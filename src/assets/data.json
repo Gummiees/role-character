@@ -1,6 +1,36 @@
 {
   "name": "Test Testing",
-  "data": [
+  "inventory": [
+    {
+      "name": "Test Item 1",
+      "quantity": 1,
+      "weight": 1,
+      "price": 1,
+      "category": "Test Category 1"
+    },
+    {
+      "name": "Test Item 2",
+      "quantity": 2,
+      "weight": 2,
+      "price": 2,
+      "category": "Test Category 2"
+    },
+    {
+      "name": "Test Item 3",
+      "quantity": 3,
+      "weight": 3,
+      "price": 3,
+      "category": "Test Category 3"
+    },
+    {
+      "name": "Test Item 4",
+      "quantity": 4,
+      "weight": 4,
+      "price": 4,
+      "category": "Test Category 4"
+    }
+  ],
+  "skills": [
     {
       "skillName": "HP",
       "percentage": 60,
