@@ -1,12 +1,11 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { RippleModule } from 'primeng/ripple';
 import { AppComponent } from './app.component';
-
-import { TopbarModule } from './topbar/topbar.module';
 import { CustomTableModule } from './table/table.module';
+import { TopbarModule } from './topbar/topbar.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,6 +15,7 @@ import { CustomTableModule } from './table/table.module';
     HttpClientModule,
     TopbarModule,
     CustomTableModule,
+    RippleModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

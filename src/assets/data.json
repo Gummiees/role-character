@@ -1,33 +1,40 @@
 {
   "name": "Test Testing",
+  "categories": [
+    {
+      "name": "Espada",
+      "color": "#ff5151"
+    },
+    {
+      "name": "Comida",
+      "color": "#0000ff"
+    },
+    {
+      "name": "Dinero",
+      "color": "#7a00ff"
+    }
+  ],
   "inventory": [
     {
-      "name": "Test Item 1",
+      "name": "Espada roja",
       "quantity": 1,
       "weight": 1,
       "price": 1,
-      "category": "Test Category 1"
+      "category": "Espada"
     },
     {
-      "name": "Test Item 2",
+      "name": "Manzana",
       "quantity": 2,
       "weight": 2,
       "price": 2,
-      "category": "Test Category 2"
+      "category": "Comida"
     },
     {
-      "name": "Test Item 3",
-      "quantity": 3,
-      "weight": 3,
-      "price": 3,
-      "category": "Test Category 3"
-    },
-    {
-      "name": "Test Item 4",
+      "name": "Moneda",
       "quantity": 4,
       "weight": 4,
       "price": 4,
-      "category": "Test Category 4"
+      "category": "Dinero"
     }
   ],
   "skills": [
