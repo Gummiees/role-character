@@ -1,0 +1,23 @@
+.ui-menubar-custom {
+    width: 100%;
+}
+.topbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.profile-info {
+    display: flex;
+    align-items: center;
+}
+.profile-image {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+}
+.profile-image img {
+    width: 100%;
+}
