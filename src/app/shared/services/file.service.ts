@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Category } from '@shared/models/category.model';
+import { Character } from '@shared/models/character.model';
 import { Inventory } from '@shared/models/inventory.model';
 import { Skill } from '@shared/models/skill.model';
 
@@ -8,42 +9,49 @@ import { Skill } from '@shared/models/skill.model';
 export class FileService {
   constructor(private http: HttpClient) {}
 
-  async getSkills(): Promise<Skill[]> {
-    return this.http
-      .get('assets/data.json')
-      .toPromise()
-      .then((res: any) => res.skills)
-      .then((data: Skill[]) => data);
-  }
-
-  async getName(): Promise<string> {
-    return this.http
-      .get('assets/data.json')
-      .toPromise()
-      .then((res: any) => res.name);
+  async getFile(): Promise<any> {
+    return this.http.get('assets/data.json').toPromise();
   }
 
   async getCategories(): Promise<Category[]> {
-    return this.http
-      .get('assets/data.json')
-      .toPromise()
-      .then((res: any) => res.categories)
-      .then((data: Category[]) => data);
+    return this.getFile().then((res: any) => res.categories as Category[]);
   }
 
-  async getInventory(): Promise<Inventory[]> {
-    return this.http
-      .get('assets/data.json')
-      .toPromise()
-      .then(async (res: any) => {
-        res.inventory.forEach((item: any) => {
-          item.category = res.categories.find(
-            (cat: Category) => cat.name === item.category
-          );
-          item.categoryName = item.category?.name;
-        });
-        return res.inventory;
-      })
-      .then((data: Inventory[]) => data);
+  async getCharacters(): Promise<Character[]> {
+    return this.getFile().then((res: any) => res.characters as Character[]);
+  }
+
+  async getCharacter(characterId: string): Promise<Character | undefined> {
+    const characters: Character[] = await this.getCharacters();
+    return characters.find((character) => character.id === characterId);
+  }
+
+  async getSkills(characterId: string): Promise<Skill[]> {
+    const character: Character | undefined = await this.getCharacter(characterId);
+    if (!character) {
+      return [];
+    }
+    return character.skills;
+  }
+
+  async getName(characterId: string): Promise<string | undefined> {
+    const character: Character | undefined = await this.getCharacter(characterId);
+    if (!character) {
+      return;
+    }
+    return character.name;
+  }
+
+  async getInventory(characterId: string): Promise<Inventory[]> {
+    const character: Character | undefined = await this.getCharacter(characterId);
+    const categories: Category[] = await this.getCategories();
+    if (!character) {
+      return [];
+    }
+
+    return character.inventory.map((item: any) => {
+      item.category = categories.find((cat: Category) => cat.name === item.category);
+      item.categoryName = item.category?.name;
+    });
   }
 }
