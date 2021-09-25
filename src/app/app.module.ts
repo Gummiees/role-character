@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { BasicDialogModule } from '@shared/components/basic-dialog/basic-dialog.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,6 +30,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     AngularFireDatabaseModule,
     FooterModule,
     MatProgressSpinnerModule,
+    BasicDialogModule,
     FirebaseUIModule.forRoot(firebaseUiAuthConfig),
   ],
   providers: [],
