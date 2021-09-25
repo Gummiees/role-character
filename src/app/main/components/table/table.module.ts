@@ -1,20 +1,14 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TableComponent } from './table.component';
-import { MatTableModule } from '@angular/material/table';
-import { TableModule } from 'primeng/table';
-import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
+import { MatTableModule } from '@angular/material/table';
+import { SharedModule } from '@shared/shared.module';
+import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
+import { TableComponent } from './table.component';
 
 @NgModule({
   declarations: [TableComponent],
-  imports: [
-    CommonModule,
-    MatTableModule,
-    TableModule,
-    DropdownModule,
-    FormsModule,
-  ],
+  imports: [SharedModule, MatTableModule, TableModule, DropdownModule, FormsModule],
   exports: [TableComponent],
   providers: [],
 })

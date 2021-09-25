@@ -1,1 +1,34 @@
 <h1>Login component</h1>
+<form (ngSubmit)="onSubmit()" [formGroup]="form">
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input matInput [formControl]="emailControl" required [attr.autocomplete]="'email'" />
+    <mat-error *ngIf="emailIsIncorrect()"> Please enter a valid email address </mat-error>
+    <mat-error *ngIf="emailControl.hasError('required')">
+      Email is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Password</mat-label>
+    <input
+      matInput
+      required
+      [formControl]="passwordControl"
+      [attr.autocomplete]="'current-password'"
+      [type]="hidePassword ? 'password' : 'text'"
+    />
+    <button
+      mat-icon-button
+      matSuffix
+      (click)="hidePassword = !hidePassword"
+      [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="hidePassword"
+    >
+      <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+    <mat-error *ngIf="passwordControl.hasError('required')">
+      Password is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+  <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Submit</button>
+</form>

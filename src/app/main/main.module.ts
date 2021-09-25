@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MainComponent } from './main.component';
-import { TopbarModule } from './components/topbar/topbar.module';
-import { CustomTableModule } from './components/table/table.module';
+import { SharedModule } from '@shared/shared.module';
 import { CharacterModule } from './components/character/character.module';
+import { CustomTableModule } from './components/table/table.module';
+import { TopbarModule } from './components/topbar/topbar.module';
 import { MainRoutingModule } from './main-routing.module';
+import { MainComponent } from './main.component';
 
 @NgModule({
   declarations: [MainComponent],
-  imports: [CommonModule, MainRoutingModule, TopbarModule, CustomTableModule, CharacterModule],
+  imports: [SharedModule, MainRoutingModule, TopbarModule, CustomTableModule, CharacterModule],
   exports: [],
   providers: [],
 })

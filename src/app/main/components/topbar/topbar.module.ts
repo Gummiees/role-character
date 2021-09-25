@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TopbarComponent } from './topbar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { SharedModule } from '@shared/shared.module';
+import { TopbarComponent } from './topbar.component';
 
 @NgModule({
   declarations: [TopbarComponent],
-  imports: [CommonModule, MatToolbarModule],
+  imports: [SharedModule, MatToolbarModule],
   exports: [TopbarComponent],
   providers: [],
 })
