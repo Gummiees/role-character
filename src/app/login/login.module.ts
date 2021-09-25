@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { SharedModule } from '@shared/shared.module';
+import { FirebaseUIModule } from 'firebaseui-angular';
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
 
 @NgModule({
   declarations: [LoginComponent],
-  imports: [SharedModule, LoginRoutingModule, MatInputModule, MatIconModule, MatFormFieldModule],
+  imports: [SharedModule, LoginRoutingModule, AngularFireAuthModule, FirebaseUIModule],
   exports: [],
   providers: [],
 })

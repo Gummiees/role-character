@@ -1,13 +1,13 @@
-<mat-toolbar color="primary">
-  <div class="image-container profile-image">
-    <img src="assets/images/profile-image.jfif" alt="profile image" />
-  </div>
+<mat-toolbar color="primary" class="h-auto p-4">
+  <img class="rounded-full h-12 mr-2" src="assets/images/profile-image.jfif" alt="profile image" />
   <span>{{ name }}</span>
-  <span class="spacer"></span>
-  <a
-    class="image-container github-icon"
-    href="https://github.com/Gummiees/role-character"
+  <span class="flex-auto"></span>
+  <mat-icon
+    class="text-3xl h-8 w-8 cursor-pointer"
+    aria-hidden="false"
+    aria-label="Logout"
+    (click)="onLogout()"
   >
-    <img src="assets/images/github-logo.svg" alt="GitHub logo" />
-  </a>
+    logout
+  </mat-icon>
 </mat-toolbar>

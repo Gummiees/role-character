@@ -5,24 +5,31 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FooterModule } from '@shared/components/footer/footer.module';
 import { SharedModule } from '@shared/shared.module';
+import { firebaseUiAuthConfig } from '@shared/utils/firebaseui.config';
+import { FirebaseUIModule } from 'firebaseui-angular';
 import { RippleModule } from 'primeng/ripple';
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    AngularFireModule.initializeApp(environment.firebase),
     AppRoutingModule,
     SharedModule,
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     RippleModule,
-    AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
+    FooterModule,
+    MatProgressSpinnerModule,
+    FirebaseUIModule.forRoot(firebaseUiAuthConfig),
   ],
   providers: [],
   bootstrap: [AppComponent],

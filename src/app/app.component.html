@@ -1,1 +1,12 @@
-<router-outlet></router-outlet>
+<div
+  *ngIf="loadingRouteConfig"
+  class="absolute w-full h-full bg-black bg-opacity-60 flex items-center justify-center z-50"
+>
+  <mat-spinner></mat-spinner>
+</div>
+<div class="w-full bg-gray-100 min-h-screen flex flex-col">
+  <div class="flex-grow">
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer class="flex-none"></app-footer>
+</div>

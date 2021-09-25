@@ -4,11 +4,13 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "emulate": "firebase emulators:start",
     "test": "ng test",
     "lint": "ng lint",
     "watch": "ng build --watch --configuration development",
     "build": "ng build",
     "buildpro": "ng build --configuration production",
+    "deploy": "firebase deploy",
     "commit": "git add . && git commit -m \"auto-commit\"",
     "push": "npm run commit && git push"
   },
@@ -26,14 +28,16 @@
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
     "autoprefixer": "^10.3.5",
+    "firebase": "^9.0.0",
+    "firebaseui": "^0.600.0",
+    "firebaseui-angular": "^6.0.0-beta.0",
     "postcss": "^8.3.8",
     "primeicons": "^4.1.0",
     "primeng": "^12.1.1",
+    "rxfire": "^6.0.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.11.4",
-    "firebase": "^9.0.0",
-    "rxfire": "^6.0.0"
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~12.2.6",
