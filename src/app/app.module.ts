@@ -7,10 +7,25 @@ import { AppComponent } from './app.component';
 import { CharacterModule } from './character/character.module';
 import { CustomTableModule } from './table/table.module';
 import { TopbarModule } from './topbar/topbar.module';
+import { environment } from 'src/environments/environment';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, HttpClientModule, TopbarModule, CustomTableModule, RippleModule, CharacterModule],
+  imports: [
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFireDatabaseModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    TopbarModule,
+    CustomTableModule,
+    RippleModule,
+    CharacterModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

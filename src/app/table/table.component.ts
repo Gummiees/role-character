@@ -36,7 +36,7 @@ export class TableComponent {
   private async getInventory(): Promise<void> {
     this.loading = true;
     try {
-      this.inventory = await this.fileService.getInventory();
+      this.inventory = []; // TODO await this.fileService.getInventory();
     } finally {
       this.loading = false;
     }

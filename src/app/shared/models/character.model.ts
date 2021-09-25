@@ -1,3 +1,4 @@
+import { Inventory } from './inventory.model';
 import { Skill } from './skill.model';
 
 export class Character {

@@ -52,6 +52,7 @@ export class FileService {
     return character.inventory.map((item: any) => {
       item.category = categories.find((cat: Category) => cat.name === item.category);
       item.categoryName = item.category?.name;
+      return item as Inventory;
     });
   }
 }

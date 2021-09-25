@@ -16,7 +16,8 @@ export class TopbarComponent {
   private async getName() {
     this.loading = true;
     try {
-      this.name = await this.fileService.getName();
+      // TODO this.name = await this.fileService.getName();
+      this.name = 'test';
     } finally {
       this.loading = false;
     }
