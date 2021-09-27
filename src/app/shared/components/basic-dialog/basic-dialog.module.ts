@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
-import { BasicDialog } from './basic-dialog.component';
+import { BasicDialogComponent } from './basic-dialog.component';
 @NgModule({
-  declarations: [BasicDialog],
+  declarations: [BasicDialogComponent],
   imports: [CommonModule, MatDialogModule],
-  exports: [BasicDialog],
+  exports: [BasicDialogComponent],
   providers: [],
 })
 export class BasicDialogModule {}

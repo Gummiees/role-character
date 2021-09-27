@@ -11,9 +11,9 @@ export interface BasicDialogData {
   templateUrl: './basic-dialog.component.html',
   styleUrls: ['./basic-dialog.component.scss'],
 })
-export class BasicDialog {
+export class BasicDialogComponent {
   constructor(
-    public dialogRef: MatDialogRef<BasicDialog>,
+    public dialogRef: MatDialogRef<BasicDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: BasicDialogData
   ) {}
 }

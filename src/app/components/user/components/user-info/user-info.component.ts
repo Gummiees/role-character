@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import {
-  BasicDialog,
+  BasicDialogComponent,
   BasicDialogData,
 } from '@shared/components/basic-dialog/basic-dialog.component';
 import { GlobalService } from '@shared/services/global.service';
@@ -38,7 +38,7 @@ export class UserInfoComponent {
       header: 'Logout',
       body: 'Are you sure you want to logout?',
     };
-    const dialogRef = this.dialog.open(BasicDialog, {
+    const dialogRef = this.dialog.open(BasicDialogComponent, {
       width: '500px',
       data: data,
     });
