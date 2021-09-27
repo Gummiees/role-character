@@ -1,15 +1,12 @@
 <mat-toolbar color="primary" class="h-auto p-4">
   <div class="cursor-pointer flex items-center" [matMenuTriggerFor]="menu">
-    <img
-      class="rounded-full h-12 mr-2"
-      src="assets/images/profile-image.jfif"
-      alt="Character image"
-    />
-    <span>{{ name || email }}</span>
+    <!--TODO: selectedCharacter.<etc> -->
+    <img class="rounded-full h-12 mr-2" src="assets/images/profile-image.jfif" />
+    <span>{{ 'Test' }}</span>
   </div>
   <span class="flex-auto"></span>
   <a routerLink="/user">
-    <img class="rounded-full h-12" src="assets/images/profile-image.jfif" alt="Profile picture" />
+    <img class="rounded-full h-12" src="{{ photoUrl }}" />
   </a>
 </mat-toolbar>
 <mat-menu #menu="matMenu">

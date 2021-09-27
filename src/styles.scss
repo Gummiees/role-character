@@ -7,3 +7,18 @@
 body {
   margin: 0;
 }
+.error-message {
+  @apply bg-red-400 text-black;
+
+  .mat-simple-snackbar-action {
+    @apply text-deepBlue;
+  }
+}
+
+.success-message {
+  @apply bg-green-300 text-black;
+
+  .mat-simple-snackbar-action {
+    @apply text-indigo-900;
+  }
+}
