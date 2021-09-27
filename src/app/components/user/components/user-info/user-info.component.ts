@@ -8,6 +8,7 @@ import { GlobalService } from '@shared/services/global.service';
 import { MessageService } from '@shared/services/message.service';
 import { UserService } from '../../../../shared/services/user.service';
 import firebase from 'firebase/compat/app';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user-info',
@@ -15,16 +16,22 @@ import firebase from 'firebase/compat/app';
   styleUrls: ['./user-info.component.scss'],
 })
 export class UserInfoComponent {
+  public hide: boolean = true;
   public loading: boolean = true;
   public name?: string | null;
   public email?: string | null;
   public photoUrl: string = this.globalService.defaultPhotoUrl;
 
+  formPassword: FormGroup = this.formBuilder.group({});
+  newPassword: FormControl = new FormControl(null, [Validators.required]);
+  newPasswordRepeat: FormControl = new FormControl(null, [Validators.required]);
+
   constructor(
     private dialog: MatDialog,
     private globalService: GlobalService,
     private userService: UserService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private formBuilder: FormBuilder
   ) {
     this.setUserInfo();
   }
@@ -44,6 +51,10 @@ export class UserInfoComponent {
         this.userService.logout();
       }
     });
+  }
+
+  onChangePassword() {
+    console.log('onChangePassword');
   }
 
   private async setUserInfo() {

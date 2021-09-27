@@ -1,3 +1,21 @@
+<div class="example-container">
+  <form [formGroup]="formPassword" (ngSubmit)="onChangePassword()">
+    <mat-form-field appearance="outline">
+      <mat-label>Enter your password</mat-label>
+      <input matInput [type]="hide ? 'password' : 'text'" [formControl]="newPassword" />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hide = !hide"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide"
+      >
+        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+  </form>
+</div>
+
 <button mat-flat-button color="warn" (click)="onLogout()">
   <mat-icon aria-hidden="false" aria-label="Logout"> logout </mat-icon>
   <span class="ml-2">Logout</span>
