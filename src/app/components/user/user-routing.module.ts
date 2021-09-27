@@ -10,6 +10,11 @@ const routes: Routes = [
     component: UserComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'account',
+        pathMatch: 'full',
+      },
+      {
         path: 'account',
         component: UserInfoComponent,
       },
