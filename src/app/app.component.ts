@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
 import { PrimeNGConfig } from 'primeng/api';
 
@@ -9,7 +10,12 @@ import { PrimeNGConfig } from 'primeng/api';
 })
 export class AppComponent implements OnInit {
   loadingRouteConfig: boolean = false;
-  constructor(private primengConfig: PrimeNGConfig, private router: Router) {
+  loggedIn: boolean = false;
+  constructor(
+    private primengConfig: PrimeNGConfig,
+    private router: Router,
+    private readonly auth: AngularFireAuth
+  ) {
     this.router.events.subscribe((event) => {
       if (event instanceof RouteConfigLoadStart) {
         this.loadingRouteConfig = true;
@@ -17,6 +23,8 @@ export class AppComponent implements OnInit {
         this.loadingRouteConfig = false;
       }
     });
+
+    this.auth.authState.subscribe((user) => (this.loggedIn = !!user));
   }
 
   ngOnInit() {

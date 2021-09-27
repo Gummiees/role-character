@@ -1,0 +1,21 @@
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>account_circle</mat-icon>
+      <span class="ml-2">Accout</span>
+    </ng-template>
+
+    <button mat-flat-button color="warn">
+      <mat-icon aria-hidden="false" aria-label="Logout" (click)="onLogout()"> logout </mat-icon>
+      <span class="ml-2">Logout</span>
+    </button>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>settings</mat-icon>
+      <span class="ml-2">Settings</span>
+    </ng-template>
+    Settings
+  </mat-tab>
+</mat-tab-group>

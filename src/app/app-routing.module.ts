@@ -12,12 +12,17 @@ const redirectLoggedInToMain = () => redirectLoggedInTo(['main']);
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./main/main.module').then((m) => m.MainModule),
+    loadChildren: () => import('./components/main/main.module').then((m) => m.MainModule),
+    canActivate: [AngularFireAuthGuard],
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./components/user/user.module').then((m) => m.UserModule),
     canActivate: [AngularFireAuthGuard],
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then((m) => m.LoginModule),
+    loadChildren: () => import('./components/login/login.module').then((m) => m.LoginModule),
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

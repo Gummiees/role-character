@@ -15,6 +15,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BasicDialogModule } from '@shared/components/basic-dialog/basic-dialog.module';
+import { TopbarModule } from './components/main/components/topbar/topbar.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +32,7 @@ import { BasicDialogModule } from '@shared/components/basic-dialog/basic-dialog.
     FooterModule,
     MatProgressSpinnerModule,
     BasicDialogModule,
+    TopbarModule,
     FirebaseUIModule.forRoot(firebaseUiAuthConfig),
   ],
   providers: [],
