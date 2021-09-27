@@ -1,9 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { GlobalService } from '@shared/services/global.service';
 import { MessageService } from '@shared/services/message.service';
-import firebase from 'firebase/compat/app';
+import { UserService } from '@shared/services/user.service';
 
 @Component({
   selector: 'app-topbar',
@@ -11,21 +8,17 @@ import firebase from 'firebase/compat/app';
   styleUrls: ['./topbar.component.scss'],
 })
 export class TopbarComponent {
-  public photoUrl: string = this.globalService.defaultPhotoUrl;
+  public photoUrl: string | null = this.userService.imageUrl;
   public loading: boolean = true;
-  constructor(
-    private readonly auth: AngularFireAuth,
-    private globalService: GlobalService,
-    private messageService: MessageService
-  ) {
+  constructor(private messageService: MessageService, private userService: UserService) {
     this.setUserInfo();
   }
 
   private async setUserInfo() {
     this.loading = true;
     try {
-      const user: firebase.User | null = await this.auth.currentUser;
-      this.photoUrl = user?.photoURL || this.globalService.defaultPhotoUrl;
+      await this.userService.setUserInfo();
+      this.photoUrl = this.userService.imageUrl;
     } catch (e: any) {
       console.error(e);
       this.messageService.showError(e);

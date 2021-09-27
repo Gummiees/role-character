@@ -6,7 +6,8 @@
   </div>
   <span class="flex-auto"></span>
   <a routerLink="/user">
-    <img class="rounded-full h-12" src="{{ photoUrl }}" />
+    <img *ngIf="photoUrl" class="rounded-full h-12" src="{{ photoUrl }}" />
+    <mat-icon *ngIf="!photoUrl" class="h-12 w-12 text-5xl">account_circle</mat-icon>
   </a>
 </mat-toolbar>
 <mat-menu #menu="matMenu">

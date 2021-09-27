@@ -12,4 +12,18 @@ export class CommonService {
     }
     return result;
   }
+
+  getBase64Image(img: HTMLImageElement): string | undefined {
+    const canvas: HTMLCanvasElement = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    const ctx: CanvasRenderingContext2D | null = canvas.getContext('2d');
+    if (!ctx) {
+      return;
+    }
+    ctx.drawImage(img, 0, 0);
+    var dataURL = canvas.toDataURL('image/png');
+    return dataURL.replace(/^data:.*,/, '');
+  }
 }
