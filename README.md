@@ -1,4 +1,4 @@
-# RoleCharacter
+# RoleCharacter [![CodeFactor](https://www.codefactor.io/repository/github/gummiees/role-character/badge)](https://www.codefactor.io/repository/github/gummiees/role-character)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.6.
 
