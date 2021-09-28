@@ -1,29 +1,30 @@
-import { Component } from '@angular/core';
-import { MessageService } from '@shared/services/message.service';
+import { Component, OnDestroy } from '@angular/core';
 import { UserService } from '@shared/services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-topbar',
   templateUrl: './topbar.component.html',
   styleUrls: ['./topbar.component.scss'],
 })
-export class TopbarComponent {
+export class TopbarComponent implements OnDestroy {
   public photoUrl: string | null = this.userService.imageUrl;
-  public loading: boolean = true;
-  constructor(private messageService: MessageService, private userService: UserService) {
-    this.setUserInfo();
+  private subscriptions: Subscription[] = [];
+
+  constructor(private userService: UserService) {
+    this.subscribeToUser();
   }
 
-  private async setUserInfo() {
-    this.loading = true;
-    try {
-      await this.userService.setUserInfo();
-      this.photoUrl = this.userService.imageUrl;
-    } catch (e: any) {
-      console.error(e);
-      this.messageService.showError(e);
-    } finally {
-      this.loading = false;
-    }
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+  }
+
+  private setUserInfo() {
+    this.photoUrl = this.userService.imageUrl;
+  }
+
+  private subscribeToUser() {
+    const sub: Subscription = this.userService.$user.subscribe(() => this.setUserInfo());
+    this.subscriptions.push(sub);
   }
 }

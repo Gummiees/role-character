@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { CommonService } from '@shared/services/common.service';
-import { GlobalService } from '@shared/services/global.service';
 import { MessageService } from '@shared/services/message.service';
 import firebase from 'firebase/compat/app';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,36 +12,37 @@ import firebase from 'firebase/compat/app';
 export class UserService {
   public set imageUrl(url: string | null) {
     if (!url) {
-      this.imageBase64 = null;
+      this._imageUrl = null;
       return;
     }
     let img: HTMLImageElement | null = document.createElement('img');
     img.src = url;
     img.crossOrigin = 'anonymous';
     const imgData: string | undefined = this.commonService.getBase64Image(img);
-    this.imageBase64 = imgData;
+    this._imageUrl = imgData;
     if (!imgData) {
-      sessionStorage.removeItem('profileImageBase64');
+      sessionStorage.setItem('profileImageUrl', url);
       return;
     }
-    sessionStorage.setItem('profileImageBase64', imgData);
+    sessionStorage.setItem('profileImageUrl', imgData);
   }
 
   public get imageUrl(): string | null {
-    if (!this.imageBase64) {
-      this.imageBase64 = sessionStorage.getItem('profileImageBase64');
+    if (!this._imageUrl) {
+      this._imageUrl = sessionStorage.getItem('profileImageUrl');
     }
-    return this.imageBase64;
+    return this._imageUrl;
   }
   public user: firebase.User | null = null;
-  private imageBase64: string | null | undefined = null;
+  private _imageUrl: string | null | undefined = null;
+
+  public $user: BehaviorSubject<firebase.User | null> = new BehaviorSubject(this.user);
 
   constructor(
     private readonly auth: AngularFireAuth,
     private router: Router,
     private messageService: MessageService,
-    private commonService: CommonService,
-    private globalService: GlobalService
+    private commonService: CommonService
   ) {}
 
   public logout() {
@@ -53,6 +54,7 @@ export class UserService {
   public async deleteUser() {
     if (this.user == null) {
       this.user = await this.auth.currentUser;
+      this.$user.next(this.user);
     }
     await this.user?.delete();
     this.router.navigate(['/login']);
@@ -62,9 +64,16 @@ export class UserService {
     if (this.user == null) {
       this.user = await this.auth.currentUser;
     }
+    if (!username) {
+      username = this.user?.displayName;
+    }
     await this.user?.updateProfile({ displayName: username, photoURL });
     this.messageService.showOk('Profile updated successfully');
-    this.setUserInfo();
+    this.user = await this.auth.currentUser;
+    if (photoURL) {
+      this.imageUrl = this.user?.photoURL || null;
+    }
+    this.$user.next(this.user);
   }
 
   public async updatePassword(newPassword: string) {
@@ -91,9 +100,10 @@ export class UserService {
   public async setUserInfo() {
     if (!this.user) {
       this.user = await this.auth.currentUser;
+      this.$user.next(this.user);
     }
     if (!this.imageUrl) {
-      this.imageUrl = this.user?.photoURL || this.globalService.defaultPhotoUrl;
+      this.imageUrl = this.user?.photoURL || null;
     }
   }
 }

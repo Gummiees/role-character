@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import {
@@ -9,6 +9,7 @@ import { GlobalService } from '@shared/services/global.service';
 import { MessageService } from '@shared/services/message.service';
 import { ValidatorsService } from '@shared/services/validators.service';
 import firebase from 'firebase/compat/app';
+import { Subscription } from 'rxjs';
 import { UserService } from '../../../../shared/services/user.service';
 
 @Component({
@@ -17,17 +18,23 @@ import { UserService } from '../../../../shared/services/user.service';
   styleUrls: ['./user-info.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class UserInfoComponent {
+export class UserInfoComponent implements OnDestroy {
   public hide: boolean = true;
-  public loading: boolean = true;
+  public loading: boolean = false;
   public name?: string | null;
   public email?: string | null;
-  public photoUrl: string = this.globalService.defaultPhotoUrl;
+  public photoUrl?: string | null;
 
   form: FormGroup = new FormGroup({});
+  photoForm: FormGroup = new FormGroup({});
+  photoControl: FormControl = new FormControl(null, [
+    Validators.pattern(this.globalService.regexUrl),
+  ]);
   usernameControl: FormControl = new FormControl(null, [Validators.required]);
   newPasswordControl: FormControl = new FormControl(null, [Validators.minLength(6)]);
   newPasswordRepeatControl: FormControl = new FormControl(null);
+
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private dialog: MatDialog,
@@ -36,11 +43,15 @@ export class UserInfoComponent {
     private messageService: MessageService,
     private validatorsService: ValidatorsService
   ) {
-    this.setForm();
-    this.setUserInfo();
+    this.setForms();
+    this.subscribeToUser();
   }
 
-  private setForm() {
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+  }
+
+  private setForms() {
     this.form = new FormGroup(
       {
         username: this.usernameControl,
@@ -49,6 +60,10 @@ export class UserInfoComponent {
       },
       this.validatorsService.checkIfMatchingPasswords('newPassword', 'newPasswordRepeat')
     );
+
+    this.photoForm = new FormGroup({
+      photoUrl: this.photoControl,
+    });
   }
 
   onLogout() {
@@ -96,7 +111,31 @@ export class UserInfoComponent {
     }
   }
 
-  async updateUsername() {
+  async onSubmitPhoto() {
+    if (this.photoForm.valid) {
+      this.loading = true;
+      await this.updatePhoto();
+      this.loading = false;
+    }
+  }
+
+  onPhotoUrlChanged(event: any) {
+    if (this.photoControl.valid) {
+      this.photoUrl = event.target.value;
+    }
+  }
+
+  private async updatePhoto() {
+    try {
+      const photoUrl = this.photoControl.value;
+      await this.userService.updateProfile(null, photoUrl);
+    } catch (e: any) {
+      console.error(e);
+      this.messageService.showError(e);
+    }
+  }
+
+  private async updateUsername() {
     try {
       const username = this.usernameControl.value;
       if (username !== this.name) {
@@ -108,18 +147,16 @@ export class UserInfoComponent {
     }
   }
 
-  private async setUserInfo() {
-    this.loading = true;
-    try {
-      const user: firebase.User | null = await this.userService.getUserInfo();
-      this.name = user?.displayName || null;
-      this.email = user?.email || null;
-      this.photoUrl = this.userService.imageUrl || this.globalService.defaultPhotoUrl;
-    } catch (e: any) {
-      console.error(e);
-      this.messageService.showError(e);
-    } finally {
-      this.loading = false;
-    }
+  private setUserInfo(user: firebase.User | null) {
+    this.name = user?.displayName || null;
+    this.email = user?.email || null;
+    this.photoUrl = this.userService.imageUrl;
+  }
+
+  private subscribeToUser() {
+    const sub: Subscription = this.userService.$user.subscribe((user: firebase.User | null) =>
+      this.setUserInfo(user)
+    );
+    this.subscriptions.push(sub);
   }
 }
