@@ -1,22 +1,84 @@
-<div class="example-container">
-  <form [formGroup]="formPassword" (ngSubmit)="onChangePassword()">
-    <mat-form-field appearance="outline">
-      <mat-label>Enter your password</mat-label>
-      <input matInput [type]="hide ? 'password' : 'text'" [formControl]="newPassword" />
+<div class="flex flex-col items-start justify-center max-w-screen-sm">
+  <mat-divider class="w-full mt-4 pb-4"></mat-divider>
+  <div class="w-full">
+    <form
+      class="flex w-full flex-col items-start justify-center"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+    >
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Username</mat-label>
+        <input
+          matInput
+          type="text"
+          autocomplete="username"
+          required
+          [formControl]="usernameControl"
+        />
+        <mat-error *ngIf="usernameControl.invalid && usernameControl.hasError('required')">
+          You must enter a username
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Enter your new password</mat-label>
+        <input
+          matInput
+          autocomplete="new-password"
+          [type]="hide ? 'password' : 'text'"
+          [formControl]="newPasswordControl"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="newPasswordControl.invalid && newPasswordControl.hasError('minlength')">
+          Must be at least 6 characters
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Repeat the password</mat-label>
+        <input
+          matInput
+          type="password"
+          autocomplete="new-password"
+          [formControl]="newPasswordRepeatControl"
+        />
+        <mat-error
+          *ngIf="
+            newPasswordRepeatControl.invalid && newPasswordRepeatControl.hasError('notEquivalent')
+          "
+        >
+          Passwords must be equal
+        </mat-error>
+      </mat-form-field>
       <button
-        mat-icon-button
-        matSuffix
-        (click)="hide = !hide"
-        [attr.aria-label]="'Hide password'"
-        [attr.aria-pressed]="hide"
+        mat-raised-button
+        color="primary"
+        class="w-full"
+        type="submit"
+        [disabled]="loading || form.invalid"
       >
-        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+        <mat-icon> save </mat-icon>
+        <span class="ml-2">Save</span>
       </button>
-    </mat-form-field>
-  </form>
-</div>
+    </form>
+  </div>
 
-<button mat-flat-button color="warn" (click)="onLogout()">
-  <mat-icon aria-hidden="false" aria-label="Logout"> logout </mat-icon>
-  <span class="ml-2">Logout</span>
-</button>
+  <mat-divider class="w-full mt-4 pb-4"></mat-divider>
+
+  <div class="w-full flex items-center justify-between">
+    <button mat-stroked-button color="warn" [disabled]="loading" (click)="onDelete()">
+      <mat-icon> delete_forever </mat-icon>
+      <span class="ml-2">Delete acocunt</span>
+    </button>
+    <button mat-raised-button color="warn" [disabled]="loading" (click)="onLogout()">
+      <mat-icon> logout </mat-icon>
+      <span class="ml-2">Logout</span>
+    </button>
+  </div>
+</div>

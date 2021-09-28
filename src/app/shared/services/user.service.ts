@@ -17,6 +17,7 @@ export class UserService {
     }
     let img: HTMLImageElement | null = document.createElement('img');
     img.src = url;
+    img.crossOrigin = 'anonymous';
     const imgData: string | undefined = this.commonService.getBase64Image(img);
     this.imageBase64 = imgData;
     if (!imgData) {
@@ -57,7 +58,7 @@ export class UserService {
     this.router.navigate(['/login']);
   }
 
-  public async updateProfile(username: string, photoURL: string) {
+  public async updateProfile(username?: string | null, photoURL?: string | null) {
     if (this.user == null) {
       this.user = await this.auth.currentUser;
     }

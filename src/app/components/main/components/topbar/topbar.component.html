@@ -5,7 +5,7 @@
     <span>{{ 'Test' }}</span>
   </div>
   <span class="flex-auto"></span>
-  <a routerLink="/user">
+  <a routerLink="/user" class="h-12">
     <img *ngIf="photoUrl" class="rounded-full h-12" src="{{ photoUrl }}" />
     <mat-icon *ngIf="!photoUrl" class="h-12 w-12 text-5xl">account_circle</mat-icon>
   </a>

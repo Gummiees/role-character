@@ -23,7 +23,10 @@ export class CommonService {
       return;
     }
     ctx.drawImage(img, 0, 0);
-    var dataURL = canvas.toDataURL('image/png');
-    return dataURL.replace(/^data:.*,/, '');
+    const url = canvas.toDataURL('image/png');
+    if (!url || url === 'data:,') {
+      return;
+    }
+    return url;
   }
 }
