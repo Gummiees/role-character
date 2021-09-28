@@ -5,28 +5,30 @@
       [formGroup]="photoForm"
       (ngSubmit)="onSubmitPhoto()"
     >
-      <div class="h-24 mb-2">
-        <img
-          *ngIf="photoUrl"
-          class="h-full rounded-full border border-solid border-black"
-          src="{{ photoUrl }}"
-        />
-        <mat-icon *ngIf="!photoUrl" class="h-full w-24 text-8xl text-indigo-material"
-          >account_circle</mat-icon
-        >
+      <div class="w-full flex items-center mb-4">
+        <div class="h-24 mr-2 flex-none">
+          <img
+            *ngIf="photoUrl"
+            class="h-full rounded-full border border-solid border-black"
+            src="{{ photoUrl }}"
+          />
+          <mat-icon *ngIf="!photoUrl" class="h-full w-24 text-8xl text-indigo-material"
+            >account_circle</mat-icon
+          >
+        </div>
+        <mat-form-field class="w-full flex-grow p-0" appearance="outline">
+          <mat-label>Photo URL</mat-label>
+          <input
+            matInput
+            type="url"
+            autocomplete="photo"
+            required
+            [formControl]="photoControl"
+            (change)="onPhotoUrlChanged($event)"
+          />
+          <mat-error *ngIf="photoControl.invalid"> You must enter a valid URL </mat-error>
+        </mat-form-field>
       </div>
-      <mat-form-field class="w-full" appearance="outline">
-        <mat-label>Photo URL</mat-label>
-        <input
-          matInput
-          type="url"
-          autocomplete="photo"
-          required
-          [formControl]="photoControl"
-          (change)="onPhotoUrlChanged($event)"
-        />
-        <mat-error *ngIf="photoControl.invalid"> You must enter a valid URL </mat-error>
-      </mat-form-field>
       <button
         mat-raised-button
         color="primary"
