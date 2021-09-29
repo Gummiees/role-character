@@ -53,6 +53,21 @@ export class UserService {
     this.router.navigate(['/sign-in']);
   }
 
+  public async createUser(email: string, password: string, username?: string) {
+    await this.auth.createUserWithEmailAndPassword(email, password);
+    // May not be necessary
+    // await this.auth.signInWithEmailAndPassword(email, password);
+    const user: any = await this.auth.currentUser;
+    console.log('user', user);
+    debugger;
+    if (username) {
+      await this.updateProfile(username);
+    } else {
+      this.user = await this.auth.currentUser;
+      this.$user.next(this.user);
+    }
+  }
+
   public async deleteUser() {
     if (this.user == null) {
       this.user = await this.auth.currentUser;
@@ -81,6 +96,7 @@ export class UserService {
     if (this.user == null) {
       this.user = await this.auth.currentUser;
     }
+    // TODO: Confirm through email first in the future
     await this.user?.updatePassword(newPassword);
   }
 

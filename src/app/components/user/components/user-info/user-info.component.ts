@@ -53,21 +53,6 @@ export class UserInfoComponent implements OnDestroy {
     this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
 
-  private setForms() {
-    this.form = new FormGroup(
-      {
-        username: this.usernameControl,
-        newPassword: this.newPasswordControl,
-        newPasswordRepeat: this.newPasswordRepeatControl,
-      },
-      this.validatorsService.checkIfMatchingPasswords('newPassword', 'newPasswordRepeat')
-    );
-
-    this.photoForm = new FormGroup({
-      photoUrl: this.photoControl,
-    });
-  }
-
   onLogout() {
     const data: BasicDialogData = {
       header: 'Logout',
@@ -175,5 +160,20 @@ export class UserInfoComponent implements OnDestroy {
       this.setUserInfo(user)
     );
     this.subscriptions.push(sub);
+  }
+
+  private setForms() {
+    this.form = new FormGroup(
+      {
+        username: this.usernameControl,
+        newPassword: this.newPasswordControl,
+        newPasswordRepeat: this.newPasswordRepeatControl,
+      },
+      this.validatorsService.checkIfMatchingPasswords('newPassword', 'newPasswordRepeat')
+    );
+
+    this.photoForm = new FormGroup({
+      photoUrl: this.photoControl,
+    });
   }
 }

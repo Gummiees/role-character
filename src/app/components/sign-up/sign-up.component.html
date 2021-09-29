@@ -1,1 +1,97 @@
-<p>sign-up works!</p>
+<div class="flex items-center justify-center w-full">
+  <div
+    class="
+      flex flex-col
+      items-start
+      justify-center
+      max-w-screen-sm
+      shadow-lg
+      bg-white
+      rounded-lg
+      p-12
+      m-12
+      w-full
+      sm:w-9/12
+    "
+  >
+    <div class="w-full">
+      <h1 class="text-center">Sign Up</h1>
+      <form
+        class="flex w-full flex-col items-start justify-center"
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+      >
+        <mat-form-field class="w-full" appearance="standard">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" autocomplete="email" required [formControl]="emailControl" />
+          <mat-error *ngIf="emailControl.invalid"> You must enter a valid email </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full" appearance="standard">
+          <mat-label>Username</mat-label>
+          <input
+            matInput
+            type="text"
+            autocomplete="username"
+            required
+            [formControl]="usernameControl"
+          />
+          <mat-error *ngIf="usernameControl.invalid && usernameControl.hasError('required')">
+            You must enter a username
+          </mat-error>
+          <mat-error *ngIf="usernameControl.invalid && usernameControl.hasError('minlength')">
+            Username must be at least 4 characters
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full" appearance="standard">
+          <mat-label>Enter your password</mat-label>
+          <input
+            matInput
+            autocomplete="new-password"
+            [type]="hide ? 'password' : 'text'"
+            [formControl]="passwordControl"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="passwordControl.invalid && passwordControl.hasError('required')">
+            You must enter a password
+          </mat-error>
+          <mat-error *ngIf="passwordControl.invalid && passwordControl.hasError('minlength')">
+            Must be at least 6 characters
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full" appearance="standard">
+          <mat-label>Repeat the password</mat-label>
+          <input
+            matInput
+            type="password"
+            autocomplete="new-password"
+            [formControl]="passwordRepeatControl"
+          />
+          <mat-error
+            *ngIf="passwordRepeatControl.invalid && passwordRepeatControl.hasError('notEquivalent')"
+          >
+            Passwords must be equal
+          </mat-error>
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          class="w-full"
+          type="submit"
+          [disabled]="loading || form.invalid"
+        >
+          <mat-icon> save </mat-icon>
+          <span class="ml-2">Save</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- TOO Add Google Sign up-->
