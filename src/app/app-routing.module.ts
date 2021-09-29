@@ -6,23 +6,28 @@ import {
 } from '@angular/fire/compat/auth-guard';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
-const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
+const redirectUnauthorizedToSignIn = () => redirectUnauthorizedTo(['sign-in']);
 const redirectLoggedInToMain = () => redirectLoggedInTo(['main']);
 
 const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./components/main/main.module').then((m) => m.MainModule),
-    ...canActivate(redirectUnauthorizedToLogin),
+    ...canActivate(redirectUnauthorizedToSignIn),
   },
   {
     path: 'user',
     loadChildren: () => import('./components/user/user.module').then((m) => m.UserModule),
-    ...canActivate(redirectUnauthorizedToLogin),
+    ...canActivate(redirectUnauthorizedToSignIn),
   },
   {
-    path: 'login',
-    loadChildren: () => import('./components/login/login.module').then((m) => m.LoginModule),
+    path: 'sign-in',
+    loadChildren: () => import('./components/sign-in/sign-in.module').then((m) => m.SignInModule),
+    ...canActivate(redirectLoggedInToMain),
+  },
+  {
+    path: 'sign-up',
+    loadChildren: () => import('./components/sign-up/sign-up.module').then((m) => m.SignUpModule),
     ...canActivate(redirectLoggedInToMain),
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },

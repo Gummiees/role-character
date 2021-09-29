@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { FirebaseUISignInSuccessWithAuthResult } from 'firebaseui-angular';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  selector: 'app-sign-in',
+  templateUrl: './sign-in.component.html',
+  styleUrls: ['./sign-in.component.scss'],
 })
-export class LoginComponent {
+export class SignInComponent {
   constructor(private router: Router) {}
 
   successCallback(signInSuccessData: FirebaseUISignInSuccessWithAuthResult) {

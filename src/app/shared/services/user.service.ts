@@ -50,7 +50,7 @@ export class UserService {
   public logout() {
     this.auth.signOut();
     this.imageUrl = null;
-    this.router.navigate(['/login']);
+    this.router.navigate(['/sign-in']);
   }
 
   public async deleteUser() {
@@ -59,7 +59,7 @@ export class UserService {
       this.$user.next(this.user);
     }
     await this.user?.delete();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/sign-in']);
   }
 
   public async updateProfile(username?: string | null, photoURL?: string | null) {
