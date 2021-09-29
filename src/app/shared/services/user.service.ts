@@ -43,7 +43,9 @@ export class UserService {
     private router: Router,
     private messageService: MessageService,
     private commonService: CommonService
-  ) {}
+  ) {
+    this.setUserInfo();
+  }
 
   public logout() {
     this.auth.signOut();
@@ -68,7 +70,6 @@ export class UserService {
       username = this.user?.displayName;
     }
     await this.user?.updateProfile({ displayName: username, photoURL });
-    this.messageService.showOk('Profile updated successfully');
     this.user = await this.auth.currentUser;
     if (photoURL) {
       this.imageUrl = this.user?.photoURL || null;
@@ -81,7 +82,6 @@ export class UserService {
       this.user = await this.auth.currentUser;
     }
     await this.user?.updatePassword(newPassword);
-    this.messageService.showOk('Password updated successfully');
   }
 
   public async updateEmail(newEmail: string) {

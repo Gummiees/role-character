@@ -5,6 +5,7 @@ import {
   BasicDialogComponent,
   BasicDialogData,
 } from '@shared/components/basic-dialog/basic-dialog.component';
+import { CommonService } from '@shared/services/common.service';
 import { GlobalService } from '@shared/services/global.service';
 import { MessageService } from '@shared/services/message.service';
 import { ValidatorsService } from '@shared/services/validators.service';
@@ -41,6 +42,7 @@ export class UserInfoComponent implements OnDestroy {
     private globalService: GlobalService,
     private userService: UserService,
     private messageService: MessageService,
+    private commonService: CommonService,
     private validatorsService: ValidatorsService
   ) {
     this.setForms();
@@ -104,10 +106,17 @@ export class UserInfoComponent implements OnDestroy {
     if (this.form.valid) {
       this.loading = true;
 
-      const userPromise = this.updateUsername();
-      await Promise.all([userPromise]);
-
-      this.loading = false;
+      try {
+        const userPromise = this.updateUsername();
+        const pwPromise = this.updatePassword();
+        await Promise.all([userPromise, pwPromise]);
+        this.messageService.showOk('Profile updated successfully');
+      } catch (e: any) {
+        console.error(e);
+        this.messageService.showError(e);
+      } finally {
+        this.loading = false;
+      }
     }
   }
 
@@ -136,21 +145,29 @@ export class UserInfoComponent implements OnDestroy {
   }
 
   private async updateUsername() {
-    try {
-      const username = this.usernameControl.value;
-      if (username !== this.name) {
-        await this.userService.updateProfile(username);
-      }
-    } catch (e: any) {
-      console.error(e);
-      this.messageService.showError(e);
+    const username = this.usernameControl.value;
+    if (username !== this.name) {
+      await this.userService.updateProfile(username);
+    }
+  }
+
+  private async updatePassword() {
+    const newPassword = this.newPasswordControl.value;
+    const newPasswordRepeat = this.newPasswordRepeatControl.value;
+    if (!this.commonService.isNullOrEmpty(newPassword) && newPassword === newPasswordRepeat) {
+      await this.userService.updatePassword(newPassword);
     }
   }
 
   private setUserInfo(user: firebase.User | null) {
-    this.name = user?.displayName || null;
+    this.setUsername(user?.displayName || null);
     this.email = user?.email || null;
     this.photoUrl = this.userService.imageUrl;
+  }
+
+  private setUsername(username: string | null) {
+    this.name = username;
+    this.usernameControl.setValue(this.name);
   }
 
   private subscribeToUser() {

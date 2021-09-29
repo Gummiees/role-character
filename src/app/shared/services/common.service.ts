@@ -29,4 +29,8 @@ export class CommonService {
     }
     return url;
   }
+
+  isNullOrEmpty(value: string) {
+    return value === null || value === undefined || value.trim() === '';
+  }
 }
