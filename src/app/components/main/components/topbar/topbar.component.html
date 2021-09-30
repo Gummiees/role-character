@@ -5,13 +5,46 @@
     <span>{{ 'Test' }}</span>
   </div>
   <span class="flex-auto"></span>
-  <a routerLink="/user" class="h-12">
-    <img *ngIf="photoUrl" class="rounded-full h-12" src="{{ photoUrl }}" />
-    <mat-icon *ngIf="!photoUrl" class="h-12 w-12 text-5xl">account_circle</mat-icon>
+  <a
+    routerLink="/user"
+    class="h-12"
+    aria-label="Account settings"
+    matTooltip="Account settings"
+    matTooltipPosition="before"
+  >
+    <img
+      *ngIf="photoUrl"
+      class="
+        rounded-full
+        h-12
+        transform
+        transition
+        duration-150
+        ease-in-out
+        hover:shadow hover:scale-125
+        active:shadow active:scale-125
+      "
+      src="{{ photoUrl }}"
+    />
+    <mat-icon
+      *ngIf="!photoUrl"
+      class="
+        h-12
+        w-12
+        text-5xl
+        transform
+        transition
+        duration-150
+        ease-in-out
+        hover:shadow hover:scale-125
+        active:shadow active:scale-125
+      "
+      >account_circle</mat-icon
+    >
   </a>
 </mat-toolbar>
 <mat-menu #menu="matMenu">
-  <button mat-menu-item>Character name 1</button>
-  <button mat-menu-item>Character name 2</button>
-  <button mat-menu-item>Manage characters</button>
+  <button type="button" mat-menu-item>Character name 1</button>
+  <button type="button" mat-menu-item>Character name 2</button>
+  <button type="button" mat-menu-item>Manage characters</button>
 </mat-menu>

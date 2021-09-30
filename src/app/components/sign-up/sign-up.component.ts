@@ -19,7 +19,10 @@ export class SignUpComponent {
     Validators.required,
     Validators.minLength(4),
   ]);
-  passwordControl: FormControl = new FormControl(null, [Validators.minLength(6)]);
+  passwordControl: FormControl = new FormControl(null, [
+    Validators.required,
+    Validators.minLength(6),
+  ]);
   passwordRepeatControl: FormControl = new FormControl(null);
   constructor(
     private validatorsService: ValidatorsService,
@@ -35,7 +38,7 @@ export class SignUpComponent {
       this.loading = true;
       try {
         await this.createUser();
-        this.messageService.showOk('Profile created successfully');
+        this.messageService.showOk('Welcome and have fun!');
         this.router.navigate(['/']);
       } catch (e: any) {
         console.error(e);
@@ -48,7 +51,8 @@ export class SignUpComponent {
 
   private async createUser() {
     const { email, username, password } = this.form.value;
-    await this.userService.createUser(email, username, password);
+    debugger;
+    await this.userService.createUser(email, password, username);
   }
 
   private setForms() {

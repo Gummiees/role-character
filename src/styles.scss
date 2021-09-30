@@ -22,3 +22,7 @@ body {
 .success-message {
   @include style-message(green-300, indigo-900);
 }
+
+mat-tooltip-component > .mat-tooltip {
+  @apply text-xs shadow;
+}

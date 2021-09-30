@@ -13,6 +13,8 @@ export class UserService {
   public set imageUrl(url: string | null) {
     if (!url) {
       this._imageUrl = null;
+      debugger;
+      sessionStorage.removeItem('profileImageUrl');
       return;
     }
     let img: HTMLImageElement | null = document.createElement('img');
@@ -55,17 +57,12 @@ export class UserService {
 
   public async createUser(email: string, password: string, username?: string) {
     await this.auth.createUserWithEmailAndPassword(email, password);
-    // May not be necessary
-    // await this.auth.signInWithEmailAndPassword(email, password);
-    const user: any = await this.auth.currentUser;
-    console.log('user', user);
-    debugger;
     if (username) {
-      await this.updateProfile(username);
-    } else {
-      this.user = await this.auth.currentUser;
-      this.$user.next(this.user);
+      await this.updateUsername(username);
     }
+    await this.auth.signInWithEmailAndPassword(email, password);
+    this.user = await this.auth.currentUser;
+    this.$user.next(this.user);
   }
 
   public async deleteUser() {
@@ -77,18 +74,23 @@ export class UserService {
     this.router.navigate(['/sign-in']);
   }
 
-  public async updateProfile(username?: string | null, photoURL?: string | null) {
+  public async updateUsername(username: string) {
     if (this.user == null) {
       this.user = await this.auth.currentUser;
     }
-    if (!username) {
-      username = this.user?.displayName;
+    await this.user?.updateProfile({ displayName: username });
+    this.$user.next(this.user);
+  }
+
+  public async updateImage(photoURL: string | null) {
+    if (this.user == null) {
+      this.user = await this.auth.currentUser;
     }
-    await this.user?.updateProfile({ displayName: username, photoURL });
-    this.user = await this.auth.currentUser;
-    if (photoURL) {
-      this.imageUrl = this.user?.photoURL || null;
-    }
+    debugger;
+    await this.user?.updateProfile({ photoURL: photoURL });
+    console.log(this.user?.photoURL);
+    debugger;
+    this.imageUrl = this.user?.photoURL || null;
     this.$user.next(this.user);
   }
 
@@ -113,12 +115,12 @@ export class UserService {
     return this.user;
   }
 
-  public async setUserInfo() {
+  public async setUserInfo(forceUpdateImage?: boolean) {
     if (!this.user) {
       this.user = await this.auth.currentUser;
       this.$user.next(this.user);
     }
-    if (!this.imageUrl) {
+    if (forceUpdateImage || !this.imageUrl) {
       this.imageUrl = this.user?.photoURL || null;
     }
   }

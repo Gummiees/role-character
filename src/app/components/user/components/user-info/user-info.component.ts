@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import {
@@ -16,8 +16,6 @@ import { UserService } from '../../../../shared/services/user.service';
 @Component({
   selector: 'app-user-info',
   templateUrl: './user-info.component.html',
-  styleUrls: ['./user-info.component.scss'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class UserInfoComponent implements OnDestroy {
   public hide: boolean = true;
@@ -25,6 +23,7 @@ export class UserInfoComponent implements OnDestroy {
   public name?: string | null;
   public email?: string | null;
   public photoUrl?: string | null;
+  public oroginalPhotoUrl?: string | null;
 
   form: FormGroup = new FormGroup({});
   photoForm: FormGroup = new FormGroup({});
@@ -105,6 +104,16 @@ export class UserInfoComponent implements OnDestroy {
     }
   }
 
+  onPhotoUrlChanged(event: any) {
+    if (this.photoControl.valid) {
+      this.photoUrl = event.target.value;
+    }
+  }
+
+  photoUrlHasChanged(): boolean {
+    return this.photoUrl !== this.oroginalPhotoUrl;
+  }
+
   async onSubmitPhoto() {
     if (this.photoForm.valid) {
       this.loading = true;
@@ -113,16 +122,17 @@ export class UserInfoComponent implements OnDestroy {
     }
   }
 
-  onPhotoUrlChanged(event: any) {
-    if (this.photoControl.valid) {
-      this.photoUrl = event.target.value;
+  async onDeleteImage() {
+    if (!this.photoUrlHasChanged()) {
+      await this.userService.updateImage(null);
     }
   }
 
   private async updatePhoto() {
     try {
-      const photoUrl = this.photoControl.value;
-      await this.userService.updateProfile(null, photoUrl);
+      if (this.photoUrlHasChanged()) {
+        await this.userService.updateImage(this.photoUrl || null);
+      }
     } catch (e: any) {
       console.error(e);
       this.messageService.showError(e);
@@ -132,7 +142,7 @@ export class UserInfoComponent implements OnDestroy {
   private async updateUsername() {
     const username = this.usernameControl.value;
     if (username !== this.name) {
-      await this.userService.updateProfile(username);
+      await this.userService.updateUsername(username);
     }
   }
 
@@ -148,6 +158,7 @@ export class UserInfoComponent implements OnDestroy {
     this.setUsername(user?.displayName || null);
     this.email = user?.email || null;
     this.photoUrl = this.userService.imageUrl;
+    this.oroginalPhotoUrl = this.userService.imageUrl;
   }
 
   private setUsername(username: string | null) {

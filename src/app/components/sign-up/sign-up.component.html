@@ -50,13 +50,7 @@
             [type]="hide ? 'password' : 'text'"
             [formControl]="passwordControl"
           />
-          <button
-            mat-icon-button
-            matSuffix
-            (click)="hide = !hide"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hide"
-          >
+          <button mat-icon-button type="button" matSuffix (click)="hide = !hide" tabindex="-1">
             <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
           <mat-error *ngIf="passwordControl.invalid && passwordControl.hasError('required')">
@@ -80,16 +74,15 @@
             Passwords must be equal
           </mat-error>
         </mat-form-field>
-        <button
-          mat-raised-button
-          color="primary"
-          class="w-full"
-          type="submit"
-          [disabled]="loading || form.invalid"
-        >
-          <mat-icon> save </mat-icon>
-          <span class="ml-2">Save</span>
-        </button>
+        <div class="w-full flex items-center justify-between">
+          <button mat-button color="primary" type="button">
+            <mat-icon> arrow_back </mat-icon>
+            <a class="ml-2" routerLink="/sign-in">Sign In</a>
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading">
+            <span>Sign Up</span>
+          </button>
+        </div>
       </form>
     </div>
   </div>

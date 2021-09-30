@@ -11,13 +11,13 @@ import { SignUpComponent } from './sign-up.component';
 @NgModule({
   declarations: [SignUpComponent],
   imports: [
+    SharedModule,
+    SignUpRoutingModule,
     MatIconModule,
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
     MatDividerModule,
-    SharedModule,
-    SignUpRoutingModule,
   ],
   exports: [],
   providers: [],
