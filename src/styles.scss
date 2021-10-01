@@ -15,6 +15,7 @@
 body {
   margin: 0;
 }
+
 .error-message {
   @include style-message(red-400, deepBlue);
 }

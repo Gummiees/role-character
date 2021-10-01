@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-topbar',
   templateUrl: './topbar.component.html',
-  styleUrls: ['./topbar.component.scss'],
 })
 export class TopbarComponent implements OnDestroy {
   public photoUrl: string | null = this.userService.imageUrl;

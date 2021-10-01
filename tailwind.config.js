@@ -4,24 +4,24 @@ module.exports = {
   theme: {
     extend: {
       fontSize: {
-        '3xl': '2rem',
+        '3xl': '2rem'
       },
       backgroundOpacity: {
-        85: '0.85',
+        85: '0.85'
       },
       colors: {
         indigo: {
-          material: '#3F51B5',
+          material: '#3F51B5'
         },
         deepBlue: {
-          DEFAULT: '#020033',
-        },
-      },
-    },
+          DEFAULT: '#020033'
+        }
+      }
+    }
   },
   variants: {
-    extend: {},
+    extend: {}
   },
   plugins: [],
-  important: true,
+  important: true
 };
