@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Category } from '@shared/models/category.model';
 import { Inventory } from '@shared/models/inventory.model';
 import { FileService } from '@shared/services/file.service';
+import { LoadersService } from '@shared/services/loaders.service';
 import { SelectItem } from 'primeng/api';
 
 @Component({
@@ -10,11 +11,10 @@ import { SelectItem } from 'primeng/api';
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent {
-  public loading: boolean = false;
   public inventory: Inventory[] = [];
   public categoriesDropdown: SelectItem[] = [];
   private categories: Category[] = [];
-  constructor(private fileService: FileService) {
+  constructor(public loadersService: LoadersService, private fileService: FileService) {
     this.getFileValues();
   }
 
@@ -23,22 +23,22 @@ export class TableComponent {
   }
 
   private async getFileValues(): Promise<void> {
-    this.loading = true;
+    this.loadersService.tableLoading = true;
     try {
       const inventoryPromise = this.getInventory();
       const categoriesPromise = this.getCategories();
       await Promise.all([inventoryPromise, categoriesPromise]);
     } finally {
-      this.loading = false;
+      this.loadersService.tableLoading = false;
     }
   }
 
   private async getInventory(): Promise<void> {
-    this.loading = true;
+    this.loadersService.tableLoading = true;
     try {
       this.inventory = []; // TODO await this.fileService.getInventory();
     } finally {
-      this.loading = false;
+      this.loadersService.tableLoading = false;
     }
   }
 

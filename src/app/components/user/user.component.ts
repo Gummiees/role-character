@@ -4,7 +4,6 @@ import { TabItem } from '@shared/models/tab-item.model';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss'],
 })
 export class UserComponent {
   tabs: TabItem[] = [

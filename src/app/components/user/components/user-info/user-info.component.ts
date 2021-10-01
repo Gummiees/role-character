@@ -7,6 +7,7 @@ import {
 } from '@shared/components/basic-dialog/basic-dialog.component';
 import { CommonService } from '@shared/services/common.service';
 import { GlobalService } from '@shared/services/global.service';
+import { LoadersService } from '@shared/services/loaders.service';
 import { MessageService } from '@shared/services/message.service';
 import { ValidatorsService } from '@shared/services/validators.service';
 import firebase from 'firebase/compat/app';
@@ -19,7 +20,6 @@ import { UserService } from '../../../../shared/services/user.service';
 })
 export class UserInfoComponent implements OnDestroy {
   public hide: boolean = true;
-  public loading: boolean = false;
   public name?: string | null;
   public email?: string | null;
   public photoUrl?: string | null;
@@ -37,6 +37,7 @@ export class UserInfoComponent implements OnDestroy {
   private subscriptions: Subscription[] = [];
 
   constructor(
+    public loadersService: LoadersService,
     private dialog: MatDialog,
     private globalService: GlobalService,
     private userService: UserService,
@@ -88,7 +89,7 @@ export class UserInfoComponent implements OnDestroy {
 
   async onSubmit() {
     if (this.form.valid) {
-      this.loading = true;
+      this.loadersService.userInfoLoading = true;
 
       try {
         const userPromise = this.updateUsername();
@@ -99,7 +100,7 @@ export class UserInfoComponent implements OnDestroy {
         console.error(e);
         this.messageService.showError(e);
       } finally {
-        this.loading = false;
+        this.loadersService.userInfoLoading = false;
       }
     }
   }
@@ -116,9 +117,9 @@ export class UserInfoComponent implements OnDestroy {
 
   async onSubmitPhoto() {
     if (this.photoForm.valid) {
-      this.loading = true;
+      this.loadersService.userInfoLoading = true;
       await this.updatePhoto();
-      this.loading = false;
+      this.loadersService.userInfoLoading = false;
     }
   }
 

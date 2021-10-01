@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,7 +31,7 @@ import { TopbarModule } from './components/main/components/topbar/topbar.module'
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     FooterModule,
-    MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatSnackBarModule,
     BasicDialogModule,
     TopbarModule,

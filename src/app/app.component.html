@@ -1,11 +1,6 @@
-<!--
-  <div
-  *ngIf="loadingRouteConfig"
-  class="absolute w-full h-full bg-black bg-opacity-60 flex items-center justify-center z-50"
->
-  <mat-spinner></mat-spinner>
+<div *ngIf="loadersService.isAnyLoading()" class="absolute w-full">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
--->
 <main class="w-full bg-gray-100 min-h-screen flex flex-col">
   <app-topbar *ngIf="loggedIn" class="flex-none"></app-topbar>
   <div class="flex-grow">

@@ -1,4 +1,4 @@
-<p-table [value]="inventory" [loading]="loading">
+<p-table [value]="inventory" [loading]="loadersService.tableLoading">
   <ng-template pTemplate="header">
     <tr>
       <th>Name</th>
@@ -21,11 +21,7 @@
         <p-columnFilter type="text" field="price"></p-columnFilter>
       </th>
       <th>
-        <p-columnFilter
-          field="categoryName"
-          matchMode="equals"
-          [showMenu]="false"
-        >
+        <p-columnFilter field="categoryName" matchMode="equals" [showMenu]="false">
           <ng-template pTemplate="filter" let-value let-filter="filterCallback">
             <p-dropdown
               placeholder="Any"

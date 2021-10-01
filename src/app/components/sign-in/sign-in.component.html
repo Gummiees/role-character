@@ -55,7 +55,7 @@
             type="button"
             color="primary"
             class="flex"
-            [disabled]="loading"
+            [disabled]="loadersService.signInLoading"
             (click)="onGoogleSignIn()"
           >
             <img
@@ -66,7 +66,12 @@
             />
             <span class="ml-2">Sign In with Google</span>
           </button>
-          <button mat-raised-button color="primary" type="submit" [disabled]="loading">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="loadersService.signInLoading"
+          >
             <span>Sign In</span>
           </button>
         </div>
