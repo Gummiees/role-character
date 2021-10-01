@@ -26,3 +26,7 @@ body {
 mat-tooltip-component > .mat-tooltip {
   @apply text-xs shadow;
 }
+
+button.flex.mat-button-base .mat-button-wrapper {
+  display: flex;
+}

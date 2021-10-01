@@ -37,7 +37,8 @@ export class SignUpComponent {
     if (this.form.valid) {
       this.loading = true;
       try {
-        await this.createUser();
+        const { email, username, password } = this.form.value;
+        await this.userService.createUser(email, password, username);
         this.messageService.showOk('Welcome and have fun!');
         this.router.navigate(['/']);
       } catch (e: any) {
@@ -48,11 +49,18 @@ export class SignUpComponent {
       }
     }
   }
-
-  private async createUser() {
-    const { email, username, password } = this.form.value;
-    debugger;
-    await this.userService.createUser(email, password, username);
+  public async onGoogleSignUp() {
+    this.loading = true;
+    try {
+      await this.userService.googleSignUp();
+      this.messageService.showOk('Welcome and have fun!');
+      this.router.navigate(['/']);
+    } catch (e: any) {
+      console.error(e);
+      this.messageService.showError(e);
+    } finally {
+      this.loading = false;
+    }
   }
 
   private setForms() {

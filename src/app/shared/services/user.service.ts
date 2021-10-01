@@ -13,7 +13,6 @@ export class UserService {
   public set imageUrl(url: string | null) {
     if (!url) {
       this._imageUrl = null;
-      debugger;
       sessionStorage.removeItem('profileImageUrl');
       return;
     }
@@ -56,12 +55,18 @@ export class UserService {
   }
 
   public async createUser(email: string, password: string, username?: string) {
-    await this.auth.createUserWithEmailAndPassword(email, password);
+    const credential = await this.auth.createUserWithEmailAndPassword(email, password);
     if (username) {
       await this.updateUsername(username);
     }
-    await this.auth.signInWithEmailAndPassword(email, password);
-    this.user = await this.auth.currentUser;
+    this.user = credential.user;
+    this.$user.next(this.user);
+  }
+
+  public async googleSignUp() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const credential = await this.auth.signInWithPopup(provider);
+    this.user = credential.user;
     this.$user.next(this.user);
   }
 
@@ -86,10 +91,7 @@ export class UserService {
     if (this.user == null) {
       this.user = await this.auth.currentUser;
     }
-    debugger;
     await this.user?.updateProfile({ photoURL: photoURL });
-    console.log(this.user?.photoURL);
-    debugger;
     this.imageUrl = this.user?.photoURL || null;
     this.$user.next(this.user);
   }

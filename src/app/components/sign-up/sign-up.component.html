@@ -79,6 +79,22 @@
             <mat-icon> arrow_back </mat-icon>
             <a class="ml-2" routerLink="/sign-in">Sign In</a>
           </button>
+          <button
+            mat-stroked-button
+            type="button"
+            color="primary"
+            class="flex"
+            [disabled]="loading"
+            (click)="onGoogleSignUp()"
+          >
+            <img
+              src="assets/images/google.svg"
+              alt="Google logo"
+              class="w-6"
+              aria-label="Sign up with Google"
+            />
+            <span class="ml-2">Sign Up with Google</span>
+          </button>
           <button mat-raised-button color="primary" type="submit" [disabled]="loading">
             <span>Sign Up</span>
           </button>
