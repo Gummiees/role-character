@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/debea64a77234e0b85f0d4a9ee620151)](https://app.codacy.com/gh/Gummiees/role-character?utm_source=github.com&utm_medium=referral&utm_content=Gummiees/role-character&utm_campaign=Badge_Grade_Settings)
 # RoleCharacter [![CodeFactor](https://www.codefactor.io/repository/github/gummiees/role-character/badge)](https://www.codefactor.io/repository/github/gummiees/role-character)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.6.
