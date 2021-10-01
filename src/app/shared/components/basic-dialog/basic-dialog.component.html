@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>{{ data.header }}</h1>
+<mat-dialog-content>
+  {{ data.body }}
+</mat-dialog-content>
+<mat-dialog-actions class="w-full flex items-center justify-between">
+  <button class="p-2" mat-button type="button" mat-dialog-close>No</button>
+  <button class="p-2" mat-button type="button" cdkFocusInitial [mat-dialog-close]="true"
+    >Yes</button
+  >
+</mat-dialog-actions>

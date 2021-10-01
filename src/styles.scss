@@ -1,7 +1,33 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '~firebaseui/dist/firebaseui.css';
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@mixin style-message($bg-color, $action-color, $text-color: 'black') {
+  @apply bg-#{$bg-color} text-#{$text-color};
+
+  .mat-simple-snackbar-action {
+    @apply text-#{$action-color};
+  }
+}
 
 body {
   margin: 0;
+}
+
+.error-message {
+  @include style-message(red-400, deepBlue);
+}
+
+.success-message {
+  @include style-message(green-300, indigo-900);
+}
+
+mat-tooltip-component > .mat-tooltip {
+  @apply text-xs shadow;
+}
+
+button.flex.mat-button-base .mat-button-wrapper {
+  display: flex;
 }

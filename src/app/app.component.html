@@ -1,4 +1,10 @@
-<div class="content" role="main">
-  <app-topbar></app-topbar>
-  <app-table></app-table>
+<div *ngIf="loadersService.isAnyLoading()" class="absolute w-full">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
+<main class="w-full bg-gray-100 min-h-screen flex flex-col">
+  <app-topbar *ngIf="loggedIn" class="flex-none"></app-topbar>
+  <div class="flex-grow">
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer class="flex-none"></app-footer>
+</main>

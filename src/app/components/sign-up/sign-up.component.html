@@ -1,0 +1,111 @@
+<div class="flex items-center justify-center w-full">
+  <div
+    class="
+      flex flex-col
+      items-start
+      justify-center
+      max-w-screen-sm
+      shadow-lg
+      bg-white
+      rounded-lg
+      p-12
+      m-12
+      w-full
+      sm:w-9/12
+    "
+  >
+    <div class="w-full">
+      <h1 class="text-center">Sign Up</h1>
+      <form
+        class="flex w-full flex-col items-start justify-center"
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+      >
+        <mat-form-field class="w-full" appearance="standard">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" autocomplete="email" required [formControl]="emailControl" />
+          <mat-error *ngIf="emailControl.invalid"> You must enter a valid email </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full" appearance="standard">
+          <mat-label>Username</mat-label>
+          <input
+            matInput
+            type="text"
+            autocomplete="username"
+            required
+            [formControl]="usernameControl"
+          />
+          <mat-error *ngIf="usernameControl.invalid && usernameControl.hasError('required')">
+            You must enter a username
+          </mat-error>
+          <mat-error *ngIf="usernameControl.invalid && usernameControl.hasError('minlength')">
+            Username must be at least 4 characters
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full" appearance="standard">
+          <mat-label>Enter your password</mat-label>
+          <input
+            matInput
+            autocomplete="new-password"
+            [type]="hide ? 'password' : 'text'"
+            [formControl]="passwordControl"
+          />
+          <button mat-icon-button type="button" matSuffix (click)="hide = !hide" tabindex="-1">
+            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="passwordControl.invalid && passwordControl.hasError('required')">
+            You must enter a password
+          </mat-error>
+          <mat-error *ngIf="passwordControl.invalid && passwordControl.hasError('minlength')">
+            Must be at least 6 characters
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full" appearance="standard">
+          <mat-label>Repeat the password</mat-label>
+          <input
+            matInput
+            type="password"
+            autocomplete="new-password"
+            [formControl]="passwordRepeatControl"
+          />
+          <mat-error
+            *ngIf="passwordRepeatControl.invalid && passwordRepeatControl.hasError('notEquivalent')"
+          >
+            Passwords must be equal
+          </mat-error>
+        </mat-form-field>
+        <div class="w-full flex items-center justify-between">
+          <a routerLink="/sign-in">
+            <button mat-stroked-button color="primary" type="button">
+              <span>Sign In</span>
+            </button>
+          </a>
+          <button
+            mat-stroked-button
+            type="button"
+            color="primary"
+            class="flex"
+            [disabled]="loadersService.signUpLoading"
+            (click)="onGoogleSignUp()"
+          >
+            <img
+              src="assets/images/google.svg"
+              alt="Google logo"
+              class="w-6"
+              aria-label="Sign Up with Google"
+            />
+            <span class="ml-2">Sign Up with Google</span>
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="loadersService.signUpLoading"
+          >
+            <span>Sign Up</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

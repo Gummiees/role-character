@@ -2,10 +2,26 @@ module.exports = {
   purge: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      fontSize: {
+        '3xl': '2rem'
+      },
+      backgroundOpacity: {
+        85: '0.85'
+      },
+      colors: {
+        indigo: {
+          material: '#3F51B5'
+        },
+        deepBlue: {
+          DEFAULT: '#020033'
+        }
+      }
+    }
   },
   variants: {
-    extend: {},
+    extend: {}
   },
   plugins: [],
-}
+  important: true
+};

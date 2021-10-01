@@ -1,16 +1,42 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BasicDialogModule } from '@shared/components/basic-dialog/basic-dialog.module';
+import { FooterModule } from '@shared/components/footer/footer.module';
+import { SharedModule } from '@shared/shared.module';
+import { firebaseUiAuthConfig } from '@shared/utils/firebaseui.config';
+import { FirebaseUIModule } from 'firebaseui-angular';
 import { RippleModule } from 'primeng/ripple';
+import { environment } from 'src/environments/environment';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CharacterModule } from './character/character.module';
-import { CustomTableModule } from './table/table.module';
-import { TopbarModule } from './topbar/topbar.module';
+import { TopbarModule } from './components/main/components/topbar/topbar.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, HttpClientModule, TopbarModule, CustomTableModule, RippleModule, CharacterModule],
+  imports: [
+    AngularFireModule.initializeApp(environment.firebase),
+    AppRoutingModule,
+    SharedModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    RippleModule,
+    AngularFireAuthModule,
+    AngularFireDatabaseModule,
+    FooterModule,
+    MatProgressBarModule,
+    MatSnackBarModule,
+    BasicDialogModule,
+    TopbarModule,
+    FirebaseUIModule.forRoot(firebaseUiAuthConfig),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
