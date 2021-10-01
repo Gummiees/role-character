@@ -83,6 +83,10 @@ export class UserService {
     this.$user.next(this.user);
   }
 
+  public async forgotPassword(email: string) {
+    await this.auth.sendPasswordResetEmail(email);
+  }
+
   public async deleteUser() {
     if (this.user == null) {
       this.user = await this.auth.currentUser;

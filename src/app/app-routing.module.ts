@@ -30,6 +30,14 @@ const routes: Routes = [
     loadChildren: () => import('./components/sign-up/sign-up.module').then((m) => m.SignUpModule),
     ...canActivate(redirectLoggedInToMain),
   },
+  {
+    path: 'forgot-password',
+    loadChildren: () =>
+      import('./components/forgot-password/forgot-password.module').then(
+        (m) => m.ForgotPasswordModule
+      ),
+    ...canActivate(redirectLoggedInToMain),
+  },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
