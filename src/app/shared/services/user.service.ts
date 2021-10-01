@@ -70,6 +70,19 @@ export class UserService {
     this.$user.next(this.user);
   }
 
+  public async signIn(email: string, password: string) {
+    const credential = await this.auth.signInWithEmailAndPassword(email, password);
+    this.user = credential.user;
+    this.$user.next(this.user);
+  }
+
+  public async googleSignIn() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const credential = await this.auth.signInWithPopup(provider);
+    this.user = credential.user;
+    this.$user.next(this.user);
+  }
+
   public async deleteUser() {
     if (this.user == null) {
       this.user = await this.auth.currentUser;

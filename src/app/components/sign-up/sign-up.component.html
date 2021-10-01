@@ -75,10 +75,12 @@
           </mat-error>
         </mat-form-field>
         <div class="w-full flex items-center justify-between">
-          <button mat-button color="primary" type="button">
-            <mat-icon> arrow_back </mat-icon>
-            <a class="ml-2" routerLink="/sign-in">Sign In</a>
-          </button>
+          <a routerLink="/sign-in">
+            <button mat-button color="primary" type="button">
+              <mat-icon> arrow_back </mat-icon>
+              <span class="ml-2">Sign In</span>
+            </button>
+          </a>
           <button
             mat-stroked-button
             type="button"
@@ -91,7 +93,7 @@
               src="assets/images/google.svg"
               alt="Google logo"
               class="w-6"
-              aria-label="Sign up with Google"
+              aria-label="Sign Up with Google"
             />
             <span class="ml-2">Sign Up with Google</span>
           </button>
@@ -103,4 +105,3 @@
     </div>
   </div>
 </div>
-<!-- TOO Add Google Sign up-->

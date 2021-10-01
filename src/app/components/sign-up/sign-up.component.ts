@@ -30,7 +30,7 @@ export class SignUpComponent {
     private messageService: MessageService,
     private router: Router
   ) {
-    this.setForms();
+    this.setForm();
   }
 
   async onSubmit() {
@@ -63,7 +63,7 @@ export class SignUpComponent {
     }
   }
 
-  private setForms() {
+  private setForm() {
     this.form = new FormGroup(
       {
         email: this.emailControl,
