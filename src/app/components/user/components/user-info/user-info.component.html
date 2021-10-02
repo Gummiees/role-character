@@ -18,7 +18,7 @@
         [formGroup]="photoForm"
         (ngSubmit)="onSubmitPhoto()"
       >
-        <div class="w-full flex items-center mb-4">
+        <div class="w-full flex items-center mb-4 flex-wrap sm:flex-nowrap justify-center">
           <div class="h-24 mr-2 flex-none">
             <img
               *ngIf="photoUrl"

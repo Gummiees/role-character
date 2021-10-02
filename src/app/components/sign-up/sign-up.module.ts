@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { SharedModule } from '@shared/shared.module';
-import { SignUpRoutingModule } from './sign-up-routing.module';
+import { SignUpRoutingModule } from './sign-up.routes';
 import { SignUpComponent } from './sign-up.component';
 
 @NgModule({
@@ -17,9 +17,9 @@ import { SignUpComponent } from './sign-up.component';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatDividerModule,
+    MatDividerModule
   ],
   exports: [],
-  providers: [],
+  providers: []
 })
 export class SignUpModule {}

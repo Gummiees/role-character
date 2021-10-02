@@ -1,8 +1,8 @@
-<div *ngIf="loadersService.isAnyLoading()" class="absolute w-full">
+<div *ngIf="loadersService.isAnyLoading()" class="absolute w-full z-20">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
 <main class="w-full bg-gray-100 min-h-screen flex flex-col">
-  <app-topbar *ngIf="loggedIn" class="flex-none"></app-topbar>
+  <app-menu *ngIf="loggedIn" class="flex-none z-10 h-20"></app-menu>
   <div class="flex-grow">
     <router-outlet></router-outlet>
   </div>

@@ -8,7 +8,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { SharedModule } from '@shared/shared.module';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { UserSettingsComponent } from './components/user-settings/user-settings.component';
-import { UserRoutingModule } from './user-routing.module';
+import { UserRoutingModule } from './user.routes';
 import { UserComponent } from './user.component';
 
 @NgModule({
@@ -21,7 +21,7 @@ import { UserComponent } from './user.component';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatDividerModule,
-  ],
+    MatDividerModule
+  ]
 })
 export class UserModule {}
