@@ -1,0 +1,26 @@
+<mat-sidenav-container>
+  <mat-sidenav mode="push" [fixedInViewport]="true" class="top-20 w-screen sm:w-56">
+    <mat-nav-list>
+      <a
+        mat-list-item
+        routerLink="/"
+        routerLinkActive="bg-indigo-200"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="optionClicked()"
+      >
+        Home
+      </a>
+      <a
+        mat-list-item
+        routerLink="/categories"
+        routerLinkActive="bg-indigo-200"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="optionClicked()"
+      >
+        Categories
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content> </mat-sidenav-content>
+</mat-sidenav-container>

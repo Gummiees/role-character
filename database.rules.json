@@ -1,6 +1,9 @@
 {
   "rules": {
-    ".read": "now < 1635112800000",
-    ".write": "now < 1635112800000"
+    "user": {
+      "$userId": {
+        ".write": "$userId === auth.uid"
+      }
+    }
   }
 }

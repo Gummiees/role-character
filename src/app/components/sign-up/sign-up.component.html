@@ -74,9 +74,9 @@
             Passwords must be equal
           </mat-error>
         </mat-form-field>
-        <div class="w-full flex items-center justify-between">
-          <a routerLink="/sign-in">
-            <button mat-stroked-button color="primary" type="button">
+        <div class="w-full flex flex-wrap items-center justify-between">
+          <a routerLink="/sign-in" class="w-full sm:w-auto">
+            <button mat-stroked-button color="primary" class="w-full" type="button">
               <span>Sign In</span>
             </button>
           </a>
@@ -84,7 +84,7 @@
             mat-stroked-button
             type="button"
             color="primary"
-            class="flex"
+            class="flex justify-center w-full sm:w-auto mt-2 sm:mt-0"
             [disabled]="loadersService.signUpLoading"
             (click)="onGoogleSignUp()"
           >
@@ -100,6 +100,7 @@
             mat-raised-button
             color="primary"
             type="submit"
+            class="w-full sm:w-auto mt-2 sm:mt-0"
             [disabled]="loadersService.signUpLoading"
           >
             <span>Sign Up</span>

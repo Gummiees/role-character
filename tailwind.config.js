@@ -16,6 +16,16 @@ module.exports = {
         deepBlue: {
           DEFAULT: '#020033'
         }
+      },
+      spacing: {
+        auto: 'auto'
+      },
+      transitionProperty: {
+        padding: 'padding',
+        margin: 'margin'
+      },
+      transitionDuration: {
+        400: '400ms'
       }
     }
   },

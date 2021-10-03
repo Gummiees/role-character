@@ -1,16 +1,19 @@
 import { Component, OnDestroy } from '@angular/core';
 import { UserService } from '@shared/services/user.service';
 import { Subscription } from 'rxjs';
+import { MenuService } from '../../services/menu.service';
+import firebase from 'firebase/compat/app';
 
 @Component({
   selector: 'app-topbar',
-  templateUrl: './topbar.component.html',
+  templateUrl: './topbar.component.html'
 })
 export class TopbarComponent implements OnDestroy {
   public photoUrl: string | null = this.userService.imageUrl;
+  public username?: string | null;
   private subscriptions: Subscription[] = [];
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private menuService: MenuService) {
     this.subscribeToUser();
   }
 
@@ -18,12 +21,19 @@ export class TopbarComponent implements OnDestroy {
     this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
 
-  private setUserInfo() {
+  onMenuClick() {
+    this.menuService.toggle();
+  }
+
+  private setUserInfo(user: firebase.User | null) {
+    this.username = user?.displayName || user?.email;
     this.photoUrl = this.userService.imageUrl;
   }
 
   private subscribeToUser() {
-    const sub: Subscription = this.userService.$user.subscribe(() => this.setUserInfo());
+    const sub: Subscription = this.userService.$user.subscribe((user: firebase.User | null) =>
+      this.setUserInfo(user)
+    );
     this.subscriptions.push(sub);
   }
 }
