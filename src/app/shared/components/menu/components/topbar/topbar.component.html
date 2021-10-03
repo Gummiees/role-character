@@ -5,26 +5,24 @@
   <span class="flex-auto"></span>
   <a
     routerLink="/user"
-    class="h-12 flex items-center justify-center"
+    class="
+      h-12
+      flex
+      items-center
+      justify-center
+      transform
+      transition
+      duration-150
+      ease-in-out
+      hover:scale-110
+      active:scale-110
+    "
     aria-label="Account settings"
     matTooltip="Account settings"
     matTooltipPosition="below"
   >
     <span class="mr-2" *ngIf="username">{{ username }}</span>
-    <img
-      *ngIf="photoUrl"
-      class="
-        rounded-full
-        h-12
-        transform
-        transition
-        duration-150
-        ease-in-out
-        hover:shadow hover:scale-125
-        active:shadow active:scale-125
-      "
-      src="{{ photoUrl }}"
-    />
+    <img *ngIf="photoUrl" class="rounded-full h-12" src="{{ photoUrl }}" />
     <mat-icon
       *ngIf="!photoUrl"
       class="

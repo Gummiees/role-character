@@ -19,6 +19,13 @@ module.exports = {
       },
       spacing: {
         auto: 'auto'
+      },
+      transitionProperty: {
+        padding: 'padding',
+        margin: 'margin'
+      },
+      transitionDuration: {
+        400: '400ms'
       }
     }
   },
