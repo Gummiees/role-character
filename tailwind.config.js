@@ -16,6 +16,9 @@ module.exports = {
         deepBlue: {
           DEFAULT: '#020033'
         }
+      },
+      spacing: {
+        auto: 'auto'
       }
     }
   },

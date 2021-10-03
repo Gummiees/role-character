@@ -44,9 +44,9 @@
             </a>
           </mat-hint>
         </mat-form-field>
-        <div class="w-full flex items-center justify-between">
-          <a routerLink="/sign-up">
-            <button mat-stroked-button color="primary" type="button">
+        <div class="w-full flex flex-wrap items-center justify-between">
+          <a routerLink="/sign-up" class="w-full sm:w-auto">
+            <button mat-stroked-button color="primary" class="w-full" type="button">
               <span>Sign Up</span>
             </button>
           </a>
@@ -54,7 +54,7 @@
             mat-stroked-button
             type="button"
             color="primary"
-            class="flex"
+            class="flex justify-center w-full sm:w-auto mt-2 sm:mt-0"
             [disabled]="loadersService.signInLoading"
             (click)="onGoogleSignIn()"
           >
@@ -70,6 +70,7 @@
             mat-raised-button
             color="primary"
             type="submit"
+            class="w-full sm:w-auto mt-2 sm:mt-0"
             [disabled]="loadersService.signInLoading"
           >
             <span>Sign In</span>

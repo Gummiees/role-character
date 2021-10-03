@@ -1,6 +1,7 @@
 {
   "name": "role-character",
   "version": "0.0.1",
+  "homepage": "https://github.com/Gummiees/role-character",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -16,7 +17,6 @@
     "commit": "npm run lint && git add . && git commit -m \"auto-commit\"",
     "push": "npm run commit && git push"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "~12.2.0",
     "@angular/cdk": "^12.2.6",
@@ -38,8 +38,8 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "^12.2.6",
     "@angular-devkit/architect": "^0.1200.0",
-    "@angular-devkit/build-angular": "~12.2.6",
     "@angular-eslint/builder": "12.5.0",
     "@angular-eslint/eslint-plugin": "12.5.0",
     "@angular-eslint/eslint-plugin-template": "12.5.0",
@@ -73,5 +73,30 @@
     "stylelint-config-standard": "^22.0.0",
     "tailwindcss": "^2.2.15",
     "typescript": "~4.3.5"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/Gummiees/role-character/issues",
+    "email": "xavicaromiro@gmail.com"
+  },
+  "author": {
+    "name": "Gummiees",
+    "email": "xavicaromiro@gmail.com",
+    "url": "https://github.com/Gummiees"
+  },
+  "displayName": "Role Character",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://www.opensource.org/licenses/mit-license.php"
+    },
+    {
+      "type": "Apache-2.0",
+      "url": "https://opensource.org/licenses/apache2.0.php"
+    }
+  ],
+  "repository": "github:Gummiees/role-character",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "private": true
 }
