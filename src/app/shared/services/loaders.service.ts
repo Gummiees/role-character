@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class LoadersService {
   private $forgotPasswordLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -10,6 +10,7 @@ export class LoadersService {
   private $signInLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private $signUpLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private $userInfoLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private $categoriesLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   constructor() {}
 
   isAnyLoading(): boolean {
@@ -18,7 +19,8 @@ export class LoadersService {
       this.tableLoading ||
       this.signInLoading ||
       this.signUpLoading ||
-      this.userInfoLoading
+      this.userInfoLoading ||
+      this.categoriesLoading
     );
   }
 
@@ -51,5 +53,11 @@ export class LoadersService {
   }
   get userInfoLoading(): boolean {
     return this.$userInfoLoading.value;
+  }
+  set categoriesLoading(value: boolean) {
+    this.$categoriesLoading.next(value);
+  }
+  get categoriesLoading(): boolean {
+    return this.$categoriesLoading.value;
   }
 }

@@ -8,7 +8,7 @@ export interface BasicDialogData {
 
 @Component({
   selector: 'app-basic-dialog',
-  templateUrl: './basic-dialog.component.html',
+  templateUrl: './basic-dialog.component.html'
 })
 export class BasicDialogComponent {
   constructor(

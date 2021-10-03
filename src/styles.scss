@@ -34,3 +34,11 @@ mat-tooltip-component > .mat-tooltip {
 button.flex.mat-button-base .mat-button-wrapper {
   display: flex;
 }
+
+p-columnfilterformelement > input.p-inputtext {
+  @apply p-1;
+}
+
+button.mat-icon-button {
+  transition: background-color 0.2s ease-in-out;
+}

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
@@ -26,13 +27,14 @@ import { AppComponent } from './app.component';
     BrowserAnimationsModule,
     HttpClientModule,
     RippleModule,
+    BasicDialogModule,
+    MenuModule,
+    FooterModule,
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    FooterModule,
     MatProgressBarModule,
     MatSnackBarModule,
-    BasicDialogModule,
-    MenuModule
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
