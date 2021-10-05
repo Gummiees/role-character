@@ -28,30 +28,14 @@ export class SidenavComponent implements OnDestroy {
     this.menuService.toggle();
   }
 
-  private onToggle(isActive: boolean) {
-    this.toggleBodyClass(isActive);
-    this.toggleMenu();
-  }
-
-  private toggleBodyClass(isActive: boolean) {
-    if (isActive) {
-      this.renderer.addClass(this.document.body, 'menu-active');
-    } else {
-      // Emulates the transition since CSS can't apply transition to overflow.
-      setTimeout(() => this.renderer.removeClass(this.document.body, 'menu-active'), 400);
-    }
-  }
-
-  private toggleMenu() {
+  private onToggle() {
     if (this.navComponent) {
       this.navComponent.toggle();
     }
   }
 
   private listenToToggle() {
-    const sub: Subscription = this.menuService.$toggle.subscribe((isActive: boolean) =>
-      this.onToggle(isActive)
-    );
+    const sub: Subscription = this.menuService.$toggle.subscribe(() => this.onToggle());
     this.subscriptions.push(sub);
   }
 }

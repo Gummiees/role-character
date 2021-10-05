@@ -22,7 +22,8 @@ module.exports = {
       },
       transitionProperty: {
         padding: 'padding',
-        margin: 'margin'
+        margin: 'margin',
+        'bg-color': 'background-color'
       },
       transitionDuration: {
         400: '400ms'

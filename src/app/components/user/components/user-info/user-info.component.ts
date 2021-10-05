@@ -3,20 +3,23 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import {
   BasicDialogComponent,
-  BasicDialogData,
+  BasicDialogData
 } from '@shared/components/basic-dialog/basic-dialog.component';
+import { BasicDialogModel } from '@shared/models/dialog.model';
 import { CommonService } from '@shared/services/common.service';
+import { DialogService } from '@shared/services/dialog.service';
 import { GlobalService } from '@shared/services/global.service';
 import { LoadersService } from '@shared/services/loaders.service';
 import { MessageService } from '@shared/services/message.service';
 import { ValidatorsService } from '@shared/services/validators.service';
 import firebase from 'firebase/compat/app';
 import { Subscription } from 'rxjs';
+import { filter, first } from 'rxjs/operators';
 import { UserService } from '../../../../shared/services/user.service';
 
 @Component({
   selector: 'app-user-info',
-  templateUrl: './user-info.component.html',
+  templateUrl: './user-info.component.html'
 })
 export class UserInfoComponent implements OnDestroy {
   public hide: boolean = true;
@@ -28,7 +31,7 @@ export class UserInfoComponent implements OnDestroy {
   form: FormGroup = new FormGroup({});
   photoForm: FormGroup = new FormGroup({});
   photoControl: FormControl = new FormControl(null, [
-    Validators.pattern(this.globalService.regexUrl),
+    Validators.pattern(this.globalService.regexUrl)
   ]);
   usernameControl: FormControl = new FormControl(null, [Validators.required]);
   newPasswordControl: FormControl = new FormControl(null, [Validators.minLength(6)]);
@@ -38,7 +41,7 @@ export class UserInfoComponent implements OnDestroy {
 
   constructor(
     public loadersService: LoadersService,
-    private dialog: MatDialog,
+    private dialogService: DialogService,
     private globalService: GlobalService,
     private userService: UserService,
     private messageService: MessageService,
@@ -54,37 +57,19 @@ export class UserInfoComponent implements OnDestroy {
   }
 
   onLogout() {
-    const data: BasicDialogData = {
+    const dialogModel: BasicDialogModel = {
       header: 'Logout',
-      body: 'Are you sure you want to logout?',
+      body: 'Are you sure you want to logout?'
     };
-    const dialogRef = this.dialog.open(BasicDialogComponent, {
-      width: '500px',
-      data: data,
-    });
-
-    dialogRef.afterClosed().subscribe((ok: boolean) => {
-      if (ok === true) {
-        this.userService.logout();
-      }
-    });
+    this.dialogService.openDialog(dialogModel).subscribe(() => this.userService.logout());
   }
 
   onDelete() {
-    const data: BasicDialogData = {
+    const dialogModel: BasicDialogModel = {
       header: 'Delete account',
-      body: 'Are you sure you want to delete your account? Everything related to your account will be erared forever!',
+      body: 'Are you sure you want to delete your account? Everything related to your account will be erased forever!'
     };
-    const dialogRef = this.dialog.open(BasicDialogComponent, {
-      width: '500px',
-      data: data,
-    });
-
-    dialogRef.afterClosed().subscribe((ok: boolean) => {
-      if (ok === true) {
-        this.userService.deleteUser();
-      }
-    });
+    this.dialogService.openDialog(dialogModel).subscribe(() => this.userService.deleteUser());
   }
 
   async onSubmit() {
@@ -179,13 +164,13 @@ export class UserInfoComponent implements OnDestroy {
       {
         username: this.usernameControl,
         newPassword: this.newPasswordControl,
-        newPasswordRepeat: this.newPasswordRepeatControl,
+        newPasswordRepeat: this.newPasswordRepeatControl
       },
       this.validatorsService.checkIfMatchingPasswords('newPassword', 'newPasswordRepeat')
     );
 
     this.photoForm = new FormGroup({
-      photoUrl: this.photoControl,
+      photoUrl: this.photoControl
     });
   }
 }
