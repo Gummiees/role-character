@@ -1,4 +1,4 @@
-# RoleCharacter
+# RoleCharacter [![CodeFactor](https://www.codefactor.io/repository/github/gummiees/role-character/badge)](https://www.codefactor.io/repository/github/gummiees/role-character) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/debea64a77234e0b85f0d4a9ee620151)](https://app.codacy.com/gh/Gummiees/role-character?utm_source=github.com&utm_medium=referral&utm_content=Gummiees/role-character&utm_campaign=Badge_Grade_Settings) ![](https://img.shields.io/github/workflow/status/Gummiees/role-character/Build%20project%20and%20deploy%20on%20Firebase%20Hosting)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.6.
 
