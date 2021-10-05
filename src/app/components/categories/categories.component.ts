@@ -1,47 +1,59 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Category } from '@shared/models/category.model';
 import { BasicDialogModel } from '@shared/models/dialog.model';
 import { CommonService } from '@shared/services/common.service';
 import { DialogService } from '@shared/services/dialog.service';
 import { LoadersService } from '@shared/services/loaders.service';
+import { MessageService } from '@shared/services/message.service';
+import { Subscription } from 'rxjs';
+import { CategoryService } from './categories.service';
 import { AddDialogComponent } from './components/add-dialog/add-dialog.component';
 
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.component.html'
 })
-export class CategoriesComponent {
+export class CategoriesComponent implements OnDestroy {
   public isEditingRow: boolean = false;
-  public categoryList: Category[] = [
-    {
-      color: '#ff0000',
-      name: 'Red',
-      id: 1
-    },
-    {
-      color: '#00ff00',
-      name: 'Green',
-      id: 2
-    },
-    {
-      color: '#0000ff',
-      name: 'Blue',
-      id: 3
-    }
-  ];
+  public categoryList: Category[] = [];
   private clonedCategories: { [s: string]: Category } = {};
+  private subscriptions: Subscription[] = [];
   constructor(
     public loadersService: LoadersService,
     private dialogService: DialogService,
-    private commonService: CommonService
-  ) {}
+    private commonService: CommonService,
+    private categoryService: CategoryService,
+    private messageService: MessageService
+  ) {
+    this.subscribeToListItems();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
+  buttonsDisabled(): boolean {
+    return this.loadersService.categoriesLoading || this.isEditingRow;
+  }
 
   addCategory() {
     this.dialogService.openGenericDialog(AddDialogComponent).subscribe((category: Category) => {
       if (!this.commonService.isNullOrUndefined(category)) {
-        this.categoryList.push(category);
+        this.createItem(category);
       }
     });
+  }
+
+  private async createItem(category: Category) {
+    this.loadersService.categoriesLoading = true;
+    try {
+      await this.categoryService.createItem(category);
+      this.messageService.showOk('Category created successfully');
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.loadersService.categoriesLoading = false;
+    }
   }
 
   public async onEditInit(category: Category) {
@@ -61,8 +73,16 @@ export class CategoriesComponent {
 
   public async onEditSave(category: Category) {
     if (category.id) {
-      delete this.clonedCategories[category.id];
-      this.isEditingRow = false;
+      this.loadersService.categoriesLoading = true;
+      try {
+        await this.categoryService.updateItem(category);
+        this.isEditingRow = false;
+        this.messageService.showOk('Category updated successfully');
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.loadersService.categoriesLoading = false;
+      }
     }
   }
 
@@ -74,7 +94,21 @@ export class CategoriesComponent {
   }
 
   private async delete(category: Category) {
-    console.log('delete', category);
-    this.categoryList = this.categoryList.filter((c) => c.id !== category.id);
+    this.loadersService.categoriesLoading = true;
+    try {
+      await this.categoryService.deleteItem(category);
+      this.messageService.showOk('Category deleted successfully');
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.loadersService.categoriesLoading = false;
+    }
+  }
+
+  private subscribeToListItems() {
+    const sub: Subscription = this.categoryService
+      .listItems()
+      .subscribe((categories: any) => (this.categoryList = categories.flat() || []));
+    this.subscriptions.push(sub);
   }
 }

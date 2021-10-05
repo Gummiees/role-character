@@ -11,7 +11,7 @@
           class="shadow"
           matTooltip="Add new"
           matTooltipPosition="below"
-          [disabled]="isEditingRow || loadersService.categoriesLoading"
+          [disabled]="buttonsDisabled()"
           (click)="addCategory()"
         >
           <mat-icon>add</mat-icon>
@@ -129,7 +129,7 @@
                 class="hover:bg-indigo-100"
                 matTooltip="Edit"
                 matTooltipPosition="below"
-                [disabled]="loadersService.categoriesLoading"
+                [disabled]="buttonsDisabled()"
                 (click)="onEditInit(item)"
               >
                 <mat-icon>edit</mat-icon>
@@ -143,7 +143,7 @@
                 class="hover:bg-red-100"
                 matTooltip="Delete"
                 matTooltipPosition="below"
-                [disabled]="loadersService.categoriesLoading"
+                [disabled]="buttonsDisabled()"
                 (click)="onDelete(item)"
               >
                 <mat-icon>delete</mat-icon>
