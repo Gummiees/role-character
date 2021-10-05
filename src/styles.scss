@@ -39,3 +39,12 @@ p-columnfilterformelement > input.p-inputtext {
 button.mat-icon-button {
   transition: background-color 0.2s ease-in-out;
 }
+
+p-celleditor .mat-form-field-wrapper,
+p-celleditor .mat-form-field-appearance-standard .mat-form-field-flex {
+  @apply p-0;
+}
+
+p-celleditor .mat-form-field-underline {
+  position: static;
+}

@@ -4,7 +4,6 @@ import { BasicDialogModel } from '@shared/models/dialog.model';
 import { CommonService } from '@shared/services/common.service';
 import { DialogService } from '@shared/services/dialog.service';
 import { LoadersService } from '@shared/services/loaders.service';
-import { filter, first, tap } from 'rxjs/operators';
 import { AddDialogComponent } from './components/add-dialog/add-dialog.component';
 
 @Component({
@@ -12,6 +11,7 @@ import { AddDialogComponent } from './components/add-dialog/add-dialog.component
   templateUrl: './categories.component.html'
 })
 export class CategoriesComponent {
+  public isEditingRow: boolean = false;
   public categoryList: Category[] = [
     {
       color: '#ff0000',
@@ -29,6 +29,7 @@ export class CategoriesComponent {
       id: 3
     }
   ];
+  private clonedCategories: { [s: string]: Category } = {};
   constructor(
     public loadersService: LoadersService,
     private dialogService: DialogService,
@@ -36,12 +37,6 @@ export class CategoriesComponent {
   ) {}
 
   addCategory() {
-    // this.categoryList.push({
-    //   color: '#000000',
-    //   name: 'Black',
-    //   id: 4
-    // });
-
     this.dialogService.openGenericDialog(AddDialogComponent).subscribe((category: Category) => {
       if (!this.commonService.isNullOrUndefined(category)) {
         this.categoryList.push(category);
@@ -49,8 +44,26 @@ export class CategoriesComponent {
     });
   }
 
-  public async onEdit(category: Category) {
-    console.log('onEdit', category);
+  public async onEditInit(category: Category) {
+    if (category.id) {
+      this.clonedCategories[category.id] = { ...category };
+      this.isEditingRow = true;
+    }
+  }
+
+  public async onEditCancel(category: Category, index: number) {
+    if (category.id) {
+      this.categoryList[index] = this.clonedCategories[category.id];
+      delete this.clonedCategories[category.id];
+      this.isEditingRow = false;
+    }
+  }
+
+  public async onEditSave(category: Category) {
+    if (category.id) {
+      delete this.clonedCategories[category.id];
+      this.isEditingRow = false;
+    }
   }
 
   public async onDelete(category: Category) {

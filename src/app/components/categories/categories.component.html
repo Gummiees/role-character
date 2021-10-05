@@ -11,6 +11,7 @@
           class="shadow"
           matTooltip="Add new"
           matTooltipPosition="below"
+          [disabled]="isEditingRow || loadersService.categoriesLoading"
           (click)="addCategory()"
         >
           <mat-icon>add</mat-icon>
@@ -20,6 +21,7 @@
     <p-table
       styleClass="p-datatable-sm p-datatable-gridlines"
       responsiveLayout="scroll"
+      editMode="row"
       [value]="categoryList"
       [loading]="loadersService.tableLoading"
       [resizableColumns]="true"
@@ -44,24 +46,82 @@
           <th> </th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-item>
-        <tr>
+      <ng-template pTemplate="body" let-item let-editing="editing" let-ri="rowIndex">
+        <tr [pEditableRow]="item">
           <td>
-            {{ item.name }}
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <mat-form-field class="w-full" appearance="standard">
+                  <mat-label>Name</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    autocomplete="name"
+                    required
+                    [(ngModel)]="item.name"
+                  />
+                </mat-form-field>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ item.name }}
+              </ng-template>
+            </p-cellEditor>
           </td>
           <td>
-            <div class="w-full flex justify-center">
-              <div
-                class="p-1.5 font-bold rounded-md"
-                [ngStyle]="{ 'background-color': item.color + '40', color: item.color }"
-              >
-                {{ item.color }}
-              </div>
-            </div>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <mat-form-field class="w-full" appearance="standard">
+                  <mat-label>Color</mat-label>
+                  <input matInput type="color" required [(ngModel)]="item.color" />
+                </mat-form-field>
+              </ng-template>
+              <ng-template pTemplate="output">
+                <div class="w-full flex justify-center">
+                  <div
+                    class="p-1.5 font-bold rounded-md"
+                    [ngStyle]="{ 'background-color': item.color + '40', color: item.color }"
+                  >
+                    {{ item.color }}
+                  </div>
+                </div>
+              </ng-template>
+            </p-cellEditor>
           </td>
           <td>
             <div class="w-full flex items-center justify-evenly">
               <button
+                pCancelEditableRow
+                *ngIf="editing"
+                type="button"
+                mat-icon-button
+                color="warn"
+                aria-label="Cancel"
+                class="hover:bg-red-100"
+                matTooltip="Cancel"
+                matTooltipPosition="below"
+                [disabled]="loadersService.categoriesLoading"
+                (click)="onEditCancel(item, ri)"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+              <button
+                pSaveEditableRow
+                *ngIf="editing"
+                type="button"
+                mat-icon-button
+                color="primary"
+                aria-label="Save"
+                class="hover:bg-indigo-100"
+                matTooltip="Save"
+                matTooltipPosition="below"
+                [disabled]="loadersService.categoriesLoading"
+                (click)="onEditSave(item)"
+              >
+                <mat-icon>save</mat-icon>
+              </button>
+              <button
+                pInitEditableRow
+                *ngIf="!editing"
                 type="button"
                 mat-icon-button
                 color="primary"
@@ -69,11 +129,13 @@
                 class="hover:bg-indigo-100"
                 matTooltip="Edit"
                 matTooltipPosition="below"
-                (click)="onEdit(item)"
+                [disabled]="loadersService.categoriesLoading"
+                (click)="onEditInit(item)"
               >
                 <mat-icon>edit</mat-icon>
               </button>
               <button
+                *ngIf="!editing"
                 type="button"
                 mat-icon-button
                 color="warn"
@@ -81,6 +143,7 @@
                 class="hover:bg-red-100"
                 matTooltip="Delete"
                 matTooltipPosition="below"
+                [disabled]="loadersService.categoriesLoading"
                 (click)="onDelete(item)"
               >
                 <mat-icon>delete</mat-icon>
