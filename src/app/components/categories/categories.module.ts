@@ -8,6 +8,7 @@ import { SharedModule } from '@shared/shared.module';
 import { TableModule } from 'primeng/table';
 import { CategoriesComponent } from './categories.component';
 import { CategoriesRoutingModule } from './categories.routes';
+import { CategoryService } from './categories.service';
 import { AddDialogModule } from './components/add-dialog/add-dialog.module';
 
 @NgModule({
@@ -22,6 +23,7 @@ import { AddDialogModule } from './components/add-dialog/add-dialog.module';
     MatInputModule,
     MatFormFieldModule,
     AddDialogModule
-  ]
+  ],
+  providers: [CategoryService]
 })
 export class CategoriesModule {}

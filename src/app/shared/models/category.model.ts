@@ -1,5 +1,6 @@
 export interface Category {
-  id?: number;
+  id?: string;
+  userId?: string;
   name: string;
   color: string;
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Category } from '@shared/models/category.model';
+import { UserService } from '@shared/services/user.service';
 
 @Component({
   selector: 'app-add-dialog',
@@ -11,7 +12,10 @@ export class AddDialogComponent {
   form: FormGroup = new FormGroup({});
   nameControl: FormControl = new FormControl(null, [Validators.required]);
   colorControl: FormControl = new FormControl(null, [Validators.required]);
-  constructor(public dialogRef: MatDialogRef<AddDialogComponent>) {
+  constructor(
+    public dialogRef: MatDialogRef<AddDialogComponent>,
+    private userService: UserService
+  ) {
     this.form.addControl('name', this.nameControl);
     this.form.addControl('color', this.colorControl);
   }

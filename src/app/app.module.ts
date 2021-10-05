@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -20,21 +21,22 @@ import { AppComponent } from './app.component';
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    AngularFireModule.initializeApp(environment.firebase),
     AppRoutingModule,
     SharedModule,
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     RippleModule,
-    BasicDialogModule,
-    MenuModule,
-    FooterModule,
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
+    AngularFirestoreModule,
     MatProgressBarModule,
     MatSnackBarModule,
-    MatIconModule
+    MatIconModule,
+    BasicDialogModule,
+    MenuModule,
+    FooterModule
   ],
   providers: [],
   bootstrap: [AppComponent]
