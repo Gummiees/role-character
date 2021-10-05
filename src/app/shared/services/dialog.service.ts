@@ -1,3 +1,4 @@
+import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import {
@@ -14,7 +15,7 @@ import { filter, first } from 'rxjs/operators';
 export class DialogService {
   constructor(private dialog: MatDialog) {}
 
-  openDialog(model: BasicDialogModel): Observable<any> {
+  openDialog(model: BasicDialogModel): Observable<void> {
     const data: BasicDialogData = {
       header: model.header,
       body: model.body
@@ -28,5 +29,13 @@ export class DialogService {
       first(),
       filter((result) => !!result)
     );
+  }
+
+  openGenericDialog<T>(component: ComponentType<T>, width?: string): Observable<any> {
+    const dialogRef = this.dialog.open(component, {
+      width: width ?? '500px'
+    });
+
+    return dialogRef.afterClosed().pipe(first());
   }
 }

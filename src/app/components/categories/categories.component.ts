@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { Category } from '@shared/models/category.model';
 import { BasicDialogModel } from '@shared/models/dialog.model';
+import { CommonService } from '@shared/services/common.service';
 import { DialogService } from '@shared/services/dialog.service';
 import { LoadersService } from '@shared/services/loaders.service';
-import { filter, first } from 'rxjs/operators';
+import { filter, first, tap } from 'rxjs/operators';
+import { AddDialogComponent } from './components/add-dialog/add-dialog.component';
 
 @Component({
   selector: 'app-categories',
@@ -27,13 +29,23 @@ export class CategoriesComponent {
       id: 3
     }
   ];
-  constructor(public loadersService: LoadersService, private dialogService: DialogService) {}
+  constructor(
+    public loadersService: LoadersService,
+    private dialogService: DialogService,
+    private commonService: CommonService
+  ) {}
 
   addCategory() {
-    this.categoryList.push({
-      color: '#000000',
-      name: 'Black',
-      id: 4
+    // this.categoryList.push({
+    //   color: '#000000',
+    //   name: 'Black',
+    //   id: 4
+    // });
+
+    this.dialogService.openGenericDialog(AddDialogComponent).subscribe((category: Category) => {
+      if (!this.commonService.isNullOrUndefined(category)) {
+        this.categoryList.push(category);
+      }
     });
   }
 

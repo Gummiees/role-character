@@ -9,6 +9,8 @@
           aria-label="Add"
           color="primary"
           class="shadow"
+          matTooltip="Add new"
+          matTooltipPosition="below"
           (click)="addCategory()"
         >
           <mat-icon>add</mat-icon>
@@ -65,6 +67,8 @@
                 color="primary"
                 aria-label="Edit"
                 class="hover:bg-indigo-100"
+                matTooltip="Edit"
+                matTooltipPosition="below"
                 (click)="onEdit(item)"
               >
                 <mat-icon>edit</mat-icon>
@@ -75,6 +79,8 @@
                 color="warn"
                 aria-label="Delete"
                 class="hover:bg-red-100"
+                matTooltip="Delete"
+                matTooltipPosition="below"
                 (click)="onDelete(item)"
               >
                 <mat-icon>delete</mat-icon>

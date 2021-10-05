@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class CommonService {
   generateId(length: number = 5): string {
@@ -30,7 +30,11 @@ export class CommonService {
     return url;
   }
 
-  isNullOrEmpty(value: string) {
-    return value === null || value === undefined || value.trim() === '';
+  isNullOrEmpty(value: string): boolean {
+    return this.isNullOrUndefined(value) || value.trim() === '';
+  }
+
+  isNullOrUndefined(value: any): boolean {
+    return value === null || value === undefined;
   }
 }
