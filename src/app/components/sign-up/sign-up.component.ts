@@ -8,7 +8,7 @@ import { ValidatorsService } from '@shared/services/validators.service';
 
 @Component({
   selector: 'app-sign-up',
-  templateUrl: './sign-up.component.html',
+  templateUrl: './sign-up.component.html'
 })
 export class SignUpComponent {
   public hide: boolean = true;
@@ -16,11 +16,11 @@ export class SignUpComponent {
   emailControl: FormControl = new FormControl(null, [Validators.required, Validators.email]);
   usernameControl: FormControl = new FormControl(null, [
     Validators.required,
-    Validators.minLength(4),
+    Validators.minLength(4)
   ]);
   passwordControl: FormControl = new FormControl(null, [
     Validators.required,
-    Validators.minLength(6),
+    Validators.minLength(6)
   ]);
   passwordRepeatControl: FormControl = new FormControl(null);
   constructor(
@@ -49,6 +49,7 @@ export class SignUpComponent {
       }
     }
   }
+
   public async onGoogleSignUp() {
     this.loadersService.signUpLoading = true;
     try {
@@ -63,13 +64,17 @@ export class SignUpComponent {
     }
   }
 
+  public goToSignIn() {
+    this.router.navigate(['/sign-in']);
+  }
+
   private setForm() {
     this.form = new FormGroup(
       {
         email: this.emailControl,
         username: this.usernameControl,
         password: this.passwordControl,
-        passwordRepeat: this.passwordRepeatControl,
+        passwordRepeat: this.passwordRepeatControl
       },
       this.validatorsService.checkIfMatchingPasswords('password', 'passwordRepeat')
     );

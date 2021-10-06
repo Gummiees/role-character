@@ -45,11 +45,16 @@
           </mat-hint>
         </mat-form-field>
         <div class="w-full flex flex-wrap items-center justify-between">
-          <a routerLink="/sign-up" class="w-full sm:w-auto">
-            <button mat-stroked-button color="primary" class="w-full" type="button">
-              <span>Sign Up</span>
-            </button>
-          </a>
+          <button
+            mat-stroked-button
+            color="primary"
+            class="w-full sm:w-auto"
+            type="button"
+            [disabled]="loadersService.signInLoading"
+            (click)="goToSignUp()"
+          >
+            <span>Sign Up</span>
+          </button>
           <button
             mat-stroked-button
             type="button"

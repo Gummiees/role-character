@@ -75,11 +75,16 @@
           </mat-error>
         </mat-form-field>
         <div class="w-full flex flex-wrap items-center justify-between">
-          <a routerLink="/sign-in" class="w-full sm:w-auto">
-            <button mat-stroked-button color="primary" class="w-full" type="button">
-              <span>Sign In</span>
-            </button>
-          </a>
+          <button
+            mat-stroked-button
+            color="primary"
+            class="w-full sm:w-auto"
+            type="button"
+            [disabled]="loadersService.signUpLoading"
+            (click)="goToSignIn()"
+          >
+            <span>Sign In</span>
+          </button>
           <button
             mat-stroked-button
             type="button"
