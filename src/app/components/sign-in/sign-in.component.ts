@@ -7,7 +7,7 @@ import { UserService } from '@shared/services/user.service';
 
 @Component({
   selector: 'app-sign-in',
-  templateUrl: './sign-in.component.html',
+  templateUrl: './sign-in.component.html'
 })
 export class SignInComponent {
   public hide: boolean = true;
@@ -54,10 +54,14 @@ export class SignInComponent {
     }
   }
 
+  goToSignUp() {
+    this.router.navigate(['/sign-up']);
+  }
+
   private setForm() {
     this.form = new FormGroup({
       email: this.emailControl,
-      password: this.passwordControl,
+      password: this.passwordControl
     });
   }
 }
