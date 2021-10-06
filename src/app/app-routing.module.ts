@@ -12,13 +12,22 @@ const redirectLoggedInToMain = () => redirectLoggedInTo(['main']);
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./components/main/main.module').then((m) => m.MainModule),
+    loadChildren: () =>
+      import('./components/character/character.module').then((m) => m.CharacterModule),
     ...canActivate(redirectUnauthorizedToSignIn)
   },
   {
     path: 'categories',
     loadChildren: () =>
       import('./components/categories/categories.module').then((m) => m.CategoriesModule),
+    ...canActivate(redirectUnauthorizedToSignIn)
+  },
+  {
+    path: 'character-management',
+    loadChildren: () =>
+      import('./components/character-management/character.module').then(
+        (m) => m.CharacterManagementModule
+      ),
     ...canActivate(redirectUnauthorizedToSignIn)
   },
   {

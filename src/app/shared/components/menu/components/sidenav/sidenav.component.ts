@@ -1,5 +1,4 @@
-import { DOCUMENT } from '@angular/common';
-import { Component, Inject, OnDestroy, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Subscription } from 'rxjs';
 import { MenuService } from '../../services/menu.service';
@@ -12,11 +11,7 @@ export class SidenavComponent implements OnDestroy {
   public openSidebar: boolean = false;
   private subscriptions: Subscription[] = [];
   @ViewChild(MatSidenav) private navComponent: MatSidenav | undefined;
-  constructor(
-    private menuService: MenuService,
-    @Inject(DOCUMENT) private document: Document,
-    private renderer: Renderer2
-  ) {
+  constructor(private menuService: MenuService) {
     this.listenToToggle();
   }
 

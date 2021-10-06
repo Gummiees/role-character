@@ -22,6 +22,7 @@
       styleClass="p-datatable-sm p-datatable-gridlines"
       responsiveLayout="scroll"
       editMode="row"
+      dataKey="id"
       [value]="categoryList"
       [loading]="loadersService.tableLoading"
       [resizableColumns]="true"
@@ -31,17 +32,11 @@
           <th pSortableColumn="name" pResizableColumn
             >Name <p-sortIcon field="name"></p-sortIcon
           ></th>
-          <th pSortableColumn="color" pResizableColumn>
-            Color <p-sortIcon field="color"></p-sortIcon>
-          </th>
           <th pResizableColumn>Actions</th>
         </tr>
         <tr>
           <th>
             <p-columnFilter type="text" field="name"></p-columnFilter>
-          </th>
-          <th>
-            <p-columnFilter type="text" field="color"></p-columnFilter>
           </th>
           <th> </th>
         </tr>
@@ -51,7 +46,7 @@
           <td>
             <p-cellEditor>
               <ng-template pTemplate="input">
-                <mat-form-field class="w-full" appearance="standard">
+                <mat-form-field class="w-1/2" appearance="standard">
                   <mat-label>Name</mat-label>
                   <input
                     matInput
@@ -61,18 +56,15 @@
                     [(ngModel)]="item.name"
                   />
                 </mat-form-field>
-              </ng-template>
-              <ng-template pTemplate="output">
-                {{ item.name }}
-              </ng-template>
-            </p-cellEditor>
-          </td>
-          <td>
-            <p-cellEditor>
-              <ng-template pTemplate="input">
-                <mat-form-field class="w-full" appearance="standard">
+                <mat-form-field class="w-1/2" appearance="standard">
                   <mat-label>Color</mat-label>
-                  <input matInput type="color" required [(ngModel)]="item.color" />
+                  <input
+                    matInput
+                    type="color"
+                    required
+                    class="cursor-pointer"
+                    [(ngModel)]="item.color"
+                  />
                 </mat-form-field>
               </ng-template>
               <ng-template pTemplate="output">
@@ -81,7 +73,7 @@
                     class="p-1.5 font-bold rounded-md"
                     [ngStyle]="{ 'background-color': item.color + '40', color: item.color }"
                   >
-                    {{ item.color }}
+                    {{ item.name }}
                   </div>
                 </div>
               </ng-template>

@@ -9,7 +9,7 @@ import { TableModule } from 'primeng/table';
 import { CategoriesComponent } from './categories.component';
 import { CategoriesRoutingModule } from './categories.routes';
 import { CategoryService } from './categories.service';
-import { AddDialogModule } from './components/add-dialog/add-dialog.module';
+import { AddDialogModule } from './add-dialog/add-dialog.module';
 
 @NgModule({
   declarations: [CategoriesComponent],
