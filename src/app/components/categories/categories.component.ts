@@ -8,6 +8,8 @@ import { MessageService } from '@shared/services/message.service';
 import { Subscription } from 'rxjs';
 import { CategoryService } from './categories.service';
 import { AddDialogComponent } from './add-dialog/add-dialog.component';
+import { UserService } from '@shared/services/user.service';
+import firebase from 'firebase/compat/app';
 
 @Component({
   selector: 'app-categories',
@@ -23,6 +25,7 @@ export class CategoriesComponent implements OnDestroy {
     private dialogService: DialogService,
     private commonService: CommonService,
     private categoryService: CategoryService,
+    private userService: UserService,
     private messageService: MessageService
   ) {
     this.subscribeToListItems();
@@ -47,8 +50,13 @@ export class CategoriesComponent implements OnDestroy {
   private async createItem(category: Category) {
     this.loadersService.categoriesLoading = true;
     try {
-      await this.categoryService.createItem(category);
-      this.messageService.showOk('Category created successfully');
+      const user: firebase.User | null = await this.userService.user;
+      if (user) {
+        await this.categoryService.createItem(category, user);
+        this.messageService.showOk('Category created successfully');
+      } else {
+        this.messageService.showLocalError('You must be logged in to create a category');
+      }
     } catch (e) {
       console.error(e);
     } finally {
@@ -75,9 +83,14 @@ export class CategoriesComponent implements OnDestroy {
     if (category.id) {
       this.loadersService.categoriesLoading = true;
       try {
-        await this.categoryService.updateItem(category);
-        this.isEditingRow = false;
-        this.messageService.showOk('Category updated successfully');
+        const user: firebase.User | null = await this.userService.user;
+        if (user) {
+          await this.categoryService.updateItem(category, user);
+          this.isEditingRow = false;
+          this.messageService.showOk('Category updated successfully');
+        } else {
+          this.messageService.showLocalError('You must be logged in to update a category');
+        }
       } catch (e) {
         console.error(e);
       } finally {
@@ -96,8 +109,13 @@ export class CategoriesComponent implements OnDestroy {
   private async delete(category: Category) {
     this.loadersService.categoriesLoading = true;
     try {
-      await this.categoryService.deleteItem(category);
-      this.messageService.showOk('Category deleted successfully');
+      const user: firebase.User | null = await this.userService.user;
+      if (user) {
+        await this.categoryService.deleteItem(category, user);
+        this.messageService.showOk('Category deleted successfully');
+      } else {
+        this.messageService.showLocalError('You must be logged in to update a category');
+      }
     } catch (e) {
       console.error(e);
     } finally {
@@ -105,10 +123,15 @@ export class CategoriesComponent implements OnDestroy {
     }
   }
 
-  private subscribeToListItems() {
-    const sub: Subscription = this.categoryService
-      .listItems()
-      .subscribe((categories: any) => (this.categoryList = categories.flat() || []));
-    this.subscriptions.push(sub);
+  private async subscribeToListItems() {
+    const user: firebase.User | null = await this.userService.user;
+    if (user) {
+      const sub: Subscription = this.categoryService
+        .listItems(user)
+        .subscribe((categories: any) => (this.categoryList = categories.flat() || []));
+      this.subscriptions.push(sub);
+    } else {
+      this.messageService.showLocalError('You must be logged in to view categories');
+    }
   }
 }

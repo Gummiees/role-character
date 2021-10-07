@@ -3,13 +3,17 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class MessageService {
   constructor(private snackBar: MatSnackBar) {}
 
   showError(error: HttpErrorResponse) {
     this.snackBar.open(error.message, 'Close', { panelClass: 'error-message' });
+  }
+
+  showLocalError(error: string) {
+    this.snackBar.open(error, 'Close', { panelClass: 'error-message' });
   }
 
   showOk(message: string) {
