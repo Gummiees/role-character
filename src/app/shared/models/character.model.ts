@@ -1,9 +1,9 @@
-import { Inventory } from './inventory.model';
-import { Skill } from './skill.model';
-
 export interface Character {
-  id: string;
+  id?: string;
+  userId?: string;
   name: string;
-  inventory: Inventory[];
-  skills: Skill[];
+  story: string;
+  personality: string;
+  appearance: string;
+  // TODO: Ver cómo relacionar con inventario, etc
 }

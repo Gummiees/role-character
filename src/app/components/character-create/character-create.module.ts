@@ -6,24 +6,21 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from '@shared/shared.module';
 import { TableModule } from 'primeng/table';
-import { CategoriesComponent } from './categories.component';
-import { CategoriesRoutingModule } from './categories.routes';
-import { CategoryService } from './categories.service';
-import { AddDialogModule } from './add-dialog/add-dialog.module';
+import { CharacterCreateComponent } from './character-create.component';
+import { CharacterCreateRoutingModule } from './character-create.routes';
 
 @NgModule({
-  declarations: [CategoriesComponent],
+  declarations: [CharacterCreateComponent],
   imports: [
     SharedModule,
-    CategoriesRoutingModule,
+    CharacterCreateRoutingModule,
     TableModule,
     MatIconModule,
     MatButtonModule,
     MatTooltipModule,
     MatInputModule,
-    MatFormFieldModule,
-    AddDialogModule
+    MatFormFieldModule
   ],
-  providers: [CategoryService]
+  providers: []
 })
-export class CategoriesModule {}
+export class CharacterCreateModule {}

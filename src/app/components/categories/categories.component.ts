@@ -7,7 +7,7 @@ import { LoadersService } from '@shared/services/loaders.service';
 import { MessageService } from '@shared/services/message.service';
 import { Subscription } from 'rxjs';
 import { CategoryService } from './categories.service';
-import { AddDialogComponent } from './components/add-dialog/add-dialog.component';
+import { AddDialogComponent } from './add-dialog/add-dialog.component';
 
 @Component({
   selector: 'app-categories',

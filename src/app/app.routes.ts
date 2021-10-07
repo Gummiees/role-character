@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import {
+  AngularFireAuthGuard,
   canActivate,
   redirectLoggedInTo,
   redirectUnauthorizedTo
 } from '@angular/fire/compat/auth-guard';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { CanActivateCharacterCreateGuard } from '@shared/guards/character-create.guard';
+import { CanActivateCharacterGuard } from '@shared/guards/character.guard';
 
 const redirectUnauthorizedToSignIn = () => redirectUnauthorizedTo(['sign-in']);
 const redirectLoggedInToMain = () => redirectLoggedInTo(['main']);
@@ -12,13 +15,32 @@ const redirectLoggedInToMain = () => redirectLoggedInTo(['main']);
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./components/main/main.module').then((m) => m.MainModule),
-    ...canActivate(redirectUnauthorizedToSignIn)
+    loadChildren: () =>
+      import('./components/character/character.module').then((m) => m.CharacterModule),
+    canActivate: [AngularFireAuthGuard, CanActivateCharacterGuard],
+    data: { authGuardPipe: redirectUnauthorizedToSignIn }
+  },
+  {
+    path: 'create',
+    loadChildren: () =>
+      import('./components/character-create/character-create.module').then(
+        (m) => m.CharacterCreateModule
+      ),
+    canActivate: [AngularFireAuthGuard, CanActivateCharacterCreateGuard],
+    data: { authGuardPipe: redirectUnauthorizedToSignIn }
   },
   {
     path: 'categories',
     loadChildren: () =>
       import('./components/categories/categories.module').then((m) => m.CategoriesModule),
+    ...canActivate(redirectUnauthorizedToSignIn)
+  },
+  {
+    path: 'character-management',
+    loadChildren: () =>
+      import('./components/character-management/character.module').then(
+        (m) => m.CharacterManagementModule
+      ),
     ...canActivate(redirectUnauthorizedToSignIn)
   },
   {

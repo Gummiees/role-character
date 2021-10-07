@@ -15,8 +15,10 @@ import { MenuModule } from '@shared/components/menu/menu.module';
 import { SharedModule } from '@shared/shared.module';
 import { RippleModule } from 'primeng/ripple';
 import { environment } from 'src/environments/environment';
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from './app.routes';
 import { AppComponent } from './app.component';
+import { CanActivateCharacterGuard } from '@shared/guards/character.guard';
+import { CanActivateCharacterCreateGuard } from '@shared/guards/character-create.guard';
 
 @NgModule({
   declarations: [AppComponent],
@@ -38,7 +40,7 @@ import { AppComponent } from './app.component';
     MenuModule,
     FooterModule
   ],
-  providers: [],
+  providers: [CanActivateCharacterGuard, CanActivateCharacterCreateGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

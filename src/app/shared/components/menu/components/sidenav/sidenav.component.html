@@ -8,7 +8,16 @@
         [routerLinkActiveOptions]="{ exact: true }"
         (click)="optionClicked()"
       >
-        Home
+        Character
+      </a>
+      <a
+        mat-list-item
+        routerLink="/character-management"
+        routerLinkActive="bg-indigo-200"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="optionClicked()"
+      >
+        Character Management
       </a>
       <a
         mat-list-item
