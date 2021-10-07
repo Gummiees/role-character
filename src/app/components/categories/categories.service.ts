@@ -3,7 +3,7 @@ import { AngularFirestore, DocumentChangeAction } from '@angular/fire/compat/fir
 import { Category } from '@shared/models/category.model';
 import { UserService } from '@shared/services/user.service';
 import firebase from 'firebase/compat/app';
-import { combineLatest, merge, Observable, of } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable()

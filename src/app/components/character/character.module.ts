@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
-import { MatDividerModule } from '@angular/material/divider';
+import { MatTabsModule } from '@angular/material/tabs';
 import { SharedModule } from '@shared/shared.module';
-import { CharacterRoutingModule } from './character.routes';
 import { CharacterComponent } from './character.component';
+import { CharacterRoutingModule } from './character.routes';
+import { CharacterInfoComponent } from './components/character-info/character-info.component';
 import { CharacterStatsComponent } from './components/character-stats/character-stats.component';
 import { InventoryComponent } from './components/inventory/inventory.component';
 import { SkillsComponent } from './components/skills/skills.component';
-import { CharacterInfoComponent } from './components/character-info/character-info.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +30,7 @@ import { CharacterInfoComponent } from './components/character-info/character-in
     MatFormFieldModule,
     MatInputModule,
     MatDividerModule
-  ]
+  ],
+  providers: []
 })
 export class CharacterModule {}
