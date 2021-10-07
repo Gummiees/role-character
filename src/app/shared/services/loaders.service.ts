@@ -6,21 +6,21 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class LoadersService {
   private $forgotPasswordLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private $tableLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private $signInLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private $signUpLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private $userInfoLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private $categoriesLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private $createCharacterLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   constructor() {}
 
   isAnyLoading(): boolean {
     return (
       this.forgotPasswordLoading ||
-      this.tableLoading ||
       this.signInLoading ||
       this.signUpLoading ||
       this.userInfoLoading ||
-      this.categoriesLoading
+      this.categoriesLoading ||
+      this.createCharacterLoading
     );
   }
 
@@ -29,12 +29,6 @@ export class LoadersService {
   }
   get forgotPasswordLoading(): boolean {
     return this.$forgotPasswordLoading.value;
-  }
-  set tableLoading(value: boolean) {
-    this.$tableLoading.next(value);
-  }
-  get tableLoading(): boolean {
-    return this.$tableLoading.value;
   }
   set signInLoading(value: boolean) {
     this.$signInLoading.next(value);
@@ -59,5 +53,11 @@ export class LoadersService {
   }
   get categoriesLoading(): boolean {
     return this.$categoriesLoading.value;
+  }
+  set createCharacterLoading(value: boolean) {
+    this.$createCharacterLoading.next(value);
+  }
+  get createCharacterLoading(): boolean {
+    return this.$createCharacterLoading.value;
   }
 }

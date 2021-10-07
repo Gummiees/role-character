@@ -21,9 +21,7 @@ export class CanActivateCharacterCreateGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
     return new Promise<boolean>(async (resolve) => {
-      const hasCharacters: boolean = await this.characterService.hasCharacters(
-        this.userService.user
-      );
+      const hasCharacters: boolean = await this.characterService.hasCharacters();
       if (!hasCharacters) {
         resolve(true);
         return;

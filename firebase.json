@@ -4,10 +4,8 @@
   },
   "hosting": {
     "target": "role-character",
-    "public": "dist/role-character",
-    "ignore": [
-      "**/.*"
-    ],
+    "public": "dist/rol-player",
+    "ignore": ["**/.*"],
     "headers": [
       {
         "source": "*.[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f].+(css|js)",

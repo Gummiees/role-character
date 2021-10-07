@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { Character } from '@shared/models/character.model';
+import { UserService } from '@shared/services/user.service';
 import firebase from 'firebase/compat/app';
 import { of } from 'rxjs';
 import { catchError, first } from 'rxjs/operators';
@@ -9,10 +10,12 @@ import { catchError, first } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class CharacterService {
-  constructor(private firestore: AngularFirestore) {}
+  public character?: Character;
+  constructor(private firestore: AngularFirestore, private userService: UserService) {}
 
-  hasCharacters(user: firebase.User | null): Promise<boolean> {
-    return new Promise((resolve) => {
+  hasCharacters(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const user: firebase.User | null = await this.userService.user;
       if (user) {
         this.firestore
           .collection<Character>('characters', (ref) => ref.where('userId', '==', user.uid))
@@ -30,6 +33,19 @@ export class CharacterService {
       } else {
         resolve(false);
       }
+    });
+  }
+
+  async createCharacter(character: Character, user: firebase.User): Promise<Character> {
+    return new Promise((resolve) => {
+      character.userId = user.uid;
+      this.firestore
+        .collection<Character>('characters')
+        .add(character)
+        .then(() => {
+          this.character = character;
+          resolve(character);
+        });
     });
   }
 }

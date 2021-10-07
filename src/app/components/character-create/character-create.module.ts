@@ -14,12 +14,10 @@ import { CharacterCreateRoutingModule } from './character-create.routes';
   imports: [
     SharedModule,
     CharacterCreateRoutingModule,
-    TableModule,
     MatIconModule,
     MatButtonModule,
-    MatTooltipModule,
-    MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: []
 })

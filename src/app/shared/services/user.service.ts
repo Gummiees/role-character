@@ -7,7 +7,7 @@ import firebase from 'firebase/compat/app';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class UserService {
   public set imageUrl(url: string | null) {
@@ -34,10 +34,16 @@ export class UserService {
     }
     return this._imageUrl;
   }
-  public user: firebase.User | null = null;
+  public get user(): Promise<firebase.User | null> {
+    if (this._user) {
+      return Promise.resolve(this._user);
+    }
+    return this.auth.currentUser;
+  }
+  private _user: firebase.User | null = null;
   private _imageUrl: string | null | undefined = null;
 
-  public $user: BehaviorSubject<firebase.User | null> = new BehaviorSubject(this.user);
+  public $user: BehaviorSubject<firebase.User | null> = new BehaviorSubject(this._user);
 
   constructor(
     private readonly auth: AngularFireAuth,
@@ -59,28 +65,28 @@ export class UserService {
     if (username) {
       await this.updateUsername(username);
     }
-    this.user = credential.user;
-    this.$user.next(this.user);
+    this._user = credential.user;
+    this.$user.next(this._user);
   }
 
   public async googleSignUp() {
     const provider = new firebase.auth.GoogleAuthProvider();
     const credential = await this.auth.signInWithPopup(provider);
-    this.user = credential.user;
-    this.$user.next(this.user);
+    this._user = credential.user;
+    this.$user.next(this._user);
   }
 
   public async signIn(email: string, password: string) {
     const credential = await this.auth.signInWithEmailAndPassword(email, password);
-    this.user = credential.user;
-    this.$user.next(this.user);
+    this._user = credential.user;
+    this.$user.next(this._user);
   }
 
   public async googleSignIn() {
     const provider = new firebase.auth.GoogleAuthProvider();
     const credential = await this.auth.signInWithPopup(provider);
-    this.user = credential.user;
-    this.$user.next(this.user);
+    this._user = credential.user;
+    this.$user.next(this._user);
   }
 
   public async forgotPassword(email: string) {
@@ -88,59 +94,59 @@ export class UserService {
   }
 
   public async deleteUser() {
-    if (this.user == null) {
-      this.user = await this.auth.currentUser;
-      this.$user.next(this.user);
+    if (this._user == null) {
+      this._user = await this.auth.currentUser;
+      this.$user.next(this._user);
     }
-    await this.user?.delete();
+    await this._user?.delete();
     this.router.navigate(['/sign-in']);
   }
 
   public async updateUsername(username: string) {
-    if (this.user == null) {
-      this.user = await this.auth.currentUser;
+    if (this._user == null) {
+      this._user = await this.auth.currentUser;
     }
-    await this.user?.updateProfile({ displayName: username });
-    this.$user.next(this.user);
+    await this._user?.updateProfile({ displayName: username });
+    this.$user.next(this._user);
   }
 
   public async updateImage(photoURL: string | null) {
-    if (this.user == null) {
-      this.user = await this.auth.currentUser;
+    if (this._user == null) {
+      this._user = await this.auth.currentUser;
     }
-    await this.user?.updateProfile({ photoURL: photoURL });
-    this.imageUrl = this.user?.photoURL || null;
-    this.$user.next(this.user);
+    await this._user?.updateProfile({ photoURL: photoURL });
+    this.imageUrl = this._user?.photoURL || null;
+    this.$user.next(this._user);
   }
 
   public async updatePassword(newPassword: string) {
-    if (this.user == null) {
-      this.user = await this.auth.currentUser;
+    if (this._user == null) {
+      this._user = await this.auth.currentUser;
     }
     // TODO: Confirm through email first in the future
-    await this.user?.updatePassword(newPassword);
+    await this._user?.updatePassword(newPassword);
   }
 
   public async updateEmail(newEmail: string) {
-    if (this.user == null) {
-      this.user = await this.auth.currentUser;
+    if (this._user == null) {
+      this._user = await this.auth.currentUser;
     }
-    await this.user?.verifyBeforeUpdateEmail(newEmail);
+    await this._user?.verifyBeforeUpdateEmail(newEmail);
     this.messageService.showOk('An email has been sent to change your email address');
   }
 
   public async getUserInfo(): Promise<firebase.User | null> {
     await this.setUserInfo();
-    return this.user;
+    return this._user;
   }
 
   public async setUserInfo(forceUpdateImage?: boolean) {
-    if (!this.user) {
-      this.user = await this.auth.currentUser;
-      this.$user.next(this.user);
+    if (!this._user) {
+      this._user = await this.auth.currentUser;
+      this.$user.next(this._user);
     }
     if (forceUpdateImage || !this.imageUrl) {
-      this.imageUrl = this.user?.photoURL || null;
+      this.imageUrl = this._user?.photoURL || null;
     }
   }
 }
