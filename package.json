@@ -1,7 +1,7 @@
 {
-  "name": "role-character",
+  "name": "rol-player",
   "version": "0.0.1",
-  "homepage": "https://github.com/Gummiees/role-character",
+  "homepage": "https://github.com/Gummiees/rol-player",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -75,7 +75,7 @@
     "typescript": "~4.3.5"
   },
   "bugs": {
-    "url": "https://github.com/Gummiees/role-character/issues",
+    "url": "https://github.com/Gummiees/rol-player/issues",
     "email": "xavicaromiro@gmail.com"
   },
   "author": {
@@ -94,7 +94,7 @@
       "url": "https://opensource.org/licenses/apache2.0.php"
     }
   ],
-  "repository": "github:Gummiees/role-character",
+  "repository": "github:Gummiees/rol-player",
   "engines": {
     "node": ">=14.0.0"
   },
