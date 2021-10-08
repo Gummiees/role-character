@@ -1,1 +1,70 @@
-<p>character-info works!</p>
+<!-- TODO: Botón para alternar entre edit mode y read mode -->
+<div class="flex items-center justify-center w-full">
+  <div
+    class="
+      flex flex-col
+      items-start
+      justify-center
+      max-w-screen-sm
+      shadow-lg
+      bg-white
+      rounded-lg
+      p-12
+      m-6
+      w-full
+      sm:w-9/12
+    "
+  >
+    <div class="w-full">
+      <h1 class="text-center">Update your character</h1>
+      <form
+        class="flex w-full flex-col items-start justify-center"
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+      >
+        <mat-form-field class="w-full" appearance="standard">
+          <mat-label>Name</mat-label>
+          <input
+            matInput
+            type="text"
+            autocomplete="nickname"
+            required
+            [formControl]="nameControl"
+          />
+          <mat-error *ngIf="nameControl.invalid"> You must enter a valid name </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full" appearance="standard">
+          <mat-label>Backstory</mat-label>
+          <textarea matInput [formControl]="backstoryControl"></textarea>
+        </mat-form-field>
+        <mat-form-field class="w-full" appearance="standard">
+          <mat-label>Personality</mat-label>
+          <textarea matInput [formControl]="personalityControl"></textarea>
+        </mat-form-field>
+        <mat-form-field class="w-full" appearance="standard">
+          <mat-label>Appeareance</mat-label>
+          <textarea matInput [formControl]="appearanceControl"></textarea>
+        </mat-form-field>
+        <div class="w-full flex items-center justify-between">
+          <button
+            mat-stroked-button
+            color="primary"
+            type="button"
+            [disabled]="loadersService.characterInfoLoading || form.pristine || form.untouched"
+            (click)="onCancel()"
+          >
+            <span>Cancel</span>
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="loadersService.characterInfoLoading || form.pristine || form.untouched"
+          >
+            <span>Save</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

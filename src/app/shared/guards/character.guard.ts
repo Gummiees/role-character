@@ -1,16 +1,11 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { UserService } from '@shared/services/user.service';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CharacterService } from 'src/app/components/character/services/character.service';
 
 @Injectable()
 export class CanActivateCharacterGuard implements CanActivate {
-  constructor(
-    private router: Router,
-    private userService: UserService,
-    private characterService: CharacterService
-  ) {}
+  constructor(private router: Router, private characterService: CharacterService) {}
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot

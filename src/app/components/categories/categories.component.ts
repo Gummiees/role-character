@@ -57,8 +57,9 @@ export class CategoriesComponent implements OnDestroy {
       } else {
         this.messageService.showLocalError('You must be logged in to create a category');
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
+      this.messageService.showLocalError(e);
     } finally {
       this.loadersService.categoriesLoading = false;
     }
@@ -91,8 +92,9 @@ export class CategoriesComponent implements OnDestroy {
         } else {
           this.messageService.showLocalError('You must be logged in to update a category');
         }
-      } catch (e) {
+      } catch (e: any) {
         console.error(e);
+        this.messageService.showLocalError(e);
       } finally {
         this.loadersService.categoriesLoading = false;
       }
@@ -116,8 +118,9 @@ export class CategoriesComponent implements OnDestroy {
       } else {
         this.messageService.showLocalError('You must be logged in to update a category');
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
+      this.messageService.showLocalError(e);
     } finally {
       this.loadersService.categoriesLoading = false;
     }

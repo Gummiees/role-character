@@ -6,8 +6,6 @@ import {
   redirectUnauthorizedTo
 } from '@angular/fire/compat/auth-guard';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { CanActivateCharacterCreateGuard } from '@shared/guards/character-create.guard';
-import { CanActivateCharacterGuard } from '@shared/guards/character.guard';
 
 const redirectUnauthorizedToSignIn = () => redirectUnauthorizedTo(['sign-in']);
 const redirectLoggedInToMain = () => redirectLoggedInTo(['main']);
@@ -17,7 +15,7 @@ const routes: Routes = [
     path: '',
     loadChildren: () =>
       import('./components/character/character.module').then((m) => m.CharacterModule),
-    canActivate: [AngularFireAuthGuard, CanActivateCharacterGuard],
+    canActivate: [AngularFireAuthGuard],
     data: { authGuardPipe: redirectUnauthorizedToSignIn }
   },
   {
@@ -26,7 +24,7 @@ const routes: Routes = [
       import('./components/character-create/character-create.module').then(
         (m) => m.CharacterCreateModule
       ),
-    canActivate: [AngularFireAuthGuard, CanActivateCharacterCreateGuard],
+    canActivate: [AngularFireAuthGuard],
     data: { authGuardPipe: redirectUnauthorizedToSignIn }
   },
   {
