@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CanActivateCharacterGuard } from '@shared/guards/character.guard';
 import { CharacterComponent } from './character.component';
 import { CharacterInfoComponent } from './components/character-info/character-info.component';
 import { CharacterStatsComponent } from './components/character-stats/character-stats.component';
@@ -17,19 +18,23 @@ const routes: Routes = [
       },
       {
         path: 'information',
-        component: CharacterInfoComponent
+        component: CharacterInfoComponent,
+        canActivate: [CanActivateCharacterGuard]
       },
       {
         path: 'statistics',
-        component: CharacterStatsComponent
+        component: CharacterStatsComponent,
+        canActivate: [CanActivateCharacterGuard]
       },
       {
         path: 'inventory',
-        component: InventoryComponent
+        component: InventoryComponent,
+        canActivate: [CanActivateCharacterGuard]
       },
       {
         path: 'skills',
-        component: SkillsComponent
+        component: SkillsComponent,
+        canActivate: [CanActivateCharacterGuard]
       }
     ]
   }

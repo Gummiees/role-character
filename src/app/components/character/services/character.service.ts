@@ -10,10 +10,39 @@ import { catchError, first } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class CharacterService {
-  public character?: Character;
+  public get character(): Promise<Character | null> {
+    if (this._character) {
+      return Promise.resolve(this._character);
+    }
+    return new Promise<Character | null>(async (resolve) => {
+      this._character = await this.getCharacter();
+      resolve(this._character);
+    });
+  }
+  private _character: Character | null = null;
   constructor(private firestore: AngularFirestore, private userService: UserService) {}
 
   hasCharacters(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const character: Character | null = await this.character;
+      return character ? resolve(true) : resolve(false);
+    });
+  }
+
+  async createCharacter(character: Character, user: firebase.User): Promise<Character> {
+    return new Promise((resolve) => {
+      character.userId = user.uid;
+      this.firestore
+        .collection<Character>('characters')
+        .add(character)
+        .then(() => {
+          this._character = character;
+          resolve(character);
+        });
+    });
+  }
+
+  async getCharacter(): Promise<Character | null> {
     return new Promise(async (resolve) => {
       const user: firebase.User | null = await this.userService.user;
       if (user) {
@@ -28,24 +57,17 @@ export class CharacterService {
             first()
           )
           .subscribe((items: DocumentChangeAction<Character>[]) => {
-            resolve(items && items.length > 0);
+            if (items && items.length > 0) {
+              const data: Character = items[0].payload.doc.data() as Character;
+              data.id = items[0].payload.doc.id;
+              resolve(data);
+            } else {
+              resolve(null);
+            }
           });
       } else {
-        resolve(false);
+        resolve(null);
       }
-    });
-  }
-
-  async createCharacter(character: Character, user: firebase.User): Promise<Character> {
-    return new Promise((resolve) => {
-      character.userId = user.uid;
-      this.firestore
-        .collection<Character>('characters')
-        .add(character)
-        .then(() => {
-          this.character = character;
-          resolve(character);
-        });
     });
   }
 }

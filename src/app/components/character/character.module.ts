@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
+import { CanActivateCharacterGuard } from '@shared/guards/character.guard';
 import { SharedModule } from '@shared/shared.module';
 import { CharacterComponent } from './character.component';
 import { CharacterRoutingModule } from './character.routes';
@@ -31,6 +32,6 @@ import { SkillsComponent } from './components/skills/skills.component';
     MatInputModule,
     MatDividerModule
   ],
-  providers: []
+  providers: [CanActivateCharacterGuard]
 })
 export class CharacterModule {}

@@ -23,14 +23,20 @@ export class SidenavComponent implements OnDestroy {
     this.menuService.toggle();
   }
 
-  private onToggle() {
+  private onToggle(val: boolean) {
     if (this.navComponent) {
-      this.navComponent.toggle();
+      if (val) {
+        this.navComponent.open();
+      } else {
+        this.navComponent.close();
+      }
     }
   }
 
   private listenToToggle() {
-    const sub: Subscription = this.menuService.$toggle.subscribe(() => this.onToggle());
+    const sub: Subscription = this.menuService.$toggle.subscribe((val: boolean) =>
+      this.onToggle(val)
+    );
     this.subscriptions.push(sub);
   }
 }

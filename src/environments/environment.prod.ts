@@ -8,5 +8,6 @@ export const environment = {
     storageBucket: 'role-character.appspot.com',
     messagingSenderId: '504584160891',
     appId: '1:504584160891:web:e0ffce268d8f58e66e04de',
-  },
+    measurementId: 'G-HN9M7K15K7'
+  }
 };
