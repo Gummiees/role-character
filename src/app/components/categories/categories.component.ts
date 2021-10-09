@@ -10,6 +10,7 @@ import { CategoryService } from './categories.service';
 import { AddDialogComponent } from './add-dialog/add-dialog.component';
 import { UserService } from '@shared/services/user.service';
 import firebase from 'firebase/compat/app';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-categories',
@@ -86,7 +87,7 @@ export class CategoriesComponent implements OnDestroy {
       try {
         const user: firebase.User | null = await this.userService.user;
         if (user) {
-          await this.categoryService.updateItem(category, user);
+          await this.categoryService.updateItem(category);
           this.isEditingRow = false;
           this.messageService.showOk('Category updated successfully');
         } else {
@@ -105,7 +106,10 @@ export class CategoriesComponent implements OnDestroy {
     const dialogModel: BasicDialogModel = {
       body: 'Are you sure you want to delete the category?'
     };
-    this.dialogService.openDialog(dialogModel).subscribe(() => this.delete(category));
+    this.dialogService
+      .openDialog(dialogModel)
+      .pipe(first())
+      .subscribe(() => this.delete(category));
   }
 
   private async delete(category: Category) {
@@ -113,7 +117,7 @@ export class CategoriesComponent implements OnDestroy {
     try {
       const user: firebase.User | null = await this.userService.user;
       if (user) {
-        await this.categoryService.deleteItem(category, user);
+        await this.categoryService.deleteItem(category);
         this.messageService.showOk('Category deleted successfully');
       } else {
         this.messageService.showLocalError('You must be logged in to update a category');

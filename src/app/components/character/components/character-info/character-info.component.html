@@ -9,14 +9,15 @@
       shadow-lg
       bg-white
       rounded-lg
-      p-12
-      m-6
+      p-6
+      sm:p-12
       w-full
       sm:w-9/12
     "
   >
     <div class="w-full">
-      <h1 class="text-center">Update your character</h1>
+      <h1 *ngIf="form.disabled" class="text-center">Your character</h1>
+      <h1 *ngIf="!form.disabled" class="text-center">Update your character</h1>
       <form
         class="flex w-full flex-col items-start justify-center"
         [formGroup]="form"
@@ -45,23 +46,51 @@
           <mat-label>Appeareance</mat-label>
           <textarea matInput [formControl]="appearanceControl"></textarea>
         </mat-form-field>
-        <div class="w-full flex items-center justify-between">
+        <div *ngIf="!form.disabled" class="w-full flex items-center flex-wrap justify-between">
           <button
             mat-stroked-button
+            class="w-full sm:w-auto"
             color="primary"
             type="button"
-            [disabled]="loadersService.characterInfoLoading || form.pristine || form.untouched"
+            [disabled]="loadersService.characterInfoLoading"
             (click)="onCancel()"
           >
-            <span>Cancel</span>
+            <mat-icon> close </mat-icon>
+            <span class="sm:ml-2">Cancel</span>
           </button>
           <button
+            class="w-full sm:w-auto"
             mat-raised-button
             color="primary"
             type="submit"
             [disabled]="loadersService.characterInfoLoading || form.pristine || form.untouched"
           >
-            <span>Save</span>
+            <mat-icon> save </mat-icon>
+            <span class="sm:ml-2">Save</span>
+          </button>
+        </div>
+        <div *ngIf="form.disabled" class="w-full flex items-center flex-wrap justify-between">
+          <button
+            mat-button
+            class="w-full sm:w-auto"
+            color="warn"
+            type="button"
+            [disabled]="loadersService.characterInfoLoading"
+            (click)="onDelete()"
+          >
+            <mat-icon> delete_forever </mat-icon>
+            <span class="sm:ml-2">Delete character</span>
+          </button>
+          <button
+            mat-raised-button
+            class="w-full sm:w-auto"
+            color="primary"
+            type="button"
+            [disabled]="loadersService.characterInfoLoading"
+            (click)="onEdit()"
+          >
+            <mat-icon> edit </mat-icon>
+            <span class="sm:ml-2">Edit</span>
           </button>
         </div>
       </form>

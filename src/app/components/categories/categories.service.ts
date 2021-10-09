@@ -5,7 +5,9 @@ import firebase from 'firebase/compat/app';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CategoryService {
   constructor(private firestore: AngularFirestore) {}
 
@@ -24,11 +26,11 @@ export class CategoryService {
     });
   }
 
-  async updateItem(item: Category, user: firebase.User): Promise<void> {
-    return this.firestore.collection<Category>('categories').doc(item.id).update(item);
+  async updateItem(item: Category): Promise<void> {
+    return this.firestore.collection<Category>('categories').doc(item.id).set(item);
   }
 
-  async deleteItem(item: Category, user: firebase.User): Promise<void> {
+  async deleteItem(item: Category): Promise<void> {
     return this.firestore.collection<Category>('categories').doc(item.id).delete();
   }
 
