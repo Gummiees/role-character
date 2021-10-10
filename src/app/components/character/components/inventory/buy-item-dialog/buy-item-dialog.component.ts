@@ -17,7 +17,6 @@ export class BuyItemDialogComponent {
     public dialogRef: MatDialogRef<BuyItemDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Item
   ) {
-    console.log('this.data', this.data);
     this.quantityControl.setValidators([
       Validators.required,
       Validators.min(1),

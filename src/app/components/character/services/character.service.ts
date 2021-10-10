@@ -98,4 +98,17 @@ export class CharacterService {
     this._character = character;
     return this._character;
   }
+
+  async setGold(amount: number): Promise<Character> {
+    const character: Character | null = await this._character;
+    if (!character) {
+      throw new Error('Character not found');
+    }
+    await this.firestore
+      .collection<Character>('characters')
+      .doc(character.id)
+      .update({ gold: amount });
+    this._character = character;
+    return this._character;
+  }
 }

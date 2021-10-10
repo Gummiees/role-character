@@ -3,7 +3,10 @@
     <div class="flex items-center">
       <h1 class="m-0">Inventory</h1>
       <div class="p-2 flex">
-        <div class="p-1.5 font-bold rounded-md leading-4 bg-yellow-100 text-yellow-400">
+        <div
+          class="p-1.5 font-bold rounded-md leading-4 bg-yellow-100 text-yellow-400"
+          (click)="onEditGold()"
+        >
           <span>Gold: </span><span>{{ gold }}</span>
         </div>
       </div>

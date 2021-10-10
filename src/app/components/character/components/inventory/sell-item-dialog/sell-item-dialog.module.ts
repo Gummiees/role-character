@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,7 +14,6 @@ import { SellItemDialogComponent } from './sell-item-dialog.component';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatAutocompleteModule,
     MatSlideToggleModule
   ],
   exports: [SellItemDialogComponent],

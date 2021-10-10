@@ -28,6 +28,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routes';
 import { AddItemDialogModule } from './components/character/components/inventory/add-item-dialog/add-item-dialog.module';
 import { BuyItemDialogModule } from './components/character/components/inventory/buy-item-dialog/buy-item-dialog.module';
+import { GoldDialogModule } from './components/character/components/inventory/gold-dialog/gold-dialog.module';
 import { SellItemDialogModule } from './components/character/components/inventory/sell-item-dialog/sell-item-dialog.module';
 
 @NgModule({
@@ -53,7 +54,8 @@ import { SellItemDialogModule } from './components/character/components/inventor
     FooterModule,
     AddItemDialogModule,
     SellItemDialogModule,
-    BuyItemDialogModule
+    BuyItemDialogModule,
+    GoldDialogModule
   ],
   providers: [PerformanceMonitoringService, ScreenTrackingService, UserTrackingService],
   bootstrap: [AppComponent]

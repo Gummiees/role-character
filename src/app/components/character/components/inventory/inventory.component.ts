@@ -18,6 +18,7 @@ import { AddItemDialogComponent } from './add-item-dialog/add-item-dialog.compon
 import { AddItem } from './add-item-dialog/add-item.model';
 import { BuyItemDialogComponent } from './buy-item-dialog/buy-item-dialog.component';
 import { BuyItem } from './buy-item-dialog/buy-item.model';
+import { GoldDialogComponent } from './gold-dialog/gold-dialog.component';
 import { InventoryService } from './inventory.service';
 import { SellItemDialogComponent } from './sell-item-dialog/sell-item-dialog.component';
 import { SellItem } from './sell-item-dialog/sell-item.model';
@@ -102,6 +103,31 @@ export class InventoryComponent implements OnDestroy {
           this.buy(buyItem);
         }
       });
+  }
+
+  public async onEditGold() {
+    this.dialogService
+      .openGenericDialog(GoldDialogComponent, this.gold)
+      .pipe(first())
+      .subscribe((gold: number) => {
+        if (!this.commonService.isNullOrUndefined(gold)) {
+          this.editGold(gold);
+        }
+      });
+  }
+
+  private editGold(gold: number) {
+    this.loadersService.goldLoading = true;
+    try {
+      this.characterService.setGold(gold);
+      this.gold = gold;
+      this.messageService.showOk('Gold updated successfully');
+    } catch (e: any) {
+      console.error(e);
+      this.messageService.showLocalError(e);
+    } finally {
+      this.loadersService.goldLoading = false;
+    }
   }
 
   private async createItem(addItem: AddItem) {
