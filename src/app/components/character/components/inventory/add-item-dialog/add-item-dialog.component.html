@@ -33,7 +33,7 @@
       <mat-error *ngIf="quantityControl.invalid"> You must enter a quantity </mat-error>
     </mat-form-field>
     <mat-form-field class="w-full" appearance="standard">
-      <mat-label>Weight</mat-label>
+      <mat-label>Weight (unit)</mat-label>
       <input matInput type="number" required [formControl]="weightControl" min="0" />
       <mat-error *ngIf="weightControl.invalid"> You must enter a weight </mat-error>
     </mat-form-field>

@@ -28,7 +28,6 @@
   <p-table
     styleClass="p-datatable-sm p-datatable-gridlines"
     responsiveLayout="scroll"
-    editMode="row"
     dataKey="id"
     [value]="inventory"
     [loading]="loadersService.inventoryLoading"
@@ -39,11 +38,11 @@
         <th pSortableColumn="name" pResizableColumn>
           Name <p-sortIcon field="name"> </p-sortIcon>
         </th>
-        <th pSortableColumn="weight" pResizableColumn>
-          Weight <p-sortIcon field="weight"> </p-sortIcon>
-        </th>
         <th pSortableColumn="quantity" pResizableColumn>
           Quantity <p-sortIcon field="quantity"> </p-sortIcon>
+        </th>
+        <th pSortableColumn="weight" pResizableColumn>
+          Total weight <p-sortIcon field="weight"> </p-sortIcon>
         </th>
         <th pResizableColumn>Actions</th>
       </tr>
@@ -51,132 +50,51 @@
         <th>
           <p-columnFilter type="text" field="name"></p-columnFilter>
         </th>
-        <th>
-          <p-columnFilter type="text" field="weight"></p-columnFilter>
-        </th>
-        <th>
-          <p-columnFilter type="text" field="quantity"></p-columnFilter>
-        </th>
+        <th> </th>
+        <th> </th>
         <th> </th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-item let-editing="editing" let-ri="rowIndex">
-      <tr [pEditableRow]="item">
+    <ng-template pTemplate="body" let-item>
+      <tr>
         <td>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <mat-form-field class="w-full" appearance="standard">
-                <mat-label>Name</mat-label>
-                <input matInput type="text" autocomplete="name" required [(ngModel)]="item.name" />
-              </mat-form-field>
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{ item.name }}
-            </ng-template>
-          </p-cellEditor>
+          {{ item.name }}
         </td>
         <td>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <mat-form-field class="w-full" appearance="standard">
-                <mat-label>Weight</mat-label>
-                <input
-                  matInput
-                  type="number"
-                  min="0"
-                  autocomplete="weight"
-                  required
-                  [(ngModel)]="item.weight"
-                />
-              </mat-form-field>
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{ item.weight }}
-            </ng-template>
-          </p-cellEditor>
+          {{ item.quantity }}
         </td>
         <td>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <mat-form-field class="w-full" appearance="standard">
-                <mat-label>Quantity</mat-label>
-                <input
-                  matInput
-                  type="number"
-                  min="1"
-                  autocomplete="quantity"
-                  required
-                  [(ngModel)]="item.quantity"
-                />
-              </mat-form-field>
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{ item.quantity }}
-            </ng-template>
-          </p-cellEditor>
+          {{ item.weight * item.quantity }}
         </td>
         <td>
           <div class="w-full flex items-center justify-evenly">
             <button
-              pCancelEditableRow
-              *ngIf="editing"
               type="button"
               mat-icon-button
-              color="warn"
-              aria-label="Cancel"
-              class="hover:bg-red-100"
-              matTooltip="Cancel"
-              matTooltipPosition="below"
-              [disabled]="loadersService.inventoryLoading"
-              (click)="onEditCancel(item, ri)"
-            >
-              <mat-icon>close</mat-icon>
-            </button>
-            <button
-              pSaveEditableRow
-              *ngIf="editing"
-              type="button"
-              mat-icon-button
+              aria-label="Buy"
               color="primary"
-              aria-label="Save"
               class="hover:bg-indigo-100"
-              matTooltip="Save"
-              matTooltipPosition="below"
-              [disabled]="loadersService.inventoryLoading"
-              (click)="onEditSave(item)"
-            >
-              <mat-icon>save</mat-icon>
-            </button>
-            <button
-              pInitEditableRow
-              *ngIf="!editing"
-              type="button"
-              mat-icon-button
-              color="primary"
-              aria-label="Edit"
-              class="hover:bg-indigo-100"
-              matTooltip="Edit"
+              matTooltip="Buy"
               matTooltipPosition="below"
               [disabled]="buttonsDisabled()"
-              (click)="onEditInit(item)"
+              (click)="onBuy(item)"
             >
-              <mat-icon>edit</mat-icon>
+              <mat-icon>shopping_cart</mat-icon>
             </button>
             <button
-              *ngIf="!editing"
               type="button"
               mat-icon-button
+              color="primary"
+              class="text-green-500 hover:bg-green-100"
               aria-label="Sell"
-              class="text-green-300 hover:bg-green-100"
               matTooltip="Sell"
               matTooltipPosition="below"
               [disabled]="buttonsDisabled()"
               (click)="onSell(item)"
             >
-              <mat-icon>storefront</mat-icon>
+              <mat-icon>store</mat-icon>
             </button>
             <button
-              *ngIf="!editing"
               type="button"
               mat-icon-button
               color="warn"
@@ -187,7 +105,7 @@
               [disabled]="buttonsDisabled()"
               (click)="onDelete(item)"
             >
-              <mat-icon>delete</mat-icon>
+              <mat-icon>delete_forever</mat-icon>
             </button>
           </div>
         </td>

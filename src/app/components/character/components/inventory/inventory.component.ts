@@ -16,6 +16,8 @@ import { CategoryService } from 'src/app/components/categories/categories.servic
 import { CharacterService } from '../../services/character.service';
 import { AddItemDialogComponent } from './add-item-dialog/add-item-dialog.component';
 import { AddItem } from './add-item-dialog/add-item.model';
+import { BuyItemDialogComponent } from './buy-item-dialog/buy-item-dialog.component';
+import { BuyItem } from './buy-item-dialog/buy-item.model';
 import { InventoryService } from './inventory.service';
 import { SellItemDialogComponent } from './sell-item-dialog/sell-item-dialog.component';
 import { SellItem } from './sell-item-dialog/sell-item.model';
@@ -29,7 +31,6 @@ export class InventoryComponent implements OnDestroy {
   inventory: Item[] = [];
   categories: Category[] = [];
   gold: number = 0;
-  private clonedItems: { [s: string]: Item } = {};
   private subscriptions: Subscription[] = [];
   constructor(
     public loadersService: LoadersService,
@@ -71,43 +72,6 @@ export class InventoryComponent implements OnDestroy {
       });
   }
 
-  public async onEditInit(item: Item) {
-    if (item.id) {
-      this.clonedItems[item.id] = { ...item };
-      this.isEditingRow = true;
-    }
-  }
-
-  public async onEditCancel(item: Item, index: number) {
-    if (item.id) {
-      this.inventory[index] = this.clonedItems[item.id];
-      delete this.clonedItems[item.id];
-      this.isEditingRow = false;
-    }
-  }
-
-  public async onEditSave(item: Item) {
-    if (item.id) {
-      this.loadersService.inventoryLoading = true;
-      try {
-        const character: Character | null = await this.characterService.character;
-        if (character) {
-          await this.inventoryService.updateItem(character, item);
-          this.isEditingRow = false;
-          this.messageService.showOk('Item updated successfully');
-        } else {
-          this.messageService.showLocalError('You must have a character to update an item');
-          this.router.navigate(['/create']);
-        }
-      } catch (e: any) {
-        console.error(e);
-        this.messageService.showLocalError(e);
-      } finally {
-        this.loadersService.inventoryLoading = false;
-      }
-    }
-  }
-
   public async onDelete(item: Item) {
     const dialogModel: BasicDialogModel = {
       body: 'Are you sure you want to delete the item?'
@@ -125,6 +89,17 @@ export class InventoryComponent implements OnDestroy {
       .subscribe((sellItem: SellItem) => {
         if (!this.commonService.isNullOrUndefined(sellItem)) {
           this.sell(sellItem);
+        }
+      });
+  }
+
+  public async onBuy(item: Item) {
+    this.dialogService
+      .openGenericDialog(BuyItemDialogComponent, item)
+      .pipe(first())
+      .subscribe((buyItem: BuyItem) => {
+        if (!this.commonService.isNullOrUndefined(buyItem)) {
+          this.buy(buyItem);
         }
       });
   }
@@ -184,6 +159,29 @@ export class InventoryComponent implements OnDestroy {
         this.messageService.showOk('Item sold successfully');
       } else {
         this.messageService.showLocalError('You must have a character to sell an item');
+        this.router.navigate(['/create']);
+      }
+    } catch (e: any) {
+      console.error(e);
+      this.messageService.showLocalError(e);
+    } finally {
+      this.loadersService.inventoryLoading = false;
+    }
+  }
+
+  private async buy(buyItem: BuyItem) {
+    this.loadersService.inventoryLoading = true;
+    try {
+      const character: Character | null = await this.characterService.character;
+      if (character) {
+        await this.inventoryService.buyItem(character, buyItem);
+        if (buyItem.price > 0) {
+          await this.characterService.updateGold(buyItem.price * -1);
+          this.gold = this.gold - buyItem.price;
+        }
+        this.messageService.showOk('Item bought successfully');
+      } else {
+        this.messageService.showLocalError('You must have a character to buy an item');
         this.router.navigate(['/create']);
       }
     } catch (e: any) {
