@@ -13,6 +13,7 @@ import {
   AngularFirePerformanceModule,
   PerformanceMonitoringService
 } from '@angular/fire/compat/performance';
+import { QuillModule } from 'ngx-quill';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -49,6 +50,14 @@ import { SellItemDialogModule } from './components/character/components/inventor
     MatProgressBarModule,
     MatSnackBarModule,
     MatIconModule,
+    QuillModule.forRoot({
+      customOptions: [
+        {
+          import: 'formats/font',
+          whitelist: ['mirza', 'roboto', 'aref', 'serif', 'sansserif', 'monospace']
+        }
+      ]
+    }),
     BasicDialogModule,
     MenuModule,
     FooterModule,

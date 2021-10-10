@@ -2,6 +2,9 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.bubble.css';
+@import '~quill/dist/quill.snow.css';
 
 @mixin style-message($bg-color, $action-color, $text-color: 'black') {
   @apply bg-#{$bg-color} text-#{$text-color};

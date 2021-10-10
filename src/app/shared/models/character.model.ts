@@ -7,6 +7,7 @@ export interface Character {
   personality: string;
   appearance: string;
   backstory: string;
+  story: string;
   gold?: number;
   inventory?: Item[];
 }

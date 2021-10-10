@@ -8,6 +8,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CanActivateCharacterGuard } from '@shared/guards/character.guard';
 import { SharedModule } from '@shared/shared.module';
+import { QuillModule } from 'ngx-quill';
 import { TableModule } from 'primeng/table';
 import { CharacterComponent } from './character.component';
 import { CharacterRoutingModule } from './character.routes';
@@ -37,7 +38,8 @@ import { StoryComponent } from './components/story/story.component';
     MatInputModule,
     MatDividerModule,
     MatTooltipModule,
-    TableModule
+    TableModule,
+    QuillModule
   ],
   providers: [CanActivateCharacterGuard, InventoryService]
 })
