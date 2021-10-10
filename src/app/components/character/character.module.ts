@@ -16,6 +16,7 @@ import { CharacterStatsComponent } from './components/character-stats/character-
 import { InventoryComponent } from './components/inventory/inventory.component';
 import { InventoryService } from './components/inventory/inventory.service';
 import { SkillsComponent } from './components/skills/skills.component';
+import { StoryComponent } from './components/story/story.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { SkillsComponent } from './components/skills/skills.component';
     CharacterStatsComponent,
     InventoryComponent,
     SkillsComponent,
-    CharacterInfoComponent
+    CharacterInfoComponent,
+    StoryComponent
   ],
   imports: [
     SharedModule,

@@ -15,6 +15,10 @@ export class CategoryService {
     return combineLatest([this.listUserItems(user), this.listUserItems()]);
   }
 
+  listItemsMaintenance(user: firebase.User): Observable<Category[]> {
+    return this.listUserItems(user);
+  }
+
   async createItem(item: Category, user: firebase.User): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       if (user) {

@@ -6,6 +6,7 @@ import { CharacterInfoComponent } from './components/character-info/character-in
 import { CharacterStatsComponent } from './components/character-stats/character-stats.component';
 import { InventoryComponent } from './components/inventory/inventory.component';
 import { SkillsComponent } from './components/skills/skills.component';
+import { StoryComponent } from './components/story/story.component';
 const routes: Routes = [
   {
     path: '',
@@ -34,6 +35,11 @@ const routes: Routes = [
       {
         path: 'skills',
         component: SkillsComponent,
+        canActivate: [CanActivateCharacterGuard]
+      },
+      {
+        path: 'story',
+        component: StoryComponent,
         canActivate: [CanActivateCharacterGuard]
       }
     ]

@@ -137,8 +137,8 @@ export class CategoriesComponent implements OnDestroy {
     const user: firebase.User | null = await this.userService.user;
     if (user) {
       const sub: Subscription = this.categoryService
-        .listItems(user)
-        .subscribe((categories: any) => (this.categoryList = categories.flat() || []));
+        .listItemsMaintenance(user)
+        .subscribe((categories: Category[]) => (this.categoryList = categories || []));
       this.subscriptions.push(sub);
     } else {
       this.messageService.showLocalError('You must be logged in to view categories');
