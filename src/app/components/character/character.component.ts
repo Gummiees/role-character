@@ -26,6 +26,11 @@ export class CharacterComponent {
       label: 'Skills',
       link: '/skills',
       icon: 'hiking'
+    },
+    {
+      label: 'Story',
+      link: '/story',
+      icon: 'menu_book'
     }
   ];
   constructor() {}

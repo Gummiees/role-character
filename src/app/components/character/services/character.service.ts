@@ -29,19 +29,6 @@ export class CharacterService {
     });
   }
 
-  async createCharacter(character: Character, user: firebase.User): Promise<Character> {
-    return new Promise((resolve) => {
-      character.userId = user.uid;
-      this.firestore
-        .collection<Character>('characters')
-        .add(character)
-        .then(() => {
-          this._character = character;
-          resolve(character);
-        });
-    });
-  }
-
   async getCharacter(): Promise<Character | null> {
     return new Promise(async (resolve) => {
       const user: firebase.User | null = await this.userService.user;
@@ -69,5 +56,59 @@ export class CharacterService {
         resolve(null);
       }
     });
+  }
+
+  async createCharacter(character: Character, user: firebase.User): Promise<Character> {
+    character.userId = user.uid;
+    character.gold = 0;
+    await this.firestore.collection<Character>('characters').add(character);
+    const characterSaved: Character | null = await this.getCharacter();
+    if (!characterSaved) {
+      throw Error('Character not saved');
+    }
+    this._character = characterSaved;
+    return this._character;
+  }
+
+  async deleteCharacter(character: Character): Promise<void> {
+    if (!character.id) {
+      throw Error('Character id is required');
+    }
+    await this.firestore.collection<Character>('characters').doc(character.id).delete();
+    this._character = null;
+  }
+
+  async updateCharacter(character: Character): Promise<Character> {
+    character.id = this._character?.id;
+    await this.firestore.collection<Character>('characters').doc(character.id).update(character);
+    this._character = character;
+    return this._character;
+  }
+
+  async updateGold(amount: number): Promise<Character> {
+    const character: Character | null = await this._character;
+    if (!character) {
+      throw new Error('Character not found');
+    }
+    const increment: any = firebase.firestore.FieldValue.increment(amount);
+    await this.firestore
+      .collection<Character>('characters')
+      .doc(character.id)
+      .update({ gold: increment });
+    this._character = character;
+    return this._character;
+  }
+
+  async setGold(amount: number): Promise<Character> {
+    const character: Character | null = await this._character;
+    if (!character) {
+      throw new Error('Character not found');
+    }
+    await this.firestore
+      .collection<Character>('characters')
+      .doc(character.id)
+      .update({ gold: amount });
+    this._character = character;
+    return this._character;
   }
 }

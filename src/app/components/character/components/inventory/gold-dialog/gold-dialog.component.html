@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add new category</h1>
+<h1 mat-dialog-title>Edit Gold</h1>
 <mat-dialog-content>
   <form
     class="flex w-full flex-col items-start justify-center"
@@ -6,14 +6,15 @@
     (ngSubmit)="onSubmit()"
   >
     <mat-form-field class="w-full" appearance="standard">
-      <mat-label>Name</mat-label>
-      <input matInput type="text" autocomplete="name" required [formControl]="nameControl" />
-      <mat-error *ngIf="nameControl.invalid"> You must enter a name </mat-error>
-    </mat-form-field>
-    <mat-form-field class="w-full" appearance="standard">
-      <mat-label>Color</mat-label>
-      <input matInput type="color" autocomplete="color" required [formControl]="colorControl" />
-      <mat-error *ngIf="colorControl.invalid"> You must enter a color </mat-error>
+      <mat-label>Cuantity</mat-label>
+      <input matInput type="number" required [formControl]="quantityControl" min="0" />
+      <mat-hint> You currently have {{ data }} gold. </mat-hint>
+      <mat-error *ngIf="quantityControl.invalid && quantityControl.hasError('required')">
+        Quantity is required.
+      </mat-error>
+      <mat-error *ngIf="quantityControl.invalid && quantityControl.hasError('min')">
+        Quantity must be 0 or more.
+      </mat-error>
     </mat-form-field>
   </form>
 </mat-dialog-content>
@@ -26,6 +27,6 @@
     [disabled]="form.invalid"
     (click)="onSubmit()"
   >
-    Create
+    Save
   </button>
 </mat-dialog-actions>

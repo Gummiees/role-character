@@ -11,7 +11,7 @@
       p-12
       m-12
       w-full
-      sm:w-9/12
+      md:w-9/12
     "
   >
     <div class="w-full">
@@ -48,7 +48,7 @@
           <button
             mat-stroked-button
             color="primary"
-            class="w-full sm:w-auto"
+            class="w-full md:w-auto"
             type="button"
             [disabled]="loadersService.signInLoading"
             (click)="goToSignUp()"
@@ -59,7 +59,7 @@
             mat-stroked-button
             type="button"
             color="primary"
-            class="flex justify-center w-full sm:w-auto mt-2 sm:mt-0"
+            class="flex justify-center w-full md:w-auto mt-2 md:mt-0"
             [disabled]="loadersService.signInLoading"
             (click)="onGoogleSignIn()"
           >
@@ -75,7 +75,7 @@
             mat-raised-button
             color="primary"
             type="submit"
-            class="w-full sm:w-auto mt-2 sm:mt-0"
+            class="w-full md:w-auto mt-2 md:mt-0"
             [disabled]="loadersService.signInLoading"
           >
             <span>Sign In</span>

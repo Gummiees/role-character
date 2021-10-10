@@ -1,3 +1,5 @@
+import { Item } from './item.model';
+
 export interface Character {
   id?: string;
   userId?: string;
@@ -5,5 +7,6 @@ export interface Character {
   personality: string;
   appearance: string;
   backstory: string;
-  // TODO: Ver cómo relacionar con inventario, etc
+  gold?: number;
+  inventory?: Item[];
 }

@@ -6,10 +6,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from '@shared/shared.module';
 import { TableModule } from 'primeng/table';
+import { AddDialogModule } from './add-dialog/add-dialog.module';
 import { CategoriesComponent } from './categories.component';
 import { CategoriesRoutingModule } from './categories.routes';
-import { CategoryService } from './categories.service';
-import { AddDialogModule } from './add-dialog/add-dialog.module';
 
 @NgModule({
   declarations: [CategoriesComponent],
@@ -23,7 +22,6 @@ import { AddDialogModule } from './add-dialog/add-dialog.module';
     MatInputModule,
     MatFormFieldModule,
     AddDialogModule
-  ],
-  providers: [CategoryService]
+  ]
 })
 export class CategoriesModule {}

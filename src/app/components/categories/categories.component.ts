@@ -10,6 +10,7 @@ import { CategoryService } from './categories.service';
 import { AddDialogComponent } from './add-dialog/add-dialog.component';
 import { UserService } from '@shared/services/user.service';
 import firebase from 'firebase/compat/app';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-categories',
@@ -40,11 +41,14 @@ export class CategoriesComponent implements OnDestroy {
   }
 
   addCategory() {
-    this.dialogService.openGenericDialog(AddDialogComponent).subscribe((category: Category) => {
-      if (!this.commonService.isNullOrUndefined(category)) {
-        this.createItem(category);
-      }
-    });
+    this.dialogService
+      .openGenericDialog(AddDialogComponent)
+      .pipe(first())
+      .subscribe((category: Category) => {
+        if (!this.commonService.isNullOrUndefined(category)) {
+          this.createItem(category);
+        }
+      });
   }
 
   private async createItem(category: Category) {
@@ -86,7 +90,7 @@ export class CategoriesComponent implements OnDestroy {
       try {
         const user: firebase.User | null = await this.userService.user;
         if (user) {
-          await this.categoryService.updateItem(category, user);
+          await this.categoryService.updateItem(category);
           this.isEditingRow = false;
           this.messageService.showOk('Category updated successfully');
         } else {
@@ -105,7 +109,10 @@ export class CategoriesComponent implements OnDestroy {
     const dialogModel: BasicDialogModel = {
       body: 'Are you sure you want to delete the category?'
     };
-    this.dialogService.openDialog(dialogModel).subscribe(() => this.delete(category));
+    this.dialogService
+      .openDialog(dialogModel)
+      .pipe(first())
+      .subscribe(() => this.delete(category));
   }
 
   private async delete(category: Category) {
@@ -113,7 +120,7 @@ export class CategoriesComponent implements OnDestroy {
     try {
       const user: firebase.User | null = await this.userService.user;
       if (user) {
-        await this.categoryService.deleteItem(category, user);
+        await this.categoryService.deleteItem(category);
         this.messageService.showOk('Category deleted successfully');
       } else {
         this.messageService.showLocalError('You must be logged in to update a category');
@@ -130,8 +137,8 @@ export class CategoriesComponent implements OnDestroy {
     const user: firebase.User | null = await this.userService.user;
     if (user) {
       const sub: Subscription = this.categoryService
-        .listItems(user)
-        .subscribe((categories: any) => (this.categoryList = categories.flat() || []));
+        .listItemsMaintenance(user)
+        .subscribe((categories: Category[]) => (this.categoryList = categories || []));
       this.subscriptions.push(sub);
     } else {
       this.messageService.showLocalError('You must be logged in to view categories');

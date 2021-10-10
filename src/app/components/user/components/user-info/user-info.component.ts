@@ -61,7 +61,10 @@ export class UserInfoComponent implements OnDestroy {
       header: 'Logout',
       body: 'Are you sure you want to logout?'
     };
-    this.dialogService.openDialog(dialogModel).subscribe(() => this.userService.logout());
+    this.dialogService
+      .openDialog(dialogModel)
+      .pipe(first())
+      .subscribe(() => this.userService.logout());
   }
 
   onDelete() {
@@ -69,7 +72,10 @@ export class UserInfoComponent implements OnDestroy {
       header: 'Delete account',
       body: 'Are you sure you want to delete your account? Everything related to your account will be erased forever!'
     };
-    this.dialogService.openDialog(dialogModel).subscribe(() => this.userService.deleteUser());
+    this.dialogService
+      .openDialog(dialogModel)
+      .pipe(first())
+      .subscribe(() => this.userService.deleteUser());
   }
 
   async onSubmit() {
