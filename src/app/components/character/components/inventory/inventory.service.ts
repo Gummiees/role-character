@@ -10,6 +10,7 @@ import { UserService } from '@shared/services/user.service';
 import firebase from 'firebase/compat/app';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { SellItem } from './sell-item-dialog/sell-item.model';
 
 @Injectable()
 export class InventoryService {
@@ -68,6 +69,24 @@ export class InventoryService {
       throw new Error('You must be signed in');
     }
     await this.getCollection(character, user).doc(item.id).delete();
+  }
+
+  public async sellItem(character: Character, sellItem: SellItem): Promise<void> {
+    if (!character.id) {
+      throw new Error('Character ID is required');
+    }
+    const user: firebase.User | null = await this.userService.user;
+    if (!user) {
+      throw new Error('You must be signed in');
+    }
+
+    if (sellItem.quantity >= sellItem.item.quantity) {
+      await this.getCollection(character, user).doc(sellItem.item.id).delete();
+    } else {
+      await this.getCollection(character, user)
+        .doc(sellItem.item.id)
+        .update({ quantity: sellItem.item.quantity - sellItem.quantity });
+    }
   }
 
   public async updateItem(character: Character, item: Item): Promise<void> {

@@ -4,19 +4,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SharedModule } from '@shared/shared.module';
-import { AddItemDialogComponent } from './add-item-dialog.component';
+import { SellItemDialogComponent } from './sell-item-dialog.component';
 @NgModule({
-  declarations: [AddItemDialogComponent],
+  declarations: [SellItemDialogComponent],
   imports: [
     SharedModule,
     MatDialogModule,
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSlideToggleModule
   ],
-  exports: [AddItemDialogComponent],
+  exports: [SellItemDialogComponent],
   providers: []
 })
-export class AddItemDialogModule {}
+export class SellItemDialogModule {}

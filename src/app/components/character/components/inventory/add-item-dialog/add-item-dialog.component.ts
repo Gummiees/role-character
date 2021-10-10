@@ -5,6 +5,7 @@ import { Category } from '@shared/models/category.model';
 import { Item } from '@shared/models/item.model';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { AddItem } from './add-item.model';
 
 @Component({
   selector: 'app-add-item-dialog',
@@ -12,11 +13,11 @@ import { map, startWith } from 'rxjs/operators';
 })
 export class AddItemDialogComponent implements OnInit {
   form: FormGroup = new FormGroup({});
-  nameControl: FormControl = new FormControl(null, [Validators.required]);
-  quantityControl: FormControl = new FormControl(null, [Validators.required]);
-  weightControl: FormControl = new FormControl(null, [Validators.required]);
-  priceControl: FormControl = new FormControl(null, [Validators.required]);
   categoryControl: FormControl = new FormControl(null, [Validators.required]);
+  nameControl: FormControl = new FormControl(null, [Validators.required]);
+  quantityControl: FormControl = new FormControl(1, [Validators.required, Validators.min(1)]);
+  weightControl: FormControl = new FormControl(null, [Validators.required, Validators.min(0)]);
+  costControl: FormControl = new FormControl(0, [Validators.required, Validators.min(0)]);
   filteredOptions?: Observable<Category[]>;
   constructor(
     public dialogRef: MatDialogRef<AddItemDialogComponent>,
@@ -25,8 +26,8 @@ export class AddItemDialogComponent implements OnInit {
     this.form.addControl('name', this.nameControl);
     this.form.addControl('quantity', this.quantityControl);
     this.form.addControl('weight', this.weightControl);
-    this.form.addControl('price', this.priceControl);
     this.form.addControl('categoryId', this.categoryControl);
+    this.form.addControl('cost', this.costControl);
   }
 
   ngOnInit(): void {
@@ -39,14 +40,16 @@ export class AddItemDialogComponent implements OnInit {
 
   public onSubmit(): void {
     if (this.form.valid) {
-      const item: Item = {
-        name: this.nameControl.value,
-        quantity: this.quantityControl.value,
-        weight: this.weightControl.value,
-        price: this.priceControl.value,
-        categoryId: this.categoryControl.value.id
+      const addItem: AddItem = {
+        item: {
+          name: this.nameControl.value,
+          quantity: this.quantityControl.value,
+          weight: this.weightControl.value,
+          categoryId: this.categoryControl.value.id
+        },
+        cost: this.costControl.value
       };
-      this.dialogRef.close(item);
+      this.dialogRef.close(addItem);
     }
   }
 

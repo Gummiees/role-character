@@ -60,6 +60,7 @@ export class CharacterService {
 
   async createCharacter(character: Character, user: firebase.User): Promise<Character> {
     character.userId = user.uid;
+    character.gold = 0;
     await this.firestore.collection<Character>('characters').add(character);
     const characterSaved: Character | null = await this.getCharacter();
     if (!characterSaved) {
@@ -79,7 +80,21 @@ export class CharacterService {
 
   async updateCharacter(character: Character): Promise<Character> {
     character.id = this._character?.id;
-    await this.firestore.collection<Character>('characters').doc(character.id).set(character);
+    await this.firestore.collection<Character>('characters').doc(character.id).update(character);
+    this._character = character;
+    return this._character;
+  }
+
+  async updateGold(amount: number): Promise<Character> {
+    const character: Character | null = await this._character;
+    if (!character) {
+      throw new Error('Character not found');
+    }
+    const increment: any = firebase.firestore.FieldValue.increment(amount);
+    await this.firestore
+      .collection<Character>('characters')
+      .doc(character.id)
+      .update({ gold: increment });
     this._character = character;
     return this._character;
   }

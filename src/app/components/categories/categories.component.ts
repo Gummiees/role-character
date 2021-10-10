@@ -41,11 +41,14 @@ export class CategoriesComponent implements OnDestroy {
   }
 
   addCategory() {
-    this.dialogService.openGenericDialog(AddDialogComponent).subscribe((category: Category) => {
-      if (!this.commonService.isNullOrUndefined(category)) {
-        this.createItem(category);
-      }
-    });
+    this.dialogService
+      .openGenericDialog(AddDialogComponent)
+      .pipe(first())
+      .subscribe((category: Category) => {
+        if (!this.commonService.isNullOrUndefined(category)) {
+          this.createItem(category);
+        }
+      });
   }
 
   private async createItem(category: Category) {

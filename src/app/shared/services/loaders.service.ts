@@ -13,6 +13,7 @@ export class LoadersService {
   private $createCharacterLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private $characterInfoLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private $inventoryLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private $goldLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   constructor() {}
 
   isAnyLoading(): boolean {
@@ -24,7 +25,8 @@ export class LoadersService {
       this.categoriesLoading ||
       this.createCharacterLoading ||
       this.characterInfoLoading ||
-      this.inventoryLoading
+      this.inventoryLoading ||
+      this.goldLoading
     );
   }
 
@@ -75,5 +77,11 @@ export class LoadersService {
   }
   get inventoryLoading(): boolean {
     return this.$inventoryLoading.value;
+  }
+  set goldLoading(value: boolean) {
+    this.$goldLoading.next(value);
+  }
+  get goldLoading(): boolean {
+    return this.$goldLoading.value;
   }
 }

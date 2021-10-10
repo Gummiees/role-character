@@ -1,4 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Category } from '@shared/models/category.model';
 import { Character } from '@shared/models/character.model';
 import { BasicDialogModel } from '@shared/models/dialog.model';
@@ -14,7 +15,10 @@ import { catchError, first } from 'rxjs/operators';
 import { CategoryService } from 'src/app/components/categories/categories.service';
 import { CharacterService } from '../../services/character.service';
 import { AddItemDialogComponent } from './add-item-dialog/add-item-dialog.component';
+import { AddItem } from './add-item-dialog/add-item.model';
 import { InventoryService } from './inventory.service';
+import { SellItemDialogComponent } from './sell-item-dialog/sell-item-dialog.component';
+import { SellItem } from './sell-item-dialog/sell-item.model';
 
 @Component({
   selector: 'app-inventory',
@@ -24,6 +28,7 @@ export class InventoryComponent implements OnDestroy {
   public isEditingRow: boolean = false;
   inventory: Item[] = [];
   categories: Category[] = [];
+  gold: number = 0;
   private clonedItems: { [s: string]: Item } = {};
   private subscriptions: Subscription[] = [];
   constructor(
@@ -34,16 +39,19 @@ export class InventoryComponent implements OnDestroy {
     private userService: UserService,
     private dialogService: DialogService,
     private commonService: CommonService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {
     this.subscribeToInventory();
     this.subscribeToCategoryList();
+    this.getGold();
   }
 
   buttonsDisabled(): boolean {
     return (
       this.loadersService.categoriesLoading ||
       this.loadersService.inventoryLoading ||
+      this.loadersService.goldLoading ||
       this.isEditingRow
     );
   }
@@ -55,29 +63,12 @@ export class InventoryComponent implements OnDestroy {
   addItem() {
     this.dialogService
       .openGenericDialog(AddItemDialogComponent, this.categories)
-      .subscribe((item: Item) => {
-        if (!this.commonService.isNullOrUndefined(item)) {
-          this.createItem(item);
+      .pipe(first())
+      .subscribe((addItem: AddItem) => {
+        if (!this.commonService.isNullOrUndefined(addItem)) {
+          this.createItem(addItem);
         }
       });
-  }
-
-  private async createItem(item: Item) {
-    this.loadersService.inventoryLoading = true;
-    try {
-      const character: Character | null = await this.characterService.character;
-      if (character) {
-        await this.inventoryService.createItem(character, item);
-        this.messageService.showOk('Item added successfully');
-      } else {
-        this.messageService.showLocalError('You must have a character to add an item');
-      }
-    } catch (e: any) {
-      console.error(e);
-      this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.inventoryLoading = false;
-    }
   }
 
   public async onEditInit(item: Item) {
@@ -106,6 +97,7 @@ export class InventoryComponent implements OnDestroy {
           this.messageService.showOk('Item updated successfully');
         } else {
           this.messageService.showLocalError('You must have a character to update an item');
+          this.router.navigate(['/create']);
         }
       } catch (e: any) {
         console.error(e);
@@ -126,6 +118,40 @@ export class InventoryComponent implements OnDestroy {
       .subscribe(() => this.delete(item));
   }
 
+  public async onSell(item: Item) {
+    this.dialogService
+      .openGenericDialog(SellItemDialogComponent, item)
+      .pipe(first())
+      .subscribe((sellItem: SellItem) => {
+        if (!this.commonService.isNullOrUndefined(sellItem)) {
+          this.sell(sellItem);
+        }
+      });
+  }
+
+  private async createItem(addItem: AddItem) {
+    this.loadersService.inventoryLoading = true;
+    try {
+      const character: Character | null = await this.characterService.character;
+      if (character) {
+        await this.inventoryService.createItem(character, addItem.item);
+        if (addItem.cost > 0) {
+          await this.characterService.updateGold(addItem.cost * -1);
+          this.gold = this.gold - addItem.cost;
+        }
+        this.messageService.showOk('Item added successfully');
+      } else {
+        this.messageService.showLocalError('You must have a character to add an item');
+        this.router.navigate(['/create']);
+      }
+    } catch (e: any) {
+      console.error(e);
+      this.messageService.showLocalError(e);
+    } finally {
+      this.loadersService.inventoryLoading = false;
+    }
+  }
+
   private async delete(item: Item) {
     this.loadersService.inventoryLoading = true;
     try {
@@ -135,12 +161,54 @@ export class InventoryComponent implements OnDestroy {
         this.messageService.showOk('Item deleted successfully');
       } else {
         this.messageService.showLocalError('You must have a character to delete an item');
+        this.router.navigate(['/create']);
       }
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
     } finally {
       this.loadersService.inventoryLoading = false;
+    }
+  }
+
+  private async sell(sellItem: SellItem) {
+    this.loadersService.inventoryLoading = true;
+    try {
+      const character: Character | null = await this.characterService.character;
+      if (character) {
+        await this.inventoryService.sellItem(character, sellItem);
+        if (sellItem.price > 0) {
+          await this.characterService.updateGold(sellItem.price);
+          this.gold = this.gold + sellItem.price;
+        }
+        this.messageService.showOk('Item sold successfully');
+      } else {
+        this.messageService.showLocalError('You must have a character to sell an item');
+        this.router.navigate(['/create']);
+      }
+    } catch (e: any) {
+      console.error(e);
+      this.messageService.showLocalError(e);
+    } finally {
+      this.loadersService.inventoryLoading = false;
+    }
+  }
+
+  private async getGold() {
+    try {
+      this.loadersService.goldLoading = true;
+      const character: Character | null = await this.characterService.character;
+      if (character) {
+        this.gold = character.gold || 0;
+      } else {
+        this.messageService.showLocalError('You must have a character');
+        this.router.navigate(['/create']);
+      }
+    } catch (e: any) {
+      console.error(e);
+      this.messageService.showLocalError(e);
+    } finally {
+      this.loadersService.goldLoading = false;
     }
   }
 
@@ -165,6 +233,7 @@ export class InventoryComponent implements OnDestroy {
         this.subscriptions.push(sub);
       } else {
         this.messageService.showLocalError('You must have a character');
+        this.router.navigate(['/create']);
       }
     } else {
       this.messageService.showLocalError('You must be logged in');

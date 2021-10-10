@@ -1,6 +1,13 @@
 <div class="p-8 w-full rounded-md shadow-md bg-white">
   <div class="mb-4 flex items-center justify-between">
-    <h1 class="m-0">Inventory</h1>
+    <div class="flex items-center">
+      <h1 class="m-0">Inventory</h1>
+      <div class="p-2 flex">
+        <div class="p-1.5 font-bold rounded-md leading-4 bg-yellow-100 text-yellow-400">
+          <span>Gold: </span><span>{{ gold }}</span>
+        </div>
+      </div>
+    </div>
     <div class="flex items-center">
       <button
         type="button"
@@ -32,11 +39,23 @@
         <th pSortableColumn="name" pResizableColumn>
           Name <p-sortIcon field="name"> </p-sortIcon>
         </th>
+        <th pSortableColumn="weight" pResizableColumn>
+          Weight <p-sortIcon field="weight"> </p-sortIcon>
+        </th>
+        <th pSortableColumn="quantity" pResizableColumn>
+          Quantity <p-sortIcon field="quantity"> </p-sortIcon>
+        </th>
         <th pResizableColumn>Actions</th>
       </tr>
       <tr>
         <th>
           <p-columnFilter type="text" field="name"></p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter type="text" field="weight"></p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter type="text" field="quantity"></p-columnFilter>
         </th>
         <th> </th>
       </tr>
@@ -53,6 +72,46 @@
             </ng-template>
             <ng-template pTemplate="output">
               {{ item.name }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <mat-form-field class="w-full" appearance="standard">
+                <mat-label>Weight</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  min="0"
+                  autocomplete="weight"
+                  required
+                  [(ngModel)]="item.weight"
+                />
+              </mat-form-field>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ item.weight }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <mat-form-field class="w-full" appearance="standard">
+                <mat-label>Quantity</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  min="1"
+                  autocomplete="quantity"
+                  required
+                  [(ngModel)]="item.quantity"
+                />
+              </mat-form-field>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ item.quantity }}
             </ng-template>
           </p-cellEditor>
         </td>
@@ -102,6 +161,19 @@
               (click)="onEditInit(item)"
             >
               <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              *ngIf="!editing"
+              type="button"
+              mat-icon-button
+              aria-label="Sell"
+              class="text-green-300 hover:bg-green-100"
+              matTooltip="Sell"
+              matTooltipPosition="below"
+              [disabled]="buttonsDisabled()"
+              (click)="onSell(item)"
+            >
+              <mat-icon>storefront</mat-icon>
             </button>
             <button
               *ngIf="!editing"

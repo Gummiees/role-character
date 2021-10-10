@@ -27,6 +27,7 @@ import { environment } from 'src/environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routes';
 import { AddItemDialogModule } from './components/character/components/inventory/add-item-dialog/add-item-dialog.module';
+import { SellItemDialogModule } from './components/character/components/inventory/sell-item-dialog/sell-item-dialog.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -49,7 +50,8 @@ import { AddItemDialogModule } from './components/character/components/inventory
     BasicDialogModule,
     MenuModule,
     FooterModule,
-    AddItemDialogModule
+    AddItemDialogModule,
+    SellItemDialogModule
   ],
   providers: [PerformanceMonitoringService, ScreenTrackingService, UserTrackingService],
   bootstrap: [AppComponent]
