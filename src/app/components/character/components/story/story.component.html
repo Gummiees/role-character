@@ -1,41 +1,32 @@
-<div class="flex items-center justify-center w-full">
-  <div class="flex flex-col items-start justify-center shadow-lg bg-white rounded-lg p-6 w-full">
-    <div class="w-full" [ngClass]="{ 'fullscreen-mode': fullscreen }">
-      <div class="mb-4 flex items-center justify-between">
-        <h1 class="m-0 text-center">Story</h1>
-        <button
-          type="button"
-          mat-mini-fab
-          aria-label="Add"
-          color="primary"
-          class="shadow"
-          [matTooltip]="getScreenTooltip()"
-          matTooltipPosition="below"
-          [disabled]="loadersService.storyLoading"
-          (click)="onScreenButton()"
-        >
-          <mat-icon> {{ fullscreen ? 'fullscreen_exit' : 'fullscreen' }}</mat-icon>
-        </button>
-      </div>
-      <form
-        class="flex w-full flex-col items-start justify-center"
-        [formGroup]="form"
-        (ngSubmit)="onSubmit()"
-        [ngClass]="{ 'flex-grow': fullscreen }"
-      >
-        <quill-editor
-          [formControl]="storyControl"
-          [required]="true"
-          [sanitize]="true"
-          [ngClass]="{ 'flex-grow': fullscreen }"
-        ></quill-editor>
-        <div class="w-full mt-2 flex items-center flex-wrap justify-end">
-          <button class="w-full" mat-raised-button color="primary" type="submit" [disabled]="true">
-            <mat-icon> save </mat-icon>
-            <span class="md:ml-2">Save</span>
-          </button>
-        </div>
-      </form>
+<div
+  class="
+    flex flex-col flex-grow
+    items-start
+    justify-center
+    shadow-lg
+    bg-white
+    rounded-lg
+    p-6
+    w-full
+  "
+>
+  <h1 class="text-center w-full">Story</h1>
+  <form
+    class="flex w-full flex-col items-start justify-center flex-grow"
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+  >
+    <quill-editor
+      [formControl]="storyControl"
+      class="flex-grow flex flex-col"
+      [required]="true"
+      [sanitize]="true"
+    ></quill-editor>
+    <div class="w-full mt-2 flex items-center flex-wrap justify-end">
+      <button class="w-full" mat-raised-button color="primary" type="submit" [disabled]="true">
+        <mat-icon> save </mat-icon>
+        <span class="md:ml-2">Save</span>
+      </button>
     </div>
-  </div>
+  </form>
 </div>

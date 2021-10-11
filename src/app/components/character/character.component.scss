@@ -1,0 +1,4 @@
+app-character > *:not(router-outlet):not(nav),
+app-character > *:not(router-outlet):not(nav) > * {
+  @apply flex-grow flex flex-col;
+}

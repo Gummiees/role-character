@@ -72,3 +72,7 @@ button.flex.mat-button-base .mat-button-wrapper {
 .fullscreen-mode {
   @apply h-screen w-screen absolute z-50 bg-white top-0 left-0 p-6 pb-0 flex flex-col;
 }
+
+.main-content > *:not(router-outlet) {
+  @apply flex-grow flex flex-col;
+}

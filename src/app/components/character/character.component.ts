@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { TabItem } from '@shared/models/tab-item.model';
 
 @Component({
   selector: 'app-character',
-  templateUrl: './character.component.html'
+  templateUrl: './character.component.html',
+  styleUrls: ['./character.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CharacterComponent {
   tabs: TabItem[] = [

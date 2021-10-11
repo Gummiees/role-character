@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Character } from '@shared/models/character.model';
@@ -9,10 +9,10 @@ import { CharacterService } from '../../services/character.service';
 @Component({
   selector: 'app-story',
   templateUrl: './story.component.html',
-  styleUrls: ['./story.component.scss']
+  styleUrls: ['./story.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class StoryComponent {
-  fullscreen: boolean = false;
   form: FormGroup = new FormGroup({});
   storyControl: FormControl = new FormControl(null, [Validators.required]);
   private character?: Character;
@@ -52,14 +52,6 @@ export class StoryComponent {
 
   isDisabled(): boolean {
     return this.form.invalid || this.loadersService.storyLoading;
-  }
-
-  onScreenButton() {
-    this.fullscreen = !this.fullscreen;
-  }
-
-  getScreenTooltip(): string {
-    return this.fullscreen ? 'Exit fullscreen' : 'Open fullscreen';
   }
 
   private setForm() {

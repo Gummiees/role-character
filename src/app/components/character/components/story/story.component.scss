@@ -1,11 +1,5 @@
-.fullscreen-mode > form {
-  @apply pb-6;
-}
-
-.fullscreen-mode quill-editor {
-  @apply flex flex-col;
-}
-
-.fullscreen-mode quill-editor .ql-toolbar.ql-snow + .ql-container.ql-snow {
+app-story quill-editor .ql-container.ql-snow,
+app-story quill-editor .ql-toolbar.ql-snow + .ql-container.ql-snow,
+app-story quill-editor .ql-editor {
   @apply flex-grow h-auto;
 }
