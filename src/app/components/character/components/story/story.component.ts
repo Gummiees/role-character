@@ -8,9 +8,11 @@ import { CharacterService } from '../../services/character.service';
 
 @Component({
   selector: 'app-story',
-  templateUrl: './story.component.html'
+  templateUrl: './story.component.html',
+  styleUrls: ['./story.component.scss']
 })
 export class StoryComponent {
+  fullscreen: boolean = false;
   form: FormGroup = new FormGroup({});
   storyControl: FormControl = new FormControl(null, [Validators.required]);
   private character?: Character;
@@ -50,6 +52,14 @@ export class StoryComponent {
 
   isDisabled(): boolean {
     return this.form.invalid || this.loadersService.storyLoading;
+  }
+
+  onScreenButton() {
+    this.fullscreen = !this.fullscreen;
+  }
+
+  getScreenTooltip(): string {
+    return this.fullscreen ? 'Exit fullscreen' : 'Open fullscreen';
   }
 
   private setForm() {

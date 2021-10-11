@@ -31,16 +31,8 @@ mat-tooltip-component > .mat-tooltip {
   @apply text-xs shadow;
 }
 
-button.flex.mat-button-base .mat-button-wrapper {
-  display: flex;
-}
-
 p-columnfilterformelement > input.p-inputtext {
   @apply p-1;
-}
-
-button.mat-icon-button {
-  transition: background-color 0.2s ease-in-out;
 }
 
 p-celleditor .mat-form-field-wrapper,
@@ -50,4 +42,33 @@ p-celleditor .mat-form-field-appearance-standard .mat-form-field-flex {
 
 p-celleditor .mat-form-field-underline {
   position: static;
+}
+
+button.mat-mini-fab .mat-button-wrapper,
+button.mat-fab .mat-button-wrapper,
+button.mat-icon-button .mat-button-wrapper {
+  @apply flex items-center justify-center;
+}
+
+button:disabled,
+button.mat-button.mat-button-disabled,
+button.mat-raised-button.mat-button-disabled,
+button.mat-stroked-button.mat-button-disabled,
+button.mat-flat-button.mat-button-disabled,
+button.mat-icon-button.mat-button-disabled,
+button.mat-fab.mat-button-disabled,
+button.mat-mini-fab.mat-button-disabled {
+  @apply cursor-not-allowed;
+}
+
+button.mat-icon-button {
+  transition: background-color 0.2s ease-in-out;
+}
+
+button.flex.mat-button-base .mat-button-wrapper {
+  display: flex;
+}
+
+.fullscreen-mode {
+  @apply h-screen w-screen absolute z-50 bg-white top-0 left-0 p-6 pb-0 flex flex-col;
 }
