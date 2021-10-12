@@ -37,7 +37,7 @@ export class CharacterCreateComponent {
           const character: Character = this.form.value as Character;
           await this.characterService.createCharacter(character, user);
           this.messageService.showOk('Character created successfully. Enjoy!');
-          this.router.navigate(['/information']);
+          this.router.navigate(['/statistics']);
         } else {
           this.messageService.showLocalError('You must be logged in to create a character');
         }

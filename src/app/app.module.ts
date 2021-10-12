@@ -32,6 +32,7 @@ import { BuyItemDialogModule } from './components/character/components/inventory
 import { GoldDialogModule } from './components/character/components/inventory/gold-dialog/gold-dialog.module';
 import { SellItemDialogModule } from './components/character/components/inventory/sell-item-dialog/sell-item-dialog.module';
 import { SaveCmdDirective } from '@shared/directives/save-cmd.directive';
+import { AddStatDialogModule } from './components/character/components/character-info/add-stat-dialog/add-stat-dialog.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -65,7 +66,8 @@ import { SaveCmdDirective } from '@shared/directives/save-cmd.directive';
     AddItemDialogModule,
     SellItemDialogModule,
     BuyItemDialogModule,
-    GoldDialogModule
+    GoldDialogModule,
+    AddStatDialogModule
   ],
   providers: [
     PerformanceMonitoringService,

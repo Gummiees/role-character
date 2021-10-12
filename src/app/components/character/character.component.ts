@@ -10,11 +10,6 @@ import { TabItem } from '@shared/models/tab-item.model';
 export class CharacterComponent {
   tabs: TabItem[] = [
     {
-      label: 'Information',
-      link: '/information',
-      icon: 'account_circle'
-    },
-    {
       label: 'Statistics',
       link: '/statistics',
       icon: 'insert_chart_outlined'
@@ -28,6 +23,11 @@ export class CharacterComponent {
       label: 'Skills',
       link: '/skills',
       icon: 'hiking'
+    },
+    {
+      label: 'Information',
+      link: '/information',
+      icon: 'account_circle'
     },
     {
       label: 'Story',

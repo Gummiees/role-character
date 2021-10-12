@@ -1,5 +1,5 @@
 import { Item } from './item.model';
-
+import { Statistic } from './statistic.model';
 export interface Character {
   id?: string;
   userId?: string;
@@ -10,4 +10,5 @@ export interface Character {
   story: string;
   gold?: number;
   inventory?: Item[];
+  statistics?: Statistic[];
 }

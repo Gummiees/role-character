@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { Character } from '@shared/models/character.model';
+import { CharacterStatsService } from '../components/character-stats/character-stats.service';
 import { UserService } from '@shared/services/user.service';
 import firebase from 'firebase/compat/app';
 import { of } from 'rxjs';
@@ -20,7 +21,11 @@ export class CharacterService {
     });
   }
   private _character: Character | null = null;
-  constructor(private firestore: AngularFirestore, private userService: UserService) {}
+  constructor(
+    private firestore: AngularFirestore,
+    private userService: UserService,
+    private characterStatsService: CharacterStatsService
+  ) {}
 
   hasCharacters(): Promise<boolean> {
     return new Promise(async (resolve) => {
@@ -62,10 +67,9 @@ export class CharacterService {
     character.userId = user.uid;
     character.gold = 0;
     await this.firestore.collection<Character>('characters').add(character);
-    const characterSaved: Character | null = await this.getCharacter();
-    if (!characterSaved) {
-      throw Error('Character not saved');
-    }
+    let characterSaved: Character = await this.getCharacterOrThrowError();
+    await this.characterStatsService.addDefautStats(characterSaved);
+    characterSaved = await this.getCharacterOrThrowError();
     this._character = characterSaved;
     return this._character;
   }
@@ -110,5 +114,13 @@ export class CharacterService {
       .update({ gold: amount });
     this._character = character;
     return this._character;
+  }
+
+  private async getCharacterOrThrowError(): Promise<Character> {
+    const characterSaved: Character | null = await this.getCharacter();
+    if (!characterSaved) {
+      throw Error('Character not saved');
+    }
+    return characterSaved;
   }
 }

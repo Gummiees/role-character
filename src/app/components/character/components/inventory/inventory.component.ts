@@ -28,7 +28,6 @@ import { SellItem } from './sell-item-dialog/sell-item.model';
   templateUrl: './inventory.component.html'
 })
 export class InventoryComponent implements OnDestroy {
-  public isEditingRow: boolean = false;
   inventory: Item[] = [];
   categories: Category[] = [];
   gold: number = 0;
@@ -53,8 +52,7 @@ export class InventoryComponent implements OnDestroy {
     return (
       this.loadersService.categoriesLoading ||
       this.loadersService.inventoryLoading ||
-      this.loadersService.goldLoading ||
-      this.isEditingRow
+      this.loadersService.goldLoading
     );
   }
 
@@ -246,7 +244,7 @@ export class InventoryComponent implements OnDestroy {
           .listItems(character, user)
           .pipe(
             catchError((err) => {
-              this.loadersService.categoriesLoading = false;
+              this.loadersService.inventoryLoading = false;
               return throwError(err);
             })
           )
