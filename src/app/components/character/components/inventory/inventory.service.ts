@@ -39,12 +39,14 @@ export class InventoryService {
       .snapshotChanges()
       .pipe(
         map((items: DocumentChangeAction<Item>[]) => {
-          return items.map((item: DocumentChangeAction<Item>) => {
-            return {
-              ...item.payload.doc.data(),
-              id: item.payload.doc.id
-            };
-          });
+          return items
+            .map((item: DocumentChangeAction<Item>) => {
+              return {
+                ...item.payload.doc.data(),
+                id: item.payload.doc.id
+              };
+            })
+            .sort((a: Item, b: Item) => a.name.localeCompare(b.name));
         })
       );
   }

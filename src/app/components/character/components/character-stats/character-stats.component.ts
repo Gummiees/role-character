@@ -40,7 +40,7 @@ export class CharacterStatsComponent implements OnDestroy {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  isDisabled(): boolean {
+  buttonsDisabled(): boolean {
     return this.loadersService.statisticsLoading;
   }
 

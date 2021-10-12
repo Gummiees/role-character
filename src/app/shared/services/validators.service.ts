@@ -31,18 +31,18 @@ export class ValidatorsService {
       }
 
       if (totalInput.invalid || totalInput.value == null || totalInput.value == undefined) {
-        totalInput.setErrors(null);
+        currentInput.setErrors(null);
         return {};
       }
 
-      if (!isNaN(currentInput.value) || !isNaN(totalInput.value)) {
+      if (isNaN(currentInput.value) || isNaN(totalInput.value)) {
         throw new Error('The controls for "exceedsTotal" are not numbers.');
       }
 
       if (currentInput.value > totalInput.value) {
-        totalInput.setErrors({ exceedsTotal: true });
+        currentInput.setErrors({ exceedsTotal: true });
       } else {
-        totalInput.setErrors(null);
+        currentInput.setErrors(null);
       }
       return {};
     };

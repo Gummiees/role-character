@@ -39,12 +39,14 @@ export class CharacterStatsService {
       .snapshotChanges()
       .pipe(
         map((items: DocumentChangeAction<Statistic>[]) => {
-          return items.map((item: DocumentChangeAction<Statistic>) => {
-            return {
-              ...item.payload.doc.data(),
-              id: item.payload.doc.id
-            };
-          });
+          return items
+            .map((item: DocumentChangeAction<Statistic>) => {
+              return {
+                ...item.payload.doc.data(),
+                id: item.payload.doc.id
+              };
+            })
+            .sort((a: Statistic, b: Statistic) => a.abv.localeCompare(b.abv));
         })
       );
   }
