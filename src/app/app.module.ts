@@ -31,6 +31,7 @@ import { AddItemDialogModule } from './components/character/components/inventory
 import { BuyItemDialogModule } from './components/character/components/inventory/buy-item-dialog/buy-item-dialog.module';
 import { GoldDialogModule } from './components/character/components/inventory/gold-dialog/gold-dialog.module';
 import { SellItemDialogModule } from './components/character/components/inventory/sell-item-dialog/sell-item-dialog.module';
+import { SaveCmdDirective } from '@shared/directives/save-cmd.directive';
 
 @NgModule({
   declarations: [AppComponent],
@@ -66,7 +67,12 @@ import { SellItemDialogModule } from './components/character/components/inventor
     BuyItemDialogModule,
     GoldDialogModule
   ],
-  providers: [PerformanceMonitoringService, ScreenTrackingService, UserTrackingService],
+  providers: [
+    PerformanceMonitoringService,
+    ScreenTrackingService,
+    UserTrackingService,
+    SaveCmdDirective
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

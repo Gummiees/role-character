@@ -18,12 +18,18 @@
   >
     <quill-editor
       [formControl]="storyControl"
-      class="flex-grow flex flex-col"
+      class="flex-grow flex flex-col w-full"
       [required]="true"
       [sanitize]="true"
     ></quill-editor>
     <div class="w-full mt-2 flex items-center flex-wrap justify-end">
-      <button class="w-full" mat-raised-button color="primary" type="submit" [disabled]="true">
+      <button
+        class="w-full"
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="isDisabled()"
+      >
         <mat-icon> save </mat-icon>
         <span class="md:ml-2">Save</span>
       </button>

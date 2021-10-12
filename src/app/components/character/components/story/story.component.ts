@@ -1,9 +1,11 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Character } from '@shared/models/character.model';
 import { LoadersService } from '@shared/services/loaders.service';
 import { MessageService } from '@shared/services/message.service';
+import { Subscription } from 'rxjs';
+import { debounceTime, skip } from 'rxjs/operators';
 import { CharacterService } from '../../services/character.service';
 
 @Component({
@@ -12,10 +14,11 @@ import { CharacterService } from '../../services/character.service';
   styleUrls: ['./story.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class StoryComponent {
+export class StoryComponent implements OnDestroy {
   form: FormGroup = new FormGroup({});
   storyControl: FormControl = new FormControl(null, [Validators.required]);
   private character?: Character;
+  private subscriptions: Subscription[] = [];
   constructor(
     public loadersService: LoadersService,
     private characterService: CharacterService,
@@ -23,30 +26,18 @@ export class StoryComponent {
     private router: Router
   ) {
     this.setForm();
+    this.subscribeToStory();
     this.patchCharacter();
   }
 
-  async onSubmit() {
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+  }
+
+  onSubmit() {
     if (this.form.valid) {
-      this.loadersService.storyLoading = true;
-      try {
-        if (this.character) {
-          const story: string = this.form.value.story;
-          this.character.story = story;
-          await this.characterService.updateCharacter(this.character);
-          this.messageService.showOk('Character updated successfully');
-          this.form.reset();
-          this.storyControl.setValue(story);
-        } else {
-          this.messageService.showLocalError('Character not found');
-          this.router.navigate(['/create']);
-        }
-      } catch (e: any) {
-        console.error(e);
-        this.messageService.showError(e);
-      } finally {
-        this.loadersService.storyLoading = false;
-      }
+      const story: string = this.form.value.story;
+      this.save(story);
     }
   }
 
@@ -74,6 +65,34 @@ export class StoryComponent {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
+    } finally {
+      this.loadersService.storyLoading = false;
+    }
+  }
+
+  private subscribeToStory() {
+    const sub: Subscription = this.storyControl.valueChanges
+      .pipe(debounceTime(5000), skip(1))
+      .subscribe((val: string) => this.save(val));
+    this.subscriptions.push(sub);
+  }
+
+  private async save(story: string) {
+    this.loadersService.storyLoading = true;
+    try {
+      if (this.character) {
+        this.character.story = story;
+        await this.characterService.updateCharacter(this.character);
+        this.form.markAsUntouched();
+        this.form.markAsPristine();
+        this.messageService.showOk('Character updated successfully');
+      } else {
+        this.messageService.showLocalError('Character not found');
+        this.router.navigate(['/create']);
+      }
+    } catch (e: any) {
+      console.error(e);
+      this.messageService.showError(e);
     } finally {
       this.loadersService.storyLoading = false;
     }
