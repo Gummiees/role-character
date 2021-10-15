@@ -44,11 +44,13 @@ export class CategoryService {
       .snapshotChanges()
       .pipe(
         map((items: DocumentChangeAction<Category>[]) => {
-          return items.map((item: DocumentChangeAction<Category>) => {
-            const data: Category = item.payload.doc.data() as Category;
-            data.id = item.payload.doc.id;
-            return data;
-          });
+          return items
+            .map((item: DocumentChangeAction<Category>) => {
+              const data: Category = item.payload.doc.data() as Category;
+              data.id = item.payload.doc.id;
+              return data;
+            })
+            .sort((a: Category, b: Category) => a.name.localeCompare(b.name));
         })
       );
   }

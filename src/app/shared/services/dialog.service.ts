@@ -34,7 +34,7 @@ export class DialogService {
   openGenericDialog<T>(component: ComponentType<T>, data?: any, width?: string): Observable<any> {
     const dialogRef = this.dialog.open(component, {
       data: data,
-      width: width ?? '500px'
+      width: width ?? '100%'
     });
 
     return dialogRef.afterClosed().pipe(first());

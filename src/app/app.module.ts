@@ -13,6 +13,7 @@ import {
   AngularFirePerformanceModule,
   PerformanceMonitoringService
 } from '@angular/fire/compat/performance';
+import { QuillModule } from 'ngx-quill';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -30,6 +31,8 @@ import { AddItemDialogModule } from './components/character/components/inventory
 import { BuyItemDialogModule } from './components/character/components/inventory/buy-item-dialog/buy-item-dialog.module';
 import { GoldDialogModule } from './components/character/components/inventory/gold-dialog/gold-dialog.module';
 import { SellItemDialogModule } from './components/character/components/inventory/sell-item-dialog/sell-item-dialog.module';
+import { SaveCmdDirective } from '@shared/directives/save-cmd.directive';
+import { AddStatDialogModule } from './components/character/components/character-info/add-stat-dialog/add-stat-dialog.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -49,15 +52,29 @@ import { SellItemDialogModule } from './components/character/components/inventor
     MatProgressBarModule,
     MatSnackBarModule,
     MatIconModule,
+    QuillModule.forRoot({
+      customOptions: [
+        {
+          import: 'formats/font',
+          whitelist: ['mirza', 'roboto', 'aref', 'serif', 'sansserif', 'monospace']
+        }
+      ]
+    }),
     BasicDialogModule,
     MenuModule,
     FooterModule,
     AddItemDialogModule,
     SellItemDialogModule,
     BuyItemDialogModule,
-    GoldDialogModule
+    GoldDialogModule,
+    AddStatDialogModule
   ],
-  providers: [PerformanceMonitoringService, ScreenTrackingService, UserTrackingService],
+  providers: [
+    PerformanceMonitoringService,
+    ScreenTrackingService,
+    UserTrackingService,
+    SaveCmdDirective
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
