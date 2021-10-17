@@ -50,30 +50,65 @@
     </ng-template>
     <ng-template pTemplate="body" let-item>
       <tr>
-        <td>
-          {{ item.abv }}
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <mat-form-field class="w-full" appearance="standard">
+                <mat-label>Abbreviation</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  required
+                  [(ngModel)]="item.abv"
+                  (blur)="onBlur(item)"
+                />
+              </mat-form-field>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ item.abv }}
+            </ng-template>
+          </p-cellEditor>
         </td>
-        <td>
-          {{ item.total }}
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <mat-form-field class="w-full" appearance="standard">
+                <mat-label>Total</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  required
+                  [(ngModel)]="item.total"
+                  (blur)="onBlur(item)"
+                />
+              </mat-form-field>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ item.total }}
+            </ng-template>
+          </p-cellEditor>
         </td>
-        <td>
-          {{ item.current }}
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <mat-form-field class="w-full" appearance="standard">
+                <mat-label>Current</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  required
+                  [(ngModel)]="item.current"
+                  (blur)="onBlur(item)"
+                />
+              </mat-form-field>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ item.current }}
+            </ng-template>
+          </p-cellEditor>
         </td>
         <td>
           <div class="w-full flex items-center justify-evenly">
-            <!-- TODO: Editar en línea? -->
-            <button
-              type="button"
-              mat-icon-button
-              aria-label="Save"
-              color="primary"
-              class="hover:bg-indigo-100 micro-button"
-              matTooltip="Save"
-              matTooltipPosition="below"
-              [disabled]="true"
-            >
-              <mat-icon>save</mat-icon>
-            </button>
             <button
               type="button"
               mat-icon-button

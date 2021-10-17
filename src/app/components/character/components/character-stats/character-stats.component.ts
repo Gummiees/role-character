@@ -14,6 +14,7 @@ import firebase from 'firebase/compat/app';
 import { BasicDialogModel } from '@shared/models/dialog.model';
 import { CommonService } from '@shared/services/common.service';
 import { AddStatDialogComponent } from '../character-info/add-stat-dialog/add-stat-dialog.component';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-character-stats',
@@ -65,6 +66,47 @@ export class CharacterStatsComponent implements OnDestroy {
       .subscribe(() => this.delete(stat));
   }
 
+  public async onBlur(stat: Statistic) {
+    if (this.statisticIsCorrect(stat) && this.statisticIsDifferent(stat)) {
+      this.loadersService.statisticsLoading = true;
+      try {
+        const character: Character | null = await this.characterService.character;
+        if (character) {
+          await this.statisticService.updateStat(character, stat);
+        } else {
+          this.messageService.showLocalError('You must have a character');
+          this.router.navigate(['/create']);
+        }
+      } catch (e: any) {
+        console.error(e);
+        this.messageService.showLocalError(e);
+      } finally {
+        this.loadersService.statisticsLoading = false;
+      }
+    }
+  }
+
+  private statisticIsCorrect(statistic: Statistic): boolean {
+    return (
+      !this.commonService.isNullOrUndefined(statistic.id) &&
+      !this.commonService.isNullOrEmpty(statistic.abv) &&
+      !this.commonService.isNullOrUndefined(statistic.total) &&
+      !this.commonService.isNullOrUndefined(statistic.current)
+    );
+  }
+
+  private statisticIsDifferent(statistic: Statistic): boolean {
+    const oldStat: Statistic | undefined = this.statistics.find((stat) => stat.id === statistic.id);
+    if (!oldStat) {
+      return false;
+    }
+    return (
+      oldStat.abv !== statistic.abv ||
+      oldStat.total !== statistic.total ||
+      oldStat.current !== statistic.current
+    );
+  }
+
   private async subscribeToStatistics() {
     const user: firebase.User | null = await this.userService.user;
     if (user) {
@@ -76,6 +118,7 @@ export class CharacterStatsComponent implements OnDestroy {
           .pipe(
             catchError((err) => {
               this.loadersService.statisticsLoading = false;
+              this.messageService.showError(err);
               return throwError(err);
             })
           )
