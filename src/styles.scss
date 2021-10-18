@@ -85,3 +85,8 @@ button.flex.mat-button-base .mat-button-wrapper {
 body .cdk-overlay-pane {
   max-width: 90vw !important;
 }
+
+p-table p-celleditor mat-form-field .mat-form-field-infix {
+  border-top: 0 !important;
+  padding: 0 !important;
+}

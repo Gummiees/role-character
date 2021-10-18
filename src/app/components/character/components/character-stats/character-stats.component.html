@@ -50,31 +50,93 @@
     </ng-template>
     <ng-template pTemplate="body" let-item>
       <tr>
-        <td>
-          {{ item.abv }}
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <mat-form-field class="w-full" appearance="standard">
+                <input
+                  matInput
+                  type="number"
+                  required
+                  [(ngModel)]="item.abv"
+                  (focus)="onFocus(item)"
+                />
+              </mat-form-field>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ item.abv }}
+            </ng-template>
+          </p-cellEditor>
         </td>
-        <td>
-          {{ item.total }}
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <mat-form-field class="w-full" appearance="standard">
+                <input
+                  matInput
+                  type="number"
+                  [min]="item.current"
+                  required
+                  [(ngModel)]="item.total"
+                  (focus)="onFocus(item)"
+                />
+              </mat-form-field>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ item.total }}
+            </ng-template>
+          </p-cellEditor>
         </td>
-        <td>
-          {{ item.current }}
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <mat-form-field class="w-full" appearance="standard">
+                <input
+                  matInput
+                  type="number"
+                  required
+                  min="0"
+                  [max]="item.total"
+                  [(ngModel)]="item.current"
+                  (focus)="onFocus(item)"
+                />
+              </mat-form-field>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ item.current }}
+            </ng-template>
+          </p-cellEditor>
         </td>
         <td>
           <div class="w-full flex items-center justify-evenly">
-            <!-- TODO: Editar en línea? -->
             <button
               type="button"
               mat-icon-button
-              aria-label="Save"
               color="primary"
+              aria-label="Save"
               class="hover:bg-indigo-100 micro-button"
               matTooltip="Save"
               matTooltipPosition="below"
-              [disabled]="true"
+              [disabled]="!canSave(item)"
+              (click)="onSave(item)"
             >
               <mat-icon>save</mat-icon>
             </button>
             <button
+              *ngIf="isEditing(item)"
+              type="button"
+              mat-icon-button
+              color="warn"
+              aria-label="Undo"
+              class="hover:bg-red-100 micro-button"
+              matTooltip="Undo"
+              matTooltipPosition="below"
+              (click)="onUndo(item)"
+            >
+              <mat-icon>undo</mat-icon>
+            </button>
+            <button
+              *ngIf="!isEditing(item)"
               type="button"
               mat-icon-button
               color="warn"
