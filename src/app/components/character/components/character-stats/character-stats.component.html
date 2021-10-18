@@ -54,13 +54,12 @@
           <p-cellEditor>
             <ng-template pTemplate="input">
               <mat-form-field class="w-full" appearance="standard">
-                <mat-label>Abbreviation</mat-label>
                 <input
                   matInput
                   type="number"
                   required
                   [(ngModel)]="item.abv"
-                  (blur)="onBlur(item)"
+                  (focus)="onFocus(item)"
                 />
               </mat-form-field>
             </ng-template>
@@ -73,13 +72,13 @@
           <p-cellEditor>
             <ng-template pTemplate="input">
               <mat-form-field class="w-full" appearance="standard">
-                <mat-label>Total</mat-label>
                 <input
                   matInput
                   type="number"
+                  [min]="item.current"
                   required
                   [(ngModel)]="item.total"
-                  (blur)="onBlur(item)"
+                  (focus)="onFocus(item)"
                 />
               </mat-form-field>
             </ng-template>
@@ -92,13 +91,14 @@
           <p-cellEditor>
             <ng-template pTemplate="input">
               <mat-form-field class="w-full" appearance="standard">
-                <mat-label>Current</mat-label>
                 <input
                   matInput
                   type="number"
                   required
+                  min="0"
+                  [max]="item.total"
                   [(ngModel)]="item.current"
-                  (blur)="onBlur(item)"
+                  (focus)="onFocus(item)"
                 />
               </mat-form-field>
             </ng-template>
@@ -110,6 +110,33 @@
         <td>
           <div class="w-full flex items-center justify-evenly">
             <button
+              type="button"
+              mat-icon-button
+              color="primary"
+              aria-label="Save"
+              class="hover:bg-indigo-100 micro-button"
+              matTooltip="Save"
+              matTooltipPosition="below"
+              [disabled]="!canSave(item)"
+              (click)="onSave(item)"
+            >
+              <mat-icon>save</mat-icon>
+            </button>
+            <button
+              *ngIf="isEditing(item)"
+              type="button"
+              mat-icon-button
+              color="warn"
+              aria-label="Undo"
+              class="hover:bg-red-100 micro-button"
+              matTooltip="Undo"
+              matTooltipPosition="below"
+              (click)="onUndo(item)"
+            >
+              <mat-icon>undo</mat-icon>
+            </button>
+            <button
+              *ngIf="!isEditing(item)"
               type="button"
               mat-icon-button
               color="warn"
