@@ -33,6 +33,7 @@ import { GoldDialogModule } from './components/character/components/inventory/go
 import { SellItemDialogModule } from './components/character/components/inventory/sell-item-dialog/sell-item-dialog.module';
 import { SaveCmdDirective } from '@shared/directives/save-cmd.directive';
 import { AddStatDialogModule } from './components/character/components/character-info/add-stat-dialog/add-stat-dialog.module';
+import { AddSkillDialogModule } from './components/character/components/skills/add-skill-dialog/add-skill-dialog.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -67,7 +68,8 @@ import { AddStatDialogModule } from './components/character/components/character
     SellItemDialogModule,
     BuyItemDialogModule,
     GoldDialogModule,
-    AddStatDialogModule
+    AddStatDialogModule,
+    AddSkillDialogModule
   ],
   providers: [
     PerformanceMonitoringService,

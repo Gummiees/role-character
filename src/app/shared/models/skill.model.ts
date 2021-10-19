@@ -1,14 +1,12 @@
+import { Base } from './base.model';
 import { TurnPhases } from './turn.model';
 
-export interface StatAffected {
-  id?: number;
+export interface StatAffected extends Base {
   statId: number;
   value: number;
 }
 
-export interface Skill {
-  userId?: string;
-  id?: number;
+export interface Skill extends Base {
   name?: string;
   description?: string;
   active: boolean;

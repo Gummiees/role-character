@@ -1,1 +1,18 @@
-<p>skills works!</p>
+<div class="flex flex-col flex-grow items-start shadow-lg bg-white rounded-lg p-6 w-full">
+  <div class="flex justify-center items-center w-full">
+    <h1 class="mr-4 mb-0">Skills</h1>
+    <button
+      type="button"
+      mat-mini-fab
+      aria-label="Create"
+      color="primary"
+      class="shadow"
+      matTooltip="Create new"
+      matTooltipPosition="below"
+      [disabled]="buttonsDisabled()"
+      (click)="onCreateSkill()"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</div>
