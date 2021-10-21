@@ -7,7 +7,7 @@
   >
     <mat-form-field class="w-full" appearance="standard">
       <mat-label>Name</mat-label>
-      <input matInput type="text" required [formControl]="nameControl" />
+      <input matInput type="text" [formControl]="nameControl" />
     </mat-form-field>
     <mat-form-field class="w-full" appearance="standard">
       <mat-label>Description</mat-label>
@@ -22,7 +22,7 @@
     <!-- FIXME: poner select -->
     <mat-form-field class="w-full" appearance="standard">
       <mat-label>Phase to roll a dice on</mat-label>
-      <input matInput type="text" required [formControl]="whenRollDiceControl" />
+      <input matInput type="text" [formControl]="whenRollDiceControl" />
       <mat-hint>
         The dices will be rolled before the selected phase unless the name explicitly says
         otherwise.
@@ -33,19 +33,19 @@
     </mat-slide-toggle>
     <mat-form-field class="w-full" appearance="standard">
       <mat-label>Turns left</mat-label>
-      <input matInput type="number" required [formControl]="turnsLeftControl" min="0" />
+      <input matInput type="number" [formControl]="turnsLeftControl" min="0" />
       <mat-error *ngIf="turnsLeftControl.invalid"> Turns left must be more than 0 </mat-error>
       <mat-hint> Turns for the skill to be active before turned off. </mat-hint>
     </mat-form-field>
 
     <mat-form-field class="w-full" appearance="standard">
       <mat-label>Level</mat-label>
-      <input matInput type="number" required [formControl]="levelControl" min="0" />
+      <input matInput type="number" [formControl]="levelControl" min="0" />
       <mat-error *ngIf="levelControl.invalid"> Level must be more than 0 </mat-error>
     </mat-form-field>
     <mat-form-field class="w-full" appearance="standard">
       <mat-label>Caster name</mat-label>
-      <input matInput type="text" required [formControl]="caster_nameControl" />
+      <input matInput type="text" [formControl]="caster_nameControl" />
       <mat-hint>
         In case you want to remember the name of the character who casted the spell so you can ask
         them more information if necessary.

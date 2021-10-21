@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Host, Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
@@ -11,10 +11,13 @@ import firebase from 'firebase/compat/app';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-@Injectable()
 export class BaseCharacterService<T extends Base> {
   protected collection?: AngularFirestoreCollection<T> | null;
-  constructor(protected firestore: AngularFirestore, protected userService: UserService) {}
+  constructor(
+    public collectionName: string,
+    protected firestore: AngularFirestore,
+    protected userService: UserService
+  ) {}
 
   protected getCollection(
     character: Character,
@@ -22,7 +25,7 @@ export class BaseCharacterService<T extends Base> {
   ): AngularFirestoreCollection<T> {
     if (!this.collection) {
       this.collection = this.firestore.collection<T>(
-        `characters/${character.id}/inventory`,
+        `characters/${character.id}/${this.collectionName}`,
         (ref) => ref.where('userId', '==', user.uid)
       );
     }

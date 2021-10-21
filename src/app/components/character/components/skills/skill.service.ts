@@ -10,7 +10,7 @@ import { BaseCharacterService } from '../../services/base-character.service';
 @Injectable()
 export class SkillService extends BaseCharacterService<Skill> {
   constructor(protected firestore: AngularFirestore, protected userService: UserService) {
-    super(firestore, userService);
+    super('skills', firestore, userService);
   }
 
   // TODO: Sort skills

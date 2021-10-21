@@ -56,7 +56,7 @@ export class SkillsComponent {
       console.error(e);
       this.messageService.showLocalError(e);
     } finally {
-      this.loadersService.inventoryLoading = true;
+      this.loadersService.inventoryLoading = false;
     }
   }
 }

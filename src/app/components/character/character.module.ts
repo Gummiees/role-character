@@ -16,8 +16,8 @@ import { CharacterInfoComponent } from './components/character-info/character-in
 import { CharacterStatsComponent } from './components/character-stats/character-stats.component';
 import { InventoryComponent } from './components/inventory/inventory.component';
 import { InventoryService } from './components/inventory/inventory.service';
-import { SkillsComponent } from './components/skills/skills.component';
 import { SkillService } from './components/skills/skill.service';
+import { SkillsComponent } from './components/skills/skills.component';
 import { StoryComponent } from './components/story/story.component';
 
 @NgModule({

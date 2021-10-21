@@ -19,7 +19,7 @@ export class AddSkillDialogComponent {
   turnsLeftControl: FormControl = new FormControl(0, [Validators.min(0)]);
   levelControl: FormControl = new FormControl(1, [Validators.min(0)]);
   caster_nameControl: FormControl = new FormControl(null);
-  statsControl: FormControl = new FormControl(null, [Validators.required]);
+  statsControl: FormControl = new FormControl([]);
   constructor(public dialogRef: MatDialogRef<AddSkillDialogComponent>) {
     this.form = new FormGroup({
       name: this.nameControl,
