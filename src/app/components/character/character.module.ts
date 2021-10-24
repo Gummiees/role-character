@@ -4,6 +4,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CanActivateCharacterGuard } from '@shared/guards/character.guard';
@@ -37,6 +38,7 @@ import { StoryComponent } from './components/story/story.component';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSlideToggleModule,
     MatDividerModule,
     MatTooltipModule,
     TableModule,
