@@ -13,7 +13,7 @@ import { SellItem } from './sell-item-dialog/sell-item.model';
 @Injectable()
 export class InventoryService extends BaseCharacterService<Item> {
   constructor(protected firestore: AngularFirestore, protected userService: UserService) {
-    super(firestore, userService);
+    super('inventory', firestore, userService);
   }
 
   public listItems(character: Character, user: firebase.User): Observable<Item[]> {

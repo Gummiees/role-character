@@ -5,16 +5,28 @@ import { Skill } from '@shared/models/skill.model';
 import { UserService } from '@shared/services/user.service';
 import firebase from 'firebase/compat/app';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { BaseCharacterService } from '../../services/base-character.service';
 
 @Injectable()
 export class SkillService extends BaseCharacterService<Skill> {
   constructor(protected firestore: AngularFirestore, protected userService: UserService) {
-    super(firestore, userService);
+    super('skills', firestore, userService);
   }
 
-  // TODO: Sort skills
   public listSkills(character: Character, user: firebase.User): Observable<Skill[]> {
-    return super.listItems(character, user);
+    return super.listItems(character, user).pipe(
+      map((skills: Skill[]) => {
+        return skills.sort((a: Skill, b: Skill) => {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        });
+      })
+    );
   }
 }

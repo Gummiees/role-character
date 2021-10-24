@@ -6,9 +6,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SharedModule } from '@shared/shared.module';
-import { AddSkillDialogComponent } from './add-skill-dialog.component';
+import { SkillDialogComponent } from './skill-dialog.component';
 @NgModule({
-  declarations: [AddSkillDialogComponent],
+  declarations: [SkillDialogComponent],
   imports: [
     SharedModule,
     MatDialogModule,
@@ -18,7 +18,7 @@ import { AddSkillDialogComponent } from './add-skill-dialog.component';
     MatInputModule,
     MatSelectModule
   ],
-  exports: [AddSkillDialogComponent],
+  exports: [SkillDialogComponent],
   providers: []
 })
-export class AddSkillDialogModule {}
+export class SkillDialogModule {}

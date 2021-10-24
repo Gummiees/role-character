@@ -40,6 +40,7 @@
       <tr>
         <th pSortableColumn="name" pResizableColumn>
           Name <p-sortIcon field="name"> </p-sortIcon>
+          <p-columnFilter type="text" field="name"></p-columnFilter>
         </th>
         <th pSortableColumn="quantity" pResizableColumn>
           Quantity <p-sortIcon field="quantity"> </p-sortIcon>
@@ -48,14 +49,6 @@
           Total weight <p-sortIcon field="weight"> </p-sortIcon>
         </th>
         <th pResizableColumn>Actions</th>
-      </tr>
-      <tr>
-        <th>
-          <p-columnFilter type="text" field="name"></p-columnFilter>
-        </th>
-        <th> </th>
-        <th> </th>
-        <th> </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-item>

@@ -30,6 +30,7 @@
       <tr>
         <th pSortableColumn="abv" pResizableColumn>
           Name <p-sortIcon field="abv"> </p-sortIcon>
+          <p-columnFilter type="text" field="name"></p-columnFilter>
         </th>
         <th pSortableColumn="total" pResizableColumn>
           Total <p-sortIcon field="total"> </p-sortIcon>
@@ -38,14 +39,6 @@
           Current <p-sortIcon field="current"> </p-sortIcon>
         </th>
         <th pResizableColumn>Actions</th>
-      </tr>
-      <tr>
-        <th>
-          <p-columnFilter type="text" field="name"></p-columnFilter>
-        </th>
-        <th> </th>
-        <th> </th>
-        <th> </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-item>

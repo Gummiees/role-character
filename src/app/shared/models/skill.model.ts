@@ -7,12 +7,12 @@ export interface StatAffected extends Base {
 }
 
 export interface Skill extends Base {
-  name?: string;
+  name: string;
   description?: string;
   active: boolean;
   doesRollDice: boolean;
-  whenRollDice: TurnPhases;
-  permanent: boolean;
+  whenRollDice?: TurnPhases;
+  turnBased: boolean;
   turnsLeft: number;
   stats: StatAffected[];
   level?: number;
