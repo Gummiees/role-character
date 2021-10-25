@@ -5,7 +5,7 @@
     (ngSubmit)="onSubmit()"
   >
     <div class="flex w-full items-center">
-      <mat-form-field class="flex-grow pr-8" appearance="standard">
+      <mat-form-field class="flex-grow pr-4 sm:pr-8" appearance="standard">
         <mat-label>Name</mat-label>
         <input matInput type="text" [formControl]="nameControl" required />
         <mat-error *ngIf="nameControl.invalid"> You must enter a name </mat-error>
@@ -16,9 +16,10 @@
       <mat-label>Description</mat-label>
       <textarea cdkTextareaAutosize matInput [formControl]="descriptionControl"></textarea>
     </mat-form-field>
-    <div class="flex w-full items-center">
+    <div class="flex w-full items-center flex-col sm:flex-row">
       <mat-slide-toggle
         color="primary"
+        class="w-full sm:w-auto"
         [formControl]="doesRollDiceControl"
         (change)="onDoesRollDiceChanges()"
       >
@@ -26,40 +27,48 @@
       </mat-slide-toggle>
       <mat-form-field
         *ngIf="doesRollDiceControl.value"
-        class="pl-8 flex-grow"
+        class="sm:pl-8 flex-grow w-full sm:w-auto pb-4 sm:pb-0"
         appearance="standard"
       >
         <mat-label>Phase to roll a dice on</mat-label>
-        <!-- FIXME: poner select -->
-        <input matInput type="text" [formControl]="whenRollDiceControl" />
+        <mat-select [formControl]="whenRollDiceControl">
+          <mat-option *ngFor="let turn of turnPhases" [value]="turn">
+            {{ turn }}
+          </mat-option>
+        </mat-select>
         <mat-hint>
           The dices will be rolled before the selected phase unless the name explicitly says
           otherwise.
         </mat-hint>
       </mat-form-field>
     </div>
-    <div class="flex w-full items-center">
+    <div class="flex w-full items-center flex-col sm:flex-row">
       <mat-slide-toggle
         color="primary"
+        class="w-full sm:w-auto"
         [formControl]="turnBasedControl"
         (change)="onTurnBasedChanges()"
       >
         Is it turn based?
       </mat-slide-toggle>
-      <mat-form-field *ngIf="turnBasedControl.value" class="pl-8 flex-grow" appearance="standard">
+      <mat-form-field
+        *ngIf="turnBasedControl.value"
+        class="sm:pl-8 flex-grow w-full sm:w-auto"
+        appearance="standard"
+      >
         <mat-label>Turns left</mat-label>
         <input matInput type="number" [formControl]="turnsLeftControl" min="0" />
         <mat-error *ngIf="turnsLeftControl.invalid"> Turns left must be more than 0 </mat-error>
         <mat-hint> Turns for the skill to be active before turned off. </mat-hint>
       </mat-form-field>
     </div>
-    <div class="flex items-center w-full">
-      <mat-form-field class="w-1/2 pr-2" appearance="standard">
+    <div class="flex flex-col sm:flex-row items-center w-full">
+      <mat-form-field class="w-full sm:w-1/2 sm:pr-2" appearance="standard">
         <mat-label>Level</mat-label>
         <input matInput type="number" [formControl]="levelControl" min="0" />
         <mat-error *ngIf="levelControl.invalid"> Level must be more than 0 </mat-error>
       </mat-form-field>
-      <mat-form-field class="w-1/2 pl-2" appearance="standard">
+      <mat-form-field class="w-full sm:w-1/2 sm:pl-2" appearance="standard">
         <mat-label>Caster name</mat-label>
         <input matInput type="text" [formControl]="caster_nameControl" />
         <mat-hint>
