@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Skill } from '@shared/models/skill.model';
 import { TurnPhases } from '@shared/models/turn.model';
+import { CommonService } from '@shared/services/common.service';
 
 export interface SkillDialogData {
   skill: Skill;
@@ -14,6 +15,8 @@ export interface SkillDialogData {
   templateUrl: './skill-dialog.component.html'
 })
 export class SkillDialogComponent {
+  turnPhases: string[] = this.commonService.toArray(TurnPhases);
+
   form: FormGroup = new FormGroup({});
   nameControl: FormControl = new FormControl(null, [Validators.required]);
   descriptionControl: FormControl = new FormControl(null);
@@ -31,9 +34,11 @@ export class SkillDialogComponent {
   levelControl: FormControl = new FormControl(1, [Validators.min(0)]);
   caster_nameControl: FormControl = new FormControl(null);
   statsControl: FormControl = new FormControl([]);
+
   constructor(
     public dialogRef: MatDialogRef<SkillDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: SkillDialogData
+    @Inject(MAT_DIALOG_DATA) public data: SkillDialogData,
+    private commonService: CommonService
   ) {
     this.initForm();
     this.initData();

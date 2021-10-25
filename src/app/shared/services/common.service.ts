@@ -37,4 +37,8 @@ export class CommonService {
   isNullOrUndefined(value: any): boolean {
     return value === null || value === undefined;
   }
+
+  toArray(enumType: any): string[] {
+    return Object.keys(enumType).map((key) => enumType[key]);
+  }
 }

@@ -221,7 +221,7 @@ export class InventoryComponent implements OnDestroy {
       this.loadersService.goldLoading = true;
       const character: Character | null = await this.characterService.character;
       if (character) {
-        this.gold = character.gold || 0;
+        this.gold = character.gold;
       } else {
         this.messageService.showLocalError('You must have a character');
         this.router.navigate(['/create']);

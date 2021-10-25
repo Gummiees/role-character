@@ -1,5 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { TabItem } from '@shared/models/tab-item.model';
+import { TurnPhases } from '@shared/models/turn.model';
+import { LoadersService } from '@shared/services/loaders.service';
 
 @Component({
   selector: 'app-character',
@@ -35,5 +37,11 @@ export class CharacterComponent {
       icon: 'menu_book'
     }
   ];
-  constructor() {}
+
+  currentPhase: TurnPhases = TurnPhases.START;
+  constructor(public loadersService: LoadersService) {}
+
+  public previousTurn() {}
+
+  public nextTurn() {}
 }

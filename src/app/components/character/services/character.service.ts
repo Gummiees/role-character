@@ -6,6 +6,7 @@ import { UserService } from '@shared/services/user.service';
 import firebase from 'firebase/compat/app';
 import { of } from 'rxjs';
 import { catchError, first } from 'rxjs/operators';
+import { TurnPhases } from '@shared/models/turn.model';
 
 @Injectable({
   providedIn: 'root'
@@ -66,6 +67,8 @@ export class CharacterService {
   async createCharacter(character: Character, user: firebase.User): Promise<Character> {
     character.userId = user.uid;
     character.gold = 0;
+    character.turn = 0;
+    character.phase = TurnPhases.START;
     await this.firestore.collection<Character>('characters').add(character);
     let characterSaved: Character = await this.getCharacterOrThrowError();
     await this.characterStatsService.addDefautStats(characterSaved);

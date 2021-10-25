@@ -1,5 +1,6 @@
 import { Item } from './item.model';
 import { Statistic } from './statistic.model';
+import { TurnPhases } from './turn.model';
 export interface Character {
   id?: string;
   userId?: string;
@@ -8,7 +9,9 @@ export interface Character {
   appearance: string;
   backstory: string;
   story: string;
-  gold?: number;
+  turn: number;
+  phase: TurnPhases;
+  gold: number;
   inventory?: Item[];
   statistics?: Statistic[];
 }

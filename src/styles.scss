@@ -78,6 +78,13 @@ button.flex.mat-button-base .mat-button-wrapper {
   @apply h-screen w-screen absolute z-50 bg-white top-0 left-0 p-6 pb-0 flex flex-col;
 }
 
+.p-column-filter-clear-button,
+.p-column-filter-clear-button *,
+.p-column-filter-menu-button,
+.p-column-filter-menu-button * {
+  @apply p-0 m-0 w-0 h-0;
+}
+
 .main-content > *:not(router-outlet) {
   @apply flex-grow flex flex-col;
 }

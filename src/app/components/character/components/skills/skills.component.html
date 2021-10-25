@@ -1,4 +1,4 @@
-<div class="flex flex-col flex-grow items-start shadow-lg bg-white rounded-lg p-6 w-full">
+<div class="flex flex-col flex-grow items-start bg-white p-6 w-full">
   <div class="flex justify-between items-center w-full mb-2">
     <h1 class="mb-0">Skills</h1>
     <button
@@ -31,9 +31,11 @@
           Name <p-sortIcon field="name"> </p-sortIcon>
           <p-columnFilter type="text" field="name"></p-columnFilter>
         </th>
-        <th class="text-center" pSortableColumn="active" pResizableColumn>
-          Active <p-sortIcon field="active"> </p-sortIcon>
-          <p-columnFilter type="boolean" field="active" display="menu"></p-columnFilter>
+        <th pResizableColumn>
+          <div class="w-full flex flex-col items-center justify-center">
+            Active
+            <p-columnFilter type="boolean" field="active"></p-columnFilter>
+          </div>
         </th>
         <th class="text-center" pResizableColumn>Actions</th>
       </tr>

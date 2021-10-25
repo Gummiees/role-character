@@ -12,3 +12,28 @@
   </a>
 </nav>
 <router-outlet></router-outlet>
+<div class="w-full divider bg-white">
+  <mat-divider class="w-full mt-2 pb-2"></mat-divider>
+</div>
+<div class="p-4 turn-buttons flex flex-col sm:flex-row items-center justify-between bg-white">
+  <button
+    mat-stroked-button
+    color="primary"
+    class="w-full sm:w-auto"
+    type="button"
+    [disabled]="loadersService.turnLoading"
+    (click)="previousTurn()"
+  >
+    <span>Previous turn</span>
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    class="w-full sm:w-auto mt-2 sm:mt-0"
+    [disabled]="loadersService.turnLoading"
+    (click)="nextTurn()"
+  >
+    <span>Next turn</span>
+  </button>
+</div>
