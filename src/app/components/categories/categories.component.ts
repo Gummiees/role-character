@@ -64,9 +64,8 @@ export class CategoriesComponent implements OnDestroy {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.categoriesLoading = false;
     }
+    this.loadersService.categoriesLoading = false;
   }
 
   public async onEditInit(category: Category) {
@@ -99,9 +98,8 @@ export class CategoriesComponent implements OnDestroy {
       } catch (e: any) {
         console.error(e);
         this.messageService.showLocalError(e);
-      } finally {
-        this.loadersService.categoriesLoading = false;
       }
+      this.loadersService.categoriesLoading = false;
     }
   }
 
@@ -128,9 +126,8 @@ export class CategoriesComponent implements OnDestroy {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.categoriesLoading = false;
     }
+    this.loadersService.categoriesLoading = false;
   }
 
   private async subscribeToListItems() {

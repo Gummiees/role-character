@@ -2,12 +2,13 @@ import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Skill } from '@shared/models/skill.model';
-import { TurnPhases } from '@shared/models/turn.model';
-import { CommonService } from '@shared/services/common.service';
+import { Statistic } from '@shared/models/statistic.model';
+import { GlobalService } from '@shared/services/global.service';
 
 export interface SkillDialogData {
-  skill: Skill;
+  skill: Skill | null | undefined;
   readonly: boolean;
+  statistics: Statistic[];
 }
 
 @Component({
@@ -15,15 +16,13 @@ export interface SkillDialogData {
   templateUrl: './skill-dialog.component.html'
 })
 export class SkillDialogComponent {
-  turnPhases: string[] = this.commonService.toArray(TurnPhases);
-
   form: FormGroup = new FormGroup({});
   nameControl: FormControl = new FormControl(null, [Validators.required]);
   descriptionControl: FormControl = new FormControl(null);
   activeControl: FormControl = new FormControl(false);
   doesRollDiceControl: FormControl = new FormControl(false);
   whenRollDiceControl: FormControl = new FormControl(
-    { value: TurnPhases.START, disabled: !this.doesRollDiceControl.value },
+    { value: this.globalService.turnStart, disabled: !this.doesRollDiceControl.value },
     [Validators.required]
   );
   turnBasedControl: FormControl = new FormControl(false);
@@ -35,10 +34,11 @@ export class SkillDialogComponent {
   caster_nameControl: FormControl = new FormControl(null);
   statsControl: FormControl = new FormControl([]);
 
+  step: number = 0;
   constructor(
+    public globalService: GlobalService,
     public dialogRef: MatDialogRef<SkillDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: SkillDialogData,
-    private commonService: CommonService
+    @Inject(MAT_DIALOG_DATA) public data: SkillDialogData
   ) {
     this.initForm();
     this.initData();
@@ -72,6 +72,14 @@ export class SkillDialogComponent {
     this.turnBasedControl.value ? this.turnsLeftControl.enable() : this.turnsLeftControl.disable();
   }
 
+  public previous() {
+    this.step--;
+  }
+
+  public next() {
+    this.step++;
+  }
+
   private getTurnsLeft(): number {
     if (!this.turnBasedControl.value) {
       return 0;
@@ -79,7 +87,7 @@ export class SkillDialogComponent {
     return this.turnsLeftControl.value;
   }
 
-  private getWhenRollDice(): TurnPhases | undefined {
+  private getWhenRollDice(): string | undefined {
     if (!this.doesRollDiceControl.value) {
       return undefined;
     }

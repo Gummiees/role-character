@@ -123,9 +123,8 @@ export class InventoryComponent implements OnDestroy {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.goldLoading = false;
     }
+    this.loadersService.goldLoading = false;
   }
 
   private async createItem(addItem: AddItem) {
@@ -146,9 +145,8 @@ export class InventoryComponent implements OnDestroy {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.inventoryLoading = false;
     }
+    this.loadersService.inventoryLoading = false;
   }
 
   private async delete(item: Item) {
@@ -165,9 +163,8 @@ export class InventoryComponent implements OnDestroy {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.inventoryLoading = false;
     }
+    this.loadersService.inventoryLoading = false;
   }
 
   private async sell(sellItem: SellItem) {
@@ -188,9 +185,8 @@ export class InventoryComponent implements OnDestroy {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.inventoryLoading = false;
     }
+    this.loadersService.inventoryLoading = false;
   }
 
   private async buy(buyItem: BuyItem) {
@@ -211,9 +207,8 @@ export class InventoryComponent implements OnDestroy {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.inventoryLoading = false;
     }
+    this.loadersService.inventoryLoading = false;
   }
 
   private async getGold() {
@@ -229,9 +224,8 @@ export class InventoryComponent implements OnDestroy {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.goldLoading = false;
     }
+    this.loadersService.goldLoading = false;
   }
 
   private async subscribeToInventory() {

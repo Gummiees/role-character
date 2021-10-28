@@ -39,6 +39,8 @@ export class CommonService {
   }
 
   toArray(enumType: any): string[] {
-    return Object.keys(enumType).map((key) => enumType[key]);
+    return Object.keys(enumType)
+      .filter((key) => isNaN(enumType[key]))
+      .map((key) => enumType[key]);
   }
 }

@@ -90,9 +90,8 @@ export class UserInfoComponent implements OnDestroy {
       } catch (e: any) {
         console.error(e);
         this.messageService.showError(e);
-      } finally {
-        this.loadersService.userInfoLoading = false;
       }
+      this.loadersService.userInfoLoading = false;
     }
   }
 

@@ -1,5 +1,4 @@
 import { Base } from './base.model';
-import { TurnPhases } from './turn.model';
 
 export interface StatAffected extends Base {
   statId: number;
@@ -11,7 +10,7 @@ export interface Skill extends Base {
   description?: string;
   active: boolean;
   doesRollDice: boolean;
-  whenRollDice?: TurnPhases;
+  whenRollDice?: string;
   turnBased: boolean;
   turnsLeft: number;
   stats: StatAffected[];

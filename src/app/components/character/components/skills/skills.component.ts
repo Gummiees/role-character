@@ -1,19 +1,18 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Character } from '@shared/models/character.model';
+import { BasicDialogModel } from '@shared/models/dialog.model';
 import { Skill } from '@shared/models/skill.model';
-import { CommonService } from '@shared/services/common.service';
 import { DialogService } from '@shared/services/dialog.service';
 import { LoadersService } from '@shared/services/loaders.service';
 import { MessageService } from '@shared/services/message.service';
+import { UserService } from '@shared/services/user.service';
+import firebase from 'firebase/compat/app';
 import { Subscription, throwError } from 'rxjs';
 import { catchError, first } from 'rxjs/operators';
 import { CharacterService } from '../../services/character.service';
-import { SkillDialogComponent } from './skill-dialog/skill-dialog.component';
+import { SkillDialogComponent, SkillDialogData } from './skill-dialog/skill-dialog.component';
 import { SkillService } from './skill.service';
-import firebase from 'firebase/compat/app';
-import { UserService } from '@shared/services/user.service';
-import { BasicDialogModel } from '@shared/models/dialog.model';
 
 @Component({
   selector: 'app-skills',
@@ -25,7 +24,6 @@ export class SkillsComponent implements OnDestroy {
   constructor(
     public loadersService: LoadersService,
     private dialogService: DialogService,
-    private commonService: CommonService,
     private characterService: CharacterService,
     private skillService: SkillService,
     private messageService: MessageService,
@@ -40,40 +38,25 @@ export class SkillsComponent implements OnDestroy {
   }
 
   public buttonsDisabled(): boolean {
-    return this.loadersService.skillsLoading;
+    return this.loadersService.skillsLoading || this.loadersService.statisticsLoading;
   }
 
   public async onCreateSkill() {
-    this.dialogService
-      .openGenericDialog(SkillDialogComponent)
-      .pipe(first())
-      .subscribe((skill: Skill) => {
-        if (!this.commonService.isNullOrUndefined(skill)) {
-          this.create(skill);
-        }
-      });
+    const skill: Skill | null = await this.openSkillDialog();
+    if (skill) {
+      this.create(skill);
+    }
   }
 
-  public async onView(skill: Skill) {
-    this.dialogService
-      .openGenericDialog(SkillDialogComponent, { skill, readonly: true })
-      .pipe(first())
-      .subscribe((skill: Skill) => {
-        if (!this.commonService.isNullOrUndefined(skill)) {
-          this.save(skill);
-        }
-      });
+  public onView(skill: Skill) {
+    this.openSkillDialog(skill, true);
   }
 
-  public async onEdit(skill: Skill) {
-    this.dialogService
-      .openGenericDialog(SkillDialogComponent, { skill })
-      .pipe(first())
-      .subscribe((skill: Skill) => {
-        if (!this.commonService.isNullOrUndefined(skill)) {
-          this.save(skill);
-        }
-      });
+  public async onEdit(oldSkill: Skill) {
+    const skill: Skill | null = await this.openSkillDialog(oldSkill);
+    if (skill) {
+      this.save(skill);
+    }
   }
 
   public async onDelete(skill: Skill) {
@@ -90,6 +73,32 @@ export class SkillsComponent implements OnDestroy {
     this.save(skill);
   }
 
+  private async openSkillDialog(skill?: Skill, readonly?: boolean): Promise<Skill | null> {
+    this.loadersService.statisticsLoading = true;
+    try {
+      const character: Character | null = await this.characterService.character;
+      if (character) {
+        const data: SkillDialogData = {
+          skill,
+          readonly: readonly || false,
+          statistics: character.statistics
+        };
+        return this.dialogService
+          .openGenericDialog(SkillDialogComponent, data)
+          .pipe(first())
+          .toPromise();
+      } else {
+        this.messageService.showLocalError('You must have a character be on this screen!');
+        this.router.navigate(['/create']);
+      }
+    } catch (e: any) {
+      console.error(e);
+      this.messageService.showLocalError(e);
+    }
+    this.loadersService.statisticsLoading = false;
+    return null;
+  }
+
   private async delete(skill: Skill) {
     this.loadersService.skillsLoading = true;
     try {
@@ -104,9 +113,8 @@ export class SkillsComponent implements OnDestroy {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.skillsLoading = false;
     }
+    this.loadersService.skillsLoading = false;
   }
 
   private async save(skill: Skill) {
@@ -123,9 +131,8 @@ export class SkillsComponent implements OnDestroy {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.skillsLoading = false;
     }
+    this.loadersService.skillsLoading = false;
   }
 
   private async create(skill: Skill) {
@@ -142,9 +149,8 @@ export class SkillsComponent implements OnDestroy {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.skillsLoading = false;
     }
+    this.loadersService.skillsLoading = false;
   }
 
   private async subscribeToSkills() {

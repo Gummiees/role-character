@@ -7,7 +7,7 @@ import { UserService } from '@shared/services/user.service';
 
 @Component({
   selector: 'app-forgot-password',
-  templateUrl: './forgot-password.component.html',
+  templateUrl: './forgot-password.component.html'
 })
 export class ForgotPasswordComponent {
   public hide: boolean = true;
@@ -33,15 +33,14 @@ export class ForgotPasswordComponent {
       } catch (e: any) {
         console.error(e);
         this.messageService.showError(e);
-      } finally {
-        this.loadersService.forgotPasswordLoading = false;
       }
+      this.loadersService.forgotPasswordLoading = false;
     }
   }
 
   private setForm() {
     this.form = new FormGroup({
-      email: this.emailControl,
+      email: this.emailControl
     });
   }
 }

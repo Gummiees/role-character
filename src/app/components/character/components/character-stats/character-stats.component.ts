@@ -103,9 +103,8 @@ export class CharacterStatsComponent implements OnDestroy {
       } catch (e: any) {
         console.error(e);
         this.messageService.showLocalError(e);
-      } finally {
-        this.loadersService.statisticsLoading = false;
       }
+      this.loadersService.statisticsLoading = false;
     }
   }
 
@@ -200,9 +199,8 @@ export class CharacterStatsComponent implements OnDestroy {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.statisticsLoading = false;
     }
+    this.loadersService.statisticsLoading = false;
   }
 
   private async delete(stat: Statistic) {
@@ -219,8 +217,7 @@ export class CharacterStatsComponent implements OnDestroy {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.statisticsLoading = false;
     }
+    this.loadersService.statisticsLoading = false;
   }
 }

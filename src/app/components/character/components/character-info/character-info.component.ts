@@ -43,9 +43,8 @@ export class CharacterInfoComponent {
       } catch (e: any) {
         console.error(e);
         this.messageService.showError(e);
-      } finally {
-        this.loadersService.characterInfoLoading = false;
       }
+      this.loadersService.characterInfoLoading = false;
     }
   }
 
@@ -76,9 +75,8 @@ export class CharacterInfoComponent {
       } catch (e: any) {
         console.error(e);
         this.messageService.showError(e);
-      } finally {
-        this.loadersService.characterInfoLoading = false;
       }
+      this.loadersService.characterInfoLoading = false;
     } else {
       this.messageService.showLocalError('Character not found');
       this.router.navigate(['/create']);
@@ -112,8 +110,7 @@ export class CharacterInfoComponent {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.characterInfoLoading = false;
     }
+    this.loadersService.characterInfoLoading = false;
   }
 }
