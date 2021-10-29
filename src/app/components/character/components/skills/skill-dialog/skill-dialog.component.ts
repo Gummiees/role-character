@@ -1,9 +1,10 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Skill } from '@shared/models/skill.model';
 import { Statistic } from '@shared/models/statistic.model';
 import { GlobalService } from '@shared/services/global.service';
+import { Subscription } from 'rxjs';
 
 export interface SkillDialogData {
   skill: Skill | null | undefined;
@@ -15,7 +16,7 @@ export interface SkillDialogData {
   selector: 'app-skill-dialog',
   templateUrl: './skill-dialog.component.html'
 })
-export class SkillDialogComponent {
+export class SkillDialogComponent implements OnDestroy {
   form: FormGroup = new FormGroup({});
   nameControl: FormControl = new FormControl(null, [Validators.required]);
   descriptionControl: FormControl = new FormControl(null);
@@ -35,6 +36,8 @@ export class SkillDialogComponent {
   statsControl: FormControl = new FormControl([]);
 
   step: number = 0;
+
+  private subscriptions: Subscription[] = [];
   constructor(
     public globalService: GlobalService,
     public dialogRef: MatDialogRef<SkillDialogComponent>,
@@ -42,6 +45,10 @@ export class SkillDialogComponent {
   ) {
     this.initForm();
     this.initData();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   public onSubmit(): void {
@@ -107,6 +114,11 @@ export class SkillDialogComponent {
       caster_name: this.caster_nameControl,
       stats: this.statsControl
     });
+
+    const sub: Subscription = this.statsControl.valueChanges.subscribe((stats: Statistic[]) => {
+      this.onStatChanges(stats);
+    });
+    this.subscriptions.push(sub);
   }
 
   private initData() {
@@ -126,5 +138,10 @@ export class SkillDialogComponent {
         this.form.disable();
       }
     }
+  }
+
+  onStatChanges(stats: Statistic[]) {
+    // TODO: stats: cargar datos a una tabla editable
+    console.log('onStatChanges', stats);
   }
 }

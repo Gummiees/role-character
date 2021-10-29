@@ -75,8 +75,19 @@
         </mat-form-field>
       </div>
     </div>
-    <div *ngIf="step === 1">
-      <!-- TODO: stats: hacer con un multiselect de statistics que vienen por data. -->
+    <div *ngIf="step === 1" class="flex w-full flex-col items-start justify-center">
+      <mat-form-field class="w-full" appearance="standard">
+        <mat-label>Statistics</mat-label>
+        <mat-select [formControl]="statsControl" multiple>
+          <mat-option *ngFor="let stat of data.statistics" [value]="stat">
+            {{ stat.name }}
+          </mat-option>
+        </mat-select>
+        <mat-hint>
+          The dices will be rolled before the selected phase unless the name explicitly says
+          otherwise.
+        </mat-hint>
+      </mat-form-field>
     </div>
   </form>
 </mat-dialog-content>

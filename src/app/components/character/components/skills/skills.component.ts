@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Character } from '@shared/models/character.model';
 import { BasicDialogModel } from '@shared/models/dialog.model';
 import { Skill } from '@shared/models/skill.model';
+import { Statistic } from '@shared/models/statistic.model';
 import { DialogService } from '@shared/services/dialog.service';
 import { LoadersService } from '@shared/services/loaders.service';
 import { MessageService } from '@shared/services/message.service';
@@ -11,6 +12,7 @@ import firebase from 'firebase/compat/app';
 import { Subscription, throwError } from 'rxjs';
 import { catchError, first } from 'rxjs/operators';
 import { CharacterService } from '../../services/character.service';
+import { CharacterStatsService } from '../character-stats/character-stats.service';
 import { SkillDialogComponent, SkillDialogData } from './skill-dialog/skill-dialog.component';
 import { SkillService } from './skill.service';
 
@@ -20,17 +22,20 @@ import { SkillService } from './skill.service';
 })
 export class SkillsComponent implements OnDestroy {
   skills: Skill[] = [];
+  statistic: Statistic[] = [];
   private subscriptions: Subscription[] = [];
   constructor(
     public loadersService: LoadersService,
     private dialogService: DialogService,
     private characterService: CharacterService,
+    private statsService: CharacterStatsService,
     private skillService: SkillService,
     private messageService: MessageService,
     private router: Router,
     private userService: UserService
   ) {
     this.subscribeToSkills();
+    this.subscribeToStats();
   }
 
   ngOnDestroy() {
@@ -74,29 +79,15 @@ export class SkillsComponent implements OnDestroy {
   }
 
   private async openSkillDialog(skill?: Skill, readonly?: boolean): Promise<Skill | null> {
-    this.loadersService.statisticsLoading = true;
-    try {
-      const character: Character | null = await this.characterService.character;
-      if (character) {
-        const data: SkillDialogData = {
-          skill,
-          readonly: readonly || false,
-          statistics: character.statistics
-        };
-        return this.dialogService
-          .openGenericDialog(SkillDialogComponent, data)
-          .pipe(first())
-          .toPromise();
-      } else {
-        this.messageService.showLocalError('You must have a character be on this screen!');
-        this.router.navigate(['/create']);
-      }
-    } catch (e: any) {
-      console.error(e);
-      this.messageService.showLocalError(e);
-    }
-    this.loadersService.statisticsLoading = false;
-    return null;
+    const data: SkillDialogData = {
+      skill,
+      readonly: readonly || false,
+      statistics: this.statistic
+    };
+    return this.dialogService
+      .openGenericDialog(SkillDialogComponent, data)
+      .pipe(first())
+      .toPromise();
   }
 
   private async delete(skill: Skill) {
@@ -170,6 +161,34 @@ export class SkillsComponent implements OnDestroy {
           .subscribe((skills: Skill[]) => {
             this.skills = skills;
             this.loadersService.skillsLoading = false;
+          });
+        this.subscriptions.push(sub);
+      } else {
+        this.messageService.showLocalError('You must have a character');
+        this.router.navigate(['/create']);
+      }
+    } else {
+      this.messageService.showLocalError('You must be logged in');
+    }
+  }
+
+  private async subscribeToStats() {
+    const user: firebase.User | null = await this.userService.user;
+    if (user) {
+      const character: Character | null = await this.characterService.character;
+      if (character) {
+        this.loadersService.statisticsLoading = true;
+        const sub: Subscription = this.statsService
+          .listStats(character, user)
+          .pipe(
+            catchError((err) => {
+              this.loadersService.statisticsLoading = false;
+              return throwError(err);
+            })
+          )
+          .subscribe((stats: Statistic[]) => {
+            this.statistic = stats;
+            this.loadersService.statisticsLoading = false;
           });
         this.subscriptions.push(sub);
       } else {
