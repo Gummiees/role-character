@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SharedModule } from '@shared/shared.module';
+import { TableModule } from 'primeng/table';
 import { SkillDialogComponent } from './skill-dialog.component';
 @NgModule({
   declarations: [SkillDialogComponent],
@@ -16,7 +17,8 @@ import { SkillDialogComponent } from './skill-dialog.component';
     MatFormFieldModule,
     MatSlideToggleModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    TableModule
   ],
   exports: [SkillDialogComponent],
   providers: []

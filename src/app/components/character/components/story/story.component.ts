@@ -65,9 +65,8 @@ export class StoryComponent implements OnDestroy {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.storyLoading = false;
     }
+    this.loadersService.storyLoading = false;
   }
 
   private subscribeToStory() {
@@ -93,8 +92,7 @@ export class StoryComponent implements OnDestroy {
     } catch (e: any) {
       console.error(e);
       this.messageService.showError(e);
-    } finally {
-      this.loadersService.storyLoading = false;
     }
+    this.loadersService.storyLoading = false;
   }
 }

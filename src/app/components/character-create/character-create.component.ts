@@ -44,9 +44,8 @@ export class CharacterCreateComponent {
       } catch (e: any) {
         console.error(e);
         this.messageService.showError(e);
-      } finally {
-        this.loadersService.createCharacterLoading = false;
       }
+      this.loadersService.createCharacterLoading = false;
     }
   }
 

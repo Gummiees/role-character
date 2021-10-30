@@ -1,7 +1,12 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
+import { Character } from '@shared/models/character.model';
 import { TabItem } from '@shared/models/tab-item.model';
-import { TurnPhases } from '@shared/models/turn.model';
+import { CommonService } from '@shared/services/common.service';
+import { GlobalService } from '@shared/services/global.service';
 import { LoadersService } from '@shared/services/loaders.service';
+import { MessageService } from '@shared/services/message.service';
+import { CharacterService } from './services/character.service';
 
 @Component({
   selector: 'app-character',
@@ -17,14 +22,14 @@ export class CharacterComponent {
       icon: 'insert_chart_outlined'
     },
     {
-      label: 'Inventory',
-      link: '/inventory',
-      icon: 'backpack'
-    },
-    {
       label: 'Skills',
       link: '/skills',
       icon: 'hiking'
+    },
+    {
+      label: 'Inventory',
+      link: '/inventory',
+      icon: 'backpack'
     },
     {
       label: 'Information',
@@ -38,10 +43,61 @@ export class CharacterComponent {
     }
   ];
 
-  currentPhase: TurnPhases = TurnPhases.START;
-  constructor(public loadersService: LoadersService) {}
+  currentPhase: string = this.globalService.turnStart;
+  constructor(
+    public loadersService: LoadersService,
+    private globalService: GlobalService,
+    private characterService: CharacterService,
+    private messageService: MessageService,
+    private commonService: CommonService,
+    private router: Router
+  ) {}
 
-  public previousTurn() {}
+  public previousTurn() {
+    const iTurn: number | undefined = this.globalService.turns.indexOf(this.currentPhase);
+    if (!this.commonService.isNullOrUndefined(iTurn)) {
+      if (iTurn === 0) {
+        this.setCurrentPhase(this.globalService.turns.length - 1);
+      } else {
+        this.setCurrentPhase(iTurn - 1);
+      }
 
-  public nextTurn() {}
+      this.saveTurn();
+    }
+  }
+
+  public nextTurn() {
+    const iTurn: number | undefined = this.globalService.turns.indexOf(this.currentPhase);
+    if (!this.commonService.isNullOrUndefined(iTurn)) {
+      if (iTurn === this.globalService.turns.length - 1) {
+        this.setCurrentPhase(0);
+      } else {
+        this.setCurrentPhase(iTurn + 1);
+      }
+
+      this.saveTurn();
+    }
+  }
+
+  private setCurrentPhase(key: number) {
+    this.currentPhase = this.globalService.turns[key];
+  }
+  private async saveTurn() {
+    this.loadersService.turnLoading = true;
+    try {
+      const character: Character | null = await this.characterService.character;
+      if (character) {
+        character.phase = this.currentPhase;
+        await this.characterService.updateCharacter(character);
+        this.messageService.showOk('Turn phase saved successfully');
+      } else {
+        this.messageService.showLocalError('You must have a character to change the turn phase.');
+        this.router.navigate(['/create']);
+      }
+    } catch (e: any) {
+      console.error(e);
+      this.messageService.showLocalError(e);
+    }
+    this.loadersService.turnLoading = false;
+  }
 }

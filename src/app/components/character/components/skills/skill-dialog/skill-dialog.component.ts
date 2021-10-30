@@ -1,29 +1,29 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Skill } from '@shared/models/skill.model';
-import { TurnPhases } from '@shared/models/turn.model';
-import { CommonService } from '@shared/services/common.service';
+import { Skill, StatAffected } from '@shared/models/skill.model';
+import { Statistic } from '@shared/models/statistic.model';
+import { GlobalService } from '@shared/services/global.service';
+import { Subscription } from 'rxjs';
 
 export interface SkillDialogData {
-  skill: Skill;
+  skill: Skill | null | undefined;
   readonly: boolean;
+  statistics: Statistic[];
 }
 
 @Component({
   selector: 'app-skill-dialog',
   templateUrl: './skill-dialog.component.html'
 })
-export class SkillDialogComponent {
-  turnPhases: string[] = this.commonService.toArray(TurnPhases);
-
+export class SkillDialogComponent implements OnDestroy {
   form: FormGroup = new FormGroup({});
   nameControl: FormControl = new FormControl(null, [Validators.required]);
   descriptionControl: FormControl = new FormControl(null);
   activeControl: FormControl = new FormControl(false);
   doesRollDiceControl: FormControl = new FormControl(false);
   whenRollDiceControl: FormControl = new FormControl(
-    { value: TurnPhases.START, disabled: !this.doesRollDiceControl.value },
+    { value: this.globalService.turnStart, disabled: !this.doesRollDiceControl.value },
     [Validators.required]
   );
   turnBasedControl: FormControl = new FormControl(false);
@@ -34,19 +34,29 @@ export class SkillDialogComponent {
   levelControl: FormControl = new FormControl(1, [Validators.min(0)]);
   caster_nameControl: FormControl = new FormControl(null);
   statsControl: FormControl = new FormControl([]);
+  tableStats: StatAffected[] = [];
 
+  step: number = 0;
+
+  private subscriptions: Subscription[] = [];
+  private skillId?: string;
   constructor(
+    public globalService: GlobalService,
     public dialogRef: MatDialogRef<SkillDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: SkillDialogData,
-    private commonService: CommonService
+    @Inject(MAT_DIALOG_DATA) public data: SkillDialogData
   ) {
     this.initForm();
     this.initData();
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   public onSubmit(): void {
     if (this.form.valid) {
       const item: Skill = {
+        id: this.skillId,
         name: this.nameControl.value,
         description: this.descriptionControl.value,
         active: this.activeControl.value,
@@ -56,7 +66,7 @@ export class SkillDialogComponent {
         turnsLeft: this.getTurnsLeft(),
         level: this.levelControl.value,
         caster_name: this.caster_nameControl.value,
-        stats: this.statsControl.value
+        stats: this.tableStats
       };
       this.dialogRef.close(item);
     }
@@ -72,6 +82,19 @@ export class SkillDialogComponent {
     this.turnBasedControl.value ? this.turnsLeftControl.enable() : this.turnsLeftControl.disable();
   }
 
+  public previous() {
+    this.step--;
+  }
+
+  public next() {
+    this.step++;
+  }
+
+  public getStatName(statAffected: StatAffected): string {
+    const stat = this.data.statistics.find((stat) => stat.id === statAffected.statId);
+    return stat ? stat.name : '';
+  }
+
   private getTurnsLeft(): number {
     if (!this.turnBasedControl.value) {
       return 0;
@@ -79,9 +102,9 @@ export class SkillDialogComponent {
     return this.turnsLeftControl.value;
   }
 
-  private getWhenRollDice(): TurnPhases | undefined {
+  private getWhenRollDice(): string | undefined {
     if (!this.doesRollDiceControl.value) {
-      return undefined;
+      return this.globalService.turnStart;
     }
     return this.whenRollDiceControl.value;
   }
@@ -99,10 +122,16 @@ export class SkillDialogComponent {
       caster_name: this.caster_nameControl,
       stats: this.statsControl
     });
+
+    const sub: Subscription = this.statsControl.valueChanges.subscribe((stats: Statistic[]) => {
+      this.onStatChanges(stats);
+    });
+    this.subscriptions.push(sub);
   }
 
   private initData() {
     if (this.data && this.data.skill) {
+      this.skillId = this.data.skill.id;
       this.nameControl.setValue(this.data.skill.name);
       this.descriptionControl.setValue(this.data.skill.description);
       this.activeControl.setValue(this.data.skill.active);
@@ -118,5 +147,38 @@ export class SkillDialogComponent {
         this.form.disable();
       }
     }
+  }
+
+  private onStatChanges(stats: Statistic[]) {
+    if (!stats || stats.length === 0) {
+      this.tableStats = [];
+      return;
+    }
+
+    if (!this.tableStats || this.tableStats.length === 0) {
+      this.tableStats = this.mapStats(stats);
+      return;
+    }
+
+    if (this.tableStats.length > stats.length) {
+      this.tableStats = this.tableStats.filter((skillStat) =>
+        stats.some((stat) => stat.id === skillStat.statId)
+      );
+      return;
+    }
+
+    const addedStats: Statistic[] = stats.filter((stat) =>
+      this.tableStats.every((skillStat) => stat.id !== skillStat.statId)
+    );
+    this.tableStats = [...this.tableStats, ...this.mapStats(addedStats)];
+  }
+
+  private mapStats(stats: Statistic[]): StatAffected[] {
+    return stats.map((stat) => {
+      return {
+        statId: stat.id,
+        value: 0
+      };
+    });
   }
 }

@@ -1,19 +1,20 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Character } from '@shared/models/character.model';
+import { BasicDialogModel } from '@shared/models/dialog.model';
 import { Skill } from '@shared/models/skill.model';
-import { CommonService } from '@shared/services/common.service';
+import { Statistic } from '@shared/models/statistic.model';
 import { DialogService } from '@shared/services/dialog.service';
 import { LoadersService } from '@shared/services/loaders.service';
 import { MessageService } from '@shared/services/message.service';
+import { UserService } from '@shared/services/user.service';
+import firebase from 'firebase/compat/app';
 import { Subscription, throwError } from 'rxjs';
 import { catchError, first } from 'rxjs/operators';
 import { CharacterService } from '../../services/character.service';
-import { SkillDialogComponent } from './skill-dialog/skill-dialog.component';
+import { CharacterStatsService } from '../character-stats/character-stats.service';
+import { SkillDialogComponent, SkillDialogData } from './skill-dialog/skill-dialog.component';
 import { SkillService } from './skill.service';
-import firebase from 'firebase/compat/app';
-import { UserService } from '@shared/services/user.service';
-import { BasicDialogModel } from '@shared/models/dialog.model';
 
 @Component({
   selector: 'app-skills',
@@ -21,18 +22,20 @@ import { BasicDialogModel } from '@shared/models/dialog.model';
 })
 export class SkillsComponent implements OnDestroy {
   skills: Skill[] = [];
+  statistic: Statistic[] = [];
   private subscriptions: Subscription[] = [];
   constructor(
     public loadersService: LoadersService,
     private dialogService: DialogService,
-    private commonService: CommonService,
     private characterService: CharacterService,
+    private statsService: CharacterStatsService,
     private skillService: SkillService,
     private messageService: MessageService,
     private router: Router,
     private userService: UserService
   ) {
     this.subscribeToSkills();
+    this.subscribeToStats();
   }
 
   ngOnDestroy() {
@@ -40,40 +43,25 @@ export class SkillsComponent implements OnDestroy {
   }
 
   public buttonsDisabled(): boolean {
-    return this.loadersService.skillsLoading;
+    return this.loadersService.skillsLoading || this.loadersService.statisticsLoading;
   }
 
   public async onCreateSkill() {
-    this.dialogService
-      .openGenericDialog(SkillDialogComponent)
-      .pipe(first())
-      .subscribe((skill: Skill) => {
-        if (!this.commonService.isNullOrUndefined(skill)) {
-          this.create(skill);
-        }
-      });
+    const skill: Skill | null = await this.openSkillDialog();
+    if (skill) {
+      this.create(skill);
+    }
   }
 
-  public async onView(skill: Skill) {
-    this.dialogService
-      .openGenericDialog(SkillDialogComponent, { skill, readonly: true })
-      .pipe(first())
-      .subscribe((skill: Skill) => {
-        if (!this.commonService.isNullOrUndefined(skill)) {
-          this.save(skill);
-        }
-      });
+  public onView(skill: Skill) {
+    this.openSkillDialog(skill, true);
   }
 
-  public async onEdit(skill: Skill) {
-    this.dialogService
-      .openGenericDialog(SkillDialogComponent, { skill })
-      .pipe(first())
-      .subscribe((skill: Skill) => {
-        if (!this.commonService.isNullOrUndefined(skill)) {
-          this.save(skill);
-        }
-      });
+  public async onEdit(oldSkill: Skill) {
+    const skill: Skill | null = await this.openSkillDialog(oldSkill);
+    if (skill) {
+      this.save(skill);
+    }
   }
 
   public async onDelete(skill: Skill) {
@@ -90,6 +78,19 @@ export class SkillsComponent implements OnDestroy {
     this.save(skill);
   }
 
+  private async openSkillDialog(skill?: Skill, readonly?: boolean): Promise<Skill | null> {
+    // TODO: Cargar stats en dialogo
+    const data: SkillDialogData = {
+      skill,
+      readonly: readonly || false,
+      statistics: this.statistic
+    };
+    return this.dialogService
+      .openGenericDialog(SkillDialogComponent, data)
+      .pipe(first())
+      .toPromise();
+  }
+
   private async delete(skill: Skill) {
     this.loadersService.skillsLoading = true;
     try {
@@ -104,9 +105,8 @@ export class SkillsComponent implements OnDestroy {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.skillsLoading = false;
     }
+    this.loadersService.skillsLoading = false;
   }
 
   private async save(skill: Skill) {
@@ -123,9 +123,8 @@ export class SkillsComponent implements OnDestroy {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.skillsLoading = false;
     }
+    this.loadersService.skillsLoading = false;
   }
 
   private async create(skill: Skill) {
@@ -142,9 +141,8 @@ export class SkillsComponent implements OnDestroy {
     } catch (e: any) {
       console.error(e);
       this.messageService.showLocalError(e);
-    } finally {
-      this.loadersService.skillsLoading = false;
     }
+    this.loadersService.skillsLoading = false;
   }
 
   private async subscribeToSkills() {
@@ -164,6 +162,34 @@ export class SkillsComponent implements OnDestroy {
           .subscribe((skills: Skill[]) => {
             this.skills = skills;
             this.loadersService.skillsLoading = false;
+          });
+        this.subscriptions.push(sub);
+      } else {
+        this.messageService.showLocalError('You must have a character');
+        this.router.navigate(['/create']);
+      }
+    } else {
+      this.messageService.showLocalError('You must be logged in');
+    }
+  }
+
+  private async subscribeToStats() {
+    const user: firebase.User | null = await this.userService.user;
+    if (user) {
+      const character: Character | null = await this.characterService.character;
+      if (character) {
+        this.loadersService.statisticsLoading = true;
+        const sub: Subscription = this.statsService
+          .listStats(character, user)
+          .pipe(
+            catchError((err) => {
+              this.loadersService.statisticsLoading = false;
+              return throwError(err);
+            })
+          )
+          .subscribe((stats: Statistic[]) => {
+            this.statistic = stats;
+            this.loadersService.statisticsLoading = false;
           });
         this.subscriptions.push(sub);
       } else {

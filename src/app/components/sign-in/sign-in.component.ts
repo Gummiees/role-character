@@ -34,9 +34,8 @@ export class SignInComponent {
       } catch (e: any) {
         console.error(e);
         this.messageService.showError(e);
-      } finally {
-        this.loadersService.signInLoading = false;
       }
+      this.loadersService.signInLoading = false;
     }
   }
 
@@ -49,9 +48,8 @@ export class SignInComponent {
     } catch (e: any) {
       console.error(e);
       this.messageService.showError(e);
-    } finally {
-      this.loadersService.signInLoading = false;
     }
+    this.loadersService.signInLoading = false;
   }
 
   goToSignUp() {

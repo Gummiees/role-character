@@ -18,13 +18,13 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
-        path: 'information',
-        component: CharacterInfoComponent,
+        path: 'statistics',
+        component: CharacterStatsComponent,
         canActivate: [CanActivateCharacterGuard]
       },
       {
-        path: 'statistics',
-        component: CharacterStatsComponent,
+        path: 'skills',
+        component: SkillsComponent,
         canActivate: [CanActivateCharacterGuard]
       },
       {
@@ -33,8 +33,8 @@ const routes: Routes = [
         canActivate: [CanActivateCharacterGuard]
       },
       {
-        path: 'skills',
-        component: SkillsComponent,
+        path: 'information',
+        component: CharacterInfoComponent,
         canActivate: [CanActivateCharacterGuard]
       },
       {
