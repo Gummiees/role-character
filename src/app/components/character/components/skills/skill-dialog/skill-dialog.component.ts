@@ -39,6 +39,7 @@ export class SkillDialogComponent implements OnDestroy {
   step: number = 0;
 
   private subscriptions: Subscription[] = [];
+  private skillId?: string;
   constructor(
     public globalService: GlobalService,
     public dialogRef: MatDialogRef<SkillDialogComponent>,
@@ -55,6 +56,7 @@ export class SkillDialogComponent implements OnDestroy {
   public onSubmit(): void {
     if (this.form.valid) {
       const item: Skill = {
+        id: this.skillId,
         name: this.nameControl.value,
         description: this.descriptionControl.value,
         active: this.activeControl.value,
@@ -102,7 +104,7 @@ export class SkillDialogComponent implements OnDestroy {
 
   private getWhenRollDice(): string | undefined {
     if (!this.doesRollDiceControl.value) {
-      return undefined;
+      return this.globalService.turnStart;
     }
     return this.whenRollDiceControl.value;
   }
@@ -129,6 +131,7 @@ export class SkillDialogComponent implements OnDestroy {
 
   private initData() {
     if (this.data && this.data.skill) {
+      this.skillId = this.data.skill.id;
       this.nameControl.setValue(this.data.skill.name);
       this.descriptionControl.setValue(this.data.skill.description);
       this.activeControl.setValue(this.data.skill.active);
