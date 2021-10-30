@@ -141,7 +141,9 @@ export class SkillDialogComponent implements OnDestroy {
       this.turnsLeftControl.setValue(this.data.skill.turnsLeft);
       this.levelControl.setValue(this.data.skill.level);
       this.caster_nameControl.setValue(this.data.skill.caster_name);
-      this.statsControl.setValue(this.data.skill.stats);
+
+      this.tableStats = this.data.skill.stats;
+      this.statsControl.setValue(this.reverseMapStats(this.tableStats));
 
       if (this.data.readonly) {
         this.form.disable();
@@ -180,5 +182,17 @@ export class SkillDialogComponent implements OnDestroy {
         value: 0
       };
     });
+  }
+
+  private reverseMapStats(stats: StatAffected[]): Statistic[] {
+    if (!this.data.statistics || this.data.statistics.length === 0) {
+      return [];
+    }
+
+    return stats
+      .map((stat) => {
+        return this.data.statistics.find((statistic) => statistic.id === stat.statId);
+      })
+      .filter((stat) => stat !== undefined) as Statistic[];
   }
 }

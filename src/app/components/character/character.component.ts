@@ -89,7 +89,6 @@ export class CharacterComponent {
       if (character) {
         character.phase = this.currentPhase;
         await this.characterService.updateCharacter(character);
-        this.messageService.showOk('Turn phase saved successfully');
       } else {
         this.messageService.showLocalError('You must have a character to change the turn phase.');
         this.router.navigate(['/create']);
