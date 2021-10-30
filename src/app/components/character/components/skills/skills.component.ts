@@ -79,7 +79,6 @@ export class SkillsComponent implements OnDestroy {
   }
 
   private async openSkillDialog(skill?: Skill, readonly?: boolean): Promise<Skill | null> {
-    // TODO: Cargar stats en dialogo
     const data: SkillDialogData = {
       skill,
       readonly: readonly || false,

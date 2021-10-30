@@ -108,7 +108,7 @@
           <td>
             {{ getStatName(item) }}
           </td>
-          <td pEditableColumn>
+          <td pEditableColumn [pEditableColumnDisabled]="form.disabled">
             <p-cellEditor>
               <ng-template pTemplate="input">
                 <mat-form-field class="w-full" appearance="standard">
