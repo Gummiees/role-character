@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Skill } from '@shared/models/skill.model';
+import { Skill, StatAffected } from '@shared/models/skill.model';
 import { Statistic } from '@shared/models/statistic.model';
 import { GlobalService } from '@shared/services/global.service';
 import { Subscription } from 'rxjs';
@@ -34,6 +34,7 @@ export class SkillDialogComponent implements OnDestroy {
   levelControl: FormControl = new FormControl(1, [Validators.min(0)]);
   caster_nameControl: FormControl = new FormControl(null);
   statsControl: FormControl = new FormControl([]);
+  tableStats: StatAffected[] = [];
 
   step: number = 0;
 
@@ -63,7 +64,7 @@ export class SkillDialogComponent implements OnDestroy {
         turnsLeft: this.getTurnsLeft(),
         level: this.levelControl.value,
         caster_name: this.caster_nameControl.value,
-        stats: this.statsControl.value
+        stats: this.tableStats
       };
       this.dialogRef.close(item);
     }
@@ -85,6 +86,11 @@ export class SkillDialogComponent implements OnDestroy {
 
   public next() {
     this.step++;
+  }
+
+  public getStatName(statAffected: StatAffected): string {
+    const stat = this.data.statistics.find((stat) => stat.id === statAffected.statId);
+    return stat ? stat.name : '';
   }
 
   private getTurnsLeft(): number {
@@ -140,8 +146,36 @@ export class SkillDialogComponent implements OnDestroy {
     }
   }
 
-  onStatChanges(stats: Statistic[]) {
-    // TODO: stats: cargar datos a una tabla editable
-    console.log('onStatChanges', stats);
+  private onStatChanges(stats: Statistic[]) {
+    if (!stats || stats.length === 0) {
+      this.tableStats = [];
+      return;
+    }
+
+    if (!this.tableStats || this.tableStats.length === 0) {
+      this.tableStats = this.mapStats(stats);
+      return;
+    }
+
+    if (this.tableStats.length > stats.length) {
+      this.tableStats = this.tableStats.filter((skillStat) =>
+        stats.some((stat) => stat.id === skillStat.statId)
+      );
+      return;
+    }
+
+    const addedStats: Statistic[] = stats.filter((stat) =>
+      this.tableStats.every((skillStat) => stat.id !== skillStat.statId)
+    );
+    this.tableStats = [...this.tableStats, ...this.mapStats(addedStats)];
+  }
+
+  private mapStats(stats: Statistic[]): StatAffected[] {
+    return stats.map((stat) => {
+      return {
+        statId: stat.id,
+        value: 0
+      };
+    });
   }
 }

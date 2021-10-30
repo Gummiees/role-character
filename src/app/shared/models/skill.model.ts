@@ -1,7 +1,7 @@
 import { Base } from './base.model';
 
 export interface StatAffected extends Base {
-  statId: number;
+  statId?: string;
   value: number;
 }
 

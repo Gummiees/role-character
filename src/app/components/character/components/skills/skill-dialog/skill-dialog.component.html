@@ -75,21 +75,55 @@
         </mat-form-field>
       </div>
     </div>
-    <div *ngIf="step === 1" class="flex w-full flex-col items-start justify-center">
-      <mat-form-field class="w-full" appearance="standard">
-        <mat-label>Statistics</mat-label>
-        <mat-select [formControl]="statsControl" multiple>
-          <mat-option *ngFor="let stat of data.statistics" [value]="stat">
-            {{ stat.name }}
-          </mat-option>
-        </mat-select>
-        <mat-hint>
-          The dices will be rolled before the selected phase unless the name explicitly says
-          otherwise.
-        </mat-hint>
-      </mat-form-field>
-    </div>
   </form>
+  <div *ngIf="step === 1" class="flex w-full flex-col items-start justify-center">
+    <mat-form-field class="w-full mb-4" appearance="standard">
+      <mat-label>Statistics</mat-label>
+      <mat-select [formControl]="statsControl" multiple>
+        <mat-option *ngFor="let stat of data.statistics" [value]="stat">
+          {{ stat.name }}
+        </mat-option>
+      </mat-select>
+      <mat-hint>
+        The dices will be rolled before the selected phase unless the name explicitly says
+        otherwise.
+      </mat-hint>
+    </mat-form-field>
+
+    <p-table
+      class="w-full"
+      styleClass=" p-datatable-sm p-datatable-gridlines"
+      responsiveLayout="scroll"
+      dataKey="id"
+      [value]="tableStats"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th> Name </th>
+          <th> Value </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <td>
+            {{ getStatName(item) }}
+          </td>
+          <td pEditableColumn>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <mat-form-field class="w-full" appearance="standard">
+                  <input matInput type="number" required [(ngModel)]="item.value" />
+                </mat-form-field>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ item.value }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions class="w-full flex items-center justify-between">
   <ng-container *ngIf="step === 0">

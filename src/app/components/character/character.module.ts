@@ -19,6 +19,7 @@ import { InventoryComponent } from './components/inventory/inventory.component';
 import { InventoryService } from './components/inventory/inventory.service';
 import { SkillService } from './components/skills/skill.service';
 import { SkillsComponent } from './components/skills/skills.component';
+import { StatAffectedService } from './components/skills/stat-affected.service';
 import { StoryComponent } from './components/story/story.component';
 
 @NgModule({
@@ -44,6 +45,6 @@ import { StoryComponent } from './components/story/story.component';
     TableModule,
     QuillModule
   ],
-  providers: [CanActivateCharacterGuard, InventoryService, SkillService]
+  providers: [CanActivateCharacterGuard, InventoryService, SkillService, StatAffectedService]
 })
 export class CharacterModule {}

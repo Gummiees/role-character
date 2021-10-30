@@ -49,6 +49,7 @@ export class SkillsComponent implements OnDestroy {
   public async onCreateSkill() {
     const skill: Skill | null = await this.openSkillDialog();
     if (skill) {
+      // TODO: Guardar stats
       this.create(skill);
     }
   }
@@ -60,6 +61,7 @@ export class SkillsComponent implements OnDestroy {
   public async onEdit(oldSkill: Skill) {
     const skill: Skill | null = await this.openSkillDialog(oldSkill);
     if (skill) {
+      // TODO: Guardar stats
       this.save(skill);
     }
   }
@@ -68,6 +70,7 @@ export class SkillsComponent implements OnDestroy {
     const dialogModel: BasicDialogModel = {
       body: 'Are you sure you want to delete the skill?'
     };
+    // TODO: Probar a ver que pasa si tiene stats
     this.dialogService
       .openDialog(dialogModel)
       .pipe(first())
