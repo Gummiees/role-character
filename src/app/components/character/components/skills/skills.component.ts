@@ -2,6 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Character } from '@shared/models/character.model';
 import { BasicDialogModel } from '@shared/models/dialog.model';
+import { Dice } from '@shared/models/dice.model';
 import { Skill } from '@shared/models/skill.model';
 import { Statistic } from '@shared/models/statistic.model';
 import { DialogService } from '@shared/services/dialog.service';
@@ -13,6 +14,7 @@ import { Subscription, throwError } from 'rxjs';
 import { catchError, first } from 'rxjs/operators';
 import { CharacterService } from '../../services/character.service';
 import { CharacterStatsService } from '../character-stats/character-stats.service';
+import { DiceService } from '../dices/dices.service';
 import { SkillDialogComponent, SkillDialogData } from './skill-dialog/skill-dialog.component';
 import { SkillService } from './skill.service';
 
@@ -22,13 +24,15 @@ import { SkillService } from './skill.service';
 })
 export class SkillsComponent implements OnDestroy {
   skills: Skill[] = [];
-  statistic: Statistic[] = [];
+  private stats: Statistic[] = [];
+  private dices: Dice[] = [];
   private subscriptions: Subscription[] = [];
   constructor(
     public loadersService: LoadersService,
     private dialogService: DialogService,
     private characterService: CharacterService,
     private statsService: CharacterStatsService,
+    private diceService: DiceService,
     private skillService: SkillService,
     private messageService: MessageService,
     private router: Router,
@@ -36,6 +40,7 @@ export class SkillsComponent implements OnDestroy {
   ) {
     this.subscribeToSkills();
     this.subscribeToStats();
+    this.subscribeToDices();
   }
 
   ngOnDestroy() {
@@ -43,7 +48,11 @@ export class SkillsComponent implements OnDestroy {
   }
 
   public buttonsDisabled(): boolean {
-    return this.loadersService.skillsLoading || this.loadersService.statisticsLoading;
+    return (
+      this.loadersService.skillsLoading ||
+      this.loadersService.statisticsLoading ||
+      this.loadersService.dicesLoading
+    );
   }
 
   public async onCreateSkill() {
@@ -82,7 +91,8 @@ export class SkillsComponent implements OnDestroy {
     const data: SkillDialogData = {
       skill,
       readonly: readonly || false,
-      statistics: this.statistic
+      statistics: this.stats,
+      dices: this.dices
     };
     return this.dialogService
       .openGenericDialog(SkillDialogComponent, data)
@@ -187,8 +197,37 @@ export class SkillsComponent implements OnDestroy {
             })
           )
           .subscribe((stats: Statistic[]) => {
-            this.statistic = stats;
+            this.stats = stats;
             this.loadersService.statisticsLoading = false;
+          });
+        this.subscriptions.push(sub);
+      } else {
+        this.messageService.showLocalError('You must have a character');
+        this.router.navigate(['/create']);
+      }
+    } else {
+      this.messageService.showLocalError('You must be logged in');
+    }
+  }
+
+  private async subscribeToDices() {
+    const user: firebase.User | null = await this.userService.user;
+    if (user) {
+      const character: Character | null = await this.characterService.character;
+      if (character) {
+        this.loadersService.dicesLoading = true;
+        const sub: Subscription = this.diceService
+          .listAllItems(character, user)
+          .pipe(
+            catchError((err) => {
+              this.loadersService.dicesLoading = false;
+              this.messageService.showError(err);
+              return throwError(err);
+            })
+          )
+          .subscribe((dices: Dice[]) => {
+            this.dices = dices;
+            this.loadersService.dicesLoading = false;
           });
         this.subscriptions.push(sub);
       } else {

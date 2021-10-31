@@ -4,6 +4,7 @@ import { CanActivateCharacterGuard } from '@shared/guards/character.guard';
 import { CharacterComponent } from './character.component';
 import { CharacterInfoComponent } from './components/character-info/character-info.component';
 import { CharacterStatsComponent } from './components/character-stats/character-stats.component';
+import { DicesComponent } from './components/dices/dices.component';
 import { InventoryComponent } from './components/inventory/inventory.component';
 import { SkillsComponent } from './components/skills/skills.component';
 import { StoryComponent } from './components/story/story.component';
@@ -25,6 +26,11 @@ const routes: Routes = [
       {
         path: 'skills',
         component: SkillsComponent,
+        canActivate: [CanActivateCharacterGuard]
+      },
+      {
+        path: 'dices',
+        component: DicesComponent,
         canActivate: [CanActivateCharacterGuard]
       },
       {

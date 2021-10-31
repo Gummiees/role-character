@@ -15,18 +15,8 @@ export class SkillService extends BaseCharacterService<Skill> {
   }
 
   public listSkills(character: Character, user: firebase.User): Observable<Skill[]> {
-    return super.listItems(character, user).pipe(
-      map((skills: Skill[]) => {
-        return skills.sort((a: Skill, b: Skill) => {
-          if (a.name < b.name) {
-            return -1;
-          }
-          if (a.name > b.name) {
-            return 1;
-          }
-          return 0;
-        });
-      })
-    );
+    return super
+      .listItems(character, user)
+      .pipe(map((skills: Skill[]) => skills.sort((a, b) => a.name.localeCompare(b.name))));
   }
 }

@@ -1,6 +1,7 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Dice } from '@shared/models/dice.model';
 import { Skill, StatAffected } from '@shared/models/skill.model';
 import { Statistic } from '@shared/models/statistic.model';
 import { GlobalService } from '@shared/services/global.service';
@@ -10,6 +11,7 @@ export interface SkillDialogData {
   skill: Skill | null | undefined;
   readonly: boolean;
   statistics: Statistic[];
+  dices: Dice[];
 }
 
 @Component({
@@ -33,7 +35,8 @@ export class SkillDialogComponent implements OnDestroy {
   );
   levelControl: FormControl = new FormControl(1, [Validators.min(0)]);
   caster_nameControl: FormControl = new FormControl(null);
-  statsControl: FormControl = new FormControl([]);
+  statsControl: FormControl = new FormControl([], [Validators.required]);
+  dicesControl: FormControl = new FormControl([], [Validators.required]);
   tableStats: StatAffected[] = [];
 
   step: number = 0;
@@ -120,7 +123,8 @@ export class SkillDialogComponent implements OnDestroy {
       turnsLeft: this.turnsLeftControl,
       level: this.levelControl,
       caster_name: this.caster_nameControl,
-      stats: this.statsControl
+      stats: this.statsControl,
+      dices: this.dicesControl
     });
 
     const sub: Subscription = this.statsControl.valueChanges.subscribe((stats: Statistic[]) => {
@@ -132,16 +136,7 @@ export class SkillDialogComponent implements OnDestroy {
   private initData() {
     if (this.data && this.data.skill) {
       this.skillId = this.data.skill.id;
-      this.nameControl.setValue(this.data.skill.name);
-      this.descriptionControl.setValue(this.data.skill.description);
-      this.activeControl.setValue(this.data.skill.active);
-      this.doesRollDiceControl.setValue(this.data.skill.doesRollDice);
-      this.whenRollDiceControl.setValue(this.data.skill.whenRollDice);
-      this.turnBasedControl.setValue(this.data.skill.turnBased);
-      this.turnsLeftControl.setValue(this.data.skill.turnsLeft);
-      this.levelControl.setValue(this.data.skill.level);
-      this.caster_nameControl.setValue(this.data.skill.caster_name);
-
+      this.form.patchValue(this.data.skill);
       this.tableStats = this.data.skill.stats;
       this.statsControl.setValue(this.reverseMapStats(this.tableStats));
 

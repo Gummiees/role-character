@@ -132,6 +132,20 @@
               *ngIf="!isEditing(item)"
               type="button"
               mat-icon-button
+              color="primary"
+              aria-label="Details"
+              class="text-green-500 hover:bg-green-100"
+              matTooltip="Details"
+              matTooltipPosition="below"
+              [disabled]="buttonsDisabled()"
+              (click)="statDetails(item)"
+            >
+              <mat-icon>loupe</mat-icon>
+            </button>
+            <button
+              *ngIf="!isEditing(item)"
+              type="button"
+              mat-icon-button
               color="warn"
               aria-label="Delete"
               class="hover:bg-red-100 micro-button"

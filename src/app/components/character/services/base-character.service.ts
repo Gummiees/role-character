@@ -1,17 +1,16 @@
-import { Host, Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
   DocumentChangeAction
 } from '@angular/fire/compat/firestore';
-import { Base } from '@shared/models/base.model';
+import { BaseUser } from '@shared/models/base.model';
 import { Character } from '@shared/models/character.model';
 import { UserService } from '@shared/services/user.service';
 import firebase from 'firebase/compat/app';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-export class BaseCharacterService<T extends Base> {
+export class BaseCharacterService<T extends BaseUser> {
   protected collection?: AngularFirestoreCollection<T> | null;
   constructor(
     public collectionName: string,

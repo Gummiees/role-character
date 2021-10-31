@@ -118,7 +118,6 @@ export class CharacterStatsService {
   }
 
   private async getDefaultStats(): Promise<DefaultStat[]> {
-    // TODO: Do and call
     const user: firebase.User | null = await this.userService.user;
     if (!user) {
       throw new Error('You must be signed in');
