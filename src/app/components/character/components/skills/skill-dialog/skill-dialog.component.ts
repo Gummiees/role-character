@@ -138,8 +138,7 @@ export class SkillDialogComponent implements OnDestroy {
       this.skillId = this.data.skill.id;
       this.form.patchValue(this.data.skill);
       this.tableStats = this.data.skill.stats;
-      this.statsControl.setValue(this.reverseMapStats(this.tableStats));
-
+      this.form.controls.stats.setValue(this.reverseMapStats(this.tableStats) || []);
       if (this.data.readonly) {
         this.form.disable();
       }
