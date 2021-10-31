@@ -18,6 +18,7 @@ export class LoadersService {
   private $statisticsLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private $skillsLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private $turnLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private $dicesLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   constructor() {}
 
   isAnyLoading(): boolean {
@@ -34,7 +35,8 @@ export class LoadersService {
       this.storyLoading ||
       this.statisticsLoading ||
       this.turnLoading ||
-      this.skillsLoading
+      this.skillsLoading ||
+      this.dicesLoading
     );
   }
 
@@ -115,5 +117,11 @@ export class LoadersService {
   }
   get turnLoading(): boolean {
     return this.$turnLoading.value;
+  }
+  set dicesLoading(value: boolean) {
+    this.$dicesLoading.next(value);
+  }
+  get dicesLoading(): boolean {
+    return this.$dicesLoading.value;
   }
 }

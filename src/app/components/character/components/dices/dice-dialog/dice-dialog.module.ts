@@ -4,25 +4,21 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { DicePipeModule } from '@shared/pipes/dice/dice-pipe.module';
 import { SharedModule } from '@shared/shared.module';
-import { TableModule } from 'primeng/table';
-import { SkillDialogComponent } from './skill-dialog.component';
+import { DiceDialogComponent } from './dice-dialog.component';
 @NgModule({
-  declarations: [SkillDialogComponent],
+  declarations: [DiceDialogComponent],
   imports: [
     SharedModule,
     MatDialogModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatSlideToggleModule,
     MatInputModule,
     MatSelectModule,
-    TableModule,
     DicePipeModule
   ],
-  exports: [SkillDialogComponent],
+  exports: [DiceDialogComponent],
   providers: []
 })
-export class SkillDialogModule {}
+export class DiceDialogModule {}

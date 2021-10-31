@@ -27,6 +27,11 @@ export class CharacterComponent {
       icon: 'hiking'
     },
     {
+      label: 'Dices',
+      link: '/dices',
+      icon: 'casino'
+    },
+    {
       label: 'Inventory',
       link: '/inventory',
       icon: 'backpack'

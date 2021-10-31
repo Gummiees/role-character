@@ -32,8 +32,9 @@ import { BuyItemDialogModule } from './components/character/components/inventory
 import { GoldDialogModule } from './components/character/components/inventory/gold-dialog/gold-dialog.module';
 import { SellItemDialogModule } from './components/character/components/inventory/sell-item-dialog/sell-item-dialog.module';
 import { SaveCmdDirective } from '@shared/directives/save-cmd.directive';
-import { AddStatDialogModule } from './components/character/components/character-info/add-stat-dialog/add-stat-dialog.module';
+import { StatDetailsDialogModule } from './components/character/components/character-stats/stat-details-dialog/stat-details-dialog.module';
 import { SkillDialogModule } from './components/character/components/skills/skill-dialog/skill-dialog.module';
+import { DiceDialogModule } from './components/character/components/dices/dice-dialog/dice-dialog.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -68,8 +69,9 @@ import { SkillDialogModule } from './components/character/components/skills/skil
     SellItemDialogModule,
     BuyItemDialogModule,
     GoldDialogModule,
-    AddStatDialogModule,
-    SkillDialogModule
+    StatDetailsDialogModule,
+    SkillDialogModule,
+    DiceDialogModule
   ],
   providers: [
     PerformanceMonitoringService,
