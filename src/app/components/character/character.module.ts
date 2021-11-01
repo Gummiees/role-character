@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -40,6 +41,7 @@ import { StoryComponent } from './components/story/story.component';
     MatTabsModule,
     MatIconModule,
     MatButtonModule,
+    MatChipsModule,
     MatFormFieldModule,
     MatInputModule,
     MatSlideToggleModule,
