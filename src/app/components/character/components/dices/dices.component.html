@@ -1,5 +1,5 @@
 <div class="p-6 w-full shadow-md bg-white">
-  <div class="mb-4 flex items-center justify-between">
+  <div class="flex items-center justify-between">
     <h1 class="mb-2">Dices</h1>
     <div class="flex items-center">
       <button
@@ -17,7 +17,56 @@
       </button>
     </div>
   </div>
-
+  <div class="mb-4 w-full">
+    <form
+      class="w-full flex-col items-start justify-center"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+    >
+      <mat-chip-list #chipList aria-label="Dices" multiple>
+        <mat-chip
+          *ngFor="let dice of dices"
+          [selected]="true"
+          [value]="dice.id"
+          (click)="onSelect(dice)"
+        >
+          {{ dice | shortDicePipe }}
+        </mat-chip>
+      </mat-chip-list>
+      <mat-form-field class="w-full" appearance="standard">
+        <mat-chip-list
+          #chipList
+          aria-label="Selected dices"
+          multiple
+          [formControl]="selectedDicesControl"
+        >
+          <mat-chip
+            *ngFor="let dice of selectedDicesControl.value"
+            [selected]="isSelected(dice)"
+            [value]="dice.id"
+            [removable]="true"
+            (removed)="removeDice(dice)"
+          >
+            {{ dice | shortDicePipe }}
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+        </mat-chip-list>
+        <mat-hint>Selected dices</mat-hint>
+      </mat-form-field>
+      <button
+        mat-raised-button
+        class="mt-2"
+        type="submit"
+        color="primary"
+        [disabled]="form.invalid"
+      >
+        Throw dices
+        <mat-icon class="ml-2"> casino </mat-icon>
+      </button>
+    </form>
+  </div>
   <p-table
     styleClass="p-datatable-sm p-datatable-gridlines"
     responsiveLayout="scroll"

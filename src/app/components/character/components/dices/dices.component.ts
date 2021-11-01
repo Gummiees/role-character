@@ -14,6 +14,7 @@ import { CharacterService } from '../../services/character.service';
 import { DiceDialogComponent, DiceDialogData } from './dice-dialog/dice-dialog.component';
 import { DiceService } from './dices.service';
 import firebase from 'firebase/compat/app';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-dices',
@@ -21,6 +22,8 @@ import firebase from 'firebase/compat/app';
 })
 export class DicesComponent implements OnDestroy {
   dices: Dice[] = [];
+  form: FormGroup = new FormGroup({});
+  selectedDicesControl: FormControl = new FormControl([], [Validators.required]);
   private subscriptions: Subscription[] = [];
   constructor(
     public loadersService: LoadersService,
@@ -32,6 +35,9 @@ export class DicesComponent implements OnDestroy {
     private diceService: DiceService,
     private router: Router
   ) {
+    this.form = new FormGroup({
+      name: this.selectedDicesControl
+    });
     this.subscribeToDices();
   }
 
@@ -41,6 +47,31 @@ export class DicesComponent implements OnDestroy {
 
   public buttonsDisabled(): boolean {
     return this.loadersService.dicesLoading;
+  }
+
+  public removeDice(oldDice: Dice) {
+    const index: number = this.selectedDicesControl.value.findIndex(
+      (dice: Dice) => dice.id === oldDice.id
+    );
+    if (index > -1) {
+      this.selectedDicesControl.value.splice(index, 1);
+    }
+  }
+
+  public onSelect(dice: Dice) {
+    const dices: Dice[] = [...this.selectedDicesControl.value, dice];
+    console.log('dices', dices);
+    this.selectedDicesControl.setValue(dices);
+  }
+
+  public isSelected(dice: Dice) {
+    return this.selectedDicesControl.value.some((d: Dice) => d.id === dice.id);
+  }
+
+  public onSubmit() {
+    if (this.form.valid) {
+      // TODO: Roll dices
+    }
   }
 
   public async onAdd() {

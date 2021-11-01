@@ -11,7 +11,7 @@ import { MenuService } from '../../services/menu.service';
 export class TopbarComponent implements OnDestroy {
   public photoUrl: string | null = this.userService.imageUrl;
   public username?: string | null;
-  public version: string = '0.0.1';
+  public version: string = '0.0.2';
   private subscriptions: Subscription[] = [];
 
   constructor(private userService: UserService, private menuService: MenuService) {
