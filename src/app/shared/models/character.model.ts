@@ -10,6 +10,7 @@ export interface Character {
   story: string;
   turn: number;
   phase: string;
+  inCombat: boolean;
   gold: number;
   inventory: Item[];
   statistics: Statistic[];

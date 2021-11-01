@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
-import { FormControl, FormControlName, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Dice } from '@shared/models/dice.model';
 import { Skill, StatAffected } from '@shared/models/skill.model';
@@ -24,19 +24,15 @@ export class SkillDialogComponent implements OnDestroy {
   descriptionControl: FormControl = new FormControl(null);
   activeControl: FormControl = new FormControl(false);
   doesRollDiceControl: FormControl = new FormControl(false);
-  whenRollDiceControl: FormControl = new FormControl(
-    { value: this.globalService.turnStart, disabled: !this.doesRollDiceControl.value },
-    [Validators.required]
-  );
+  whenRollDiceControl: FormControl = new FormControl(this.globalService.turnStart, [
+    Validators.required
+  ]);
   turnBasedControl: FormControl = new FormControl(false);
-  turnsLeftControl: FormControl = new FormControl(
-    { value: 0, disabled: !this.turnBasedControl.value },
-    [Validators.min(0)]
-  );
+  turnsLeftControl: FormControl = new FormControl(0, [Validators.min(0)]);
   levelControl: FormControl = new FormControl(1, [Validators.min(0)]);
   caster_nameControl: FormControl = new FormControl(null);
-  statsControl: FormControl = new FormControl([], [Validators.required]);
-  dicesControl: FormControl = new FormControl([], [Validators.required]);
+  statsControl: FormControl = new FormControl([]);
+  dicesControl: FormControl = new FormControl([]);
   tableStats: StatAffected[] = [];
 
   step: number = 0;
@@ -69,7 +65,8 @@ export class SkillDialogComponent implements OnDestroy {
         turnsLeft: this.getTurnsLeft(),
         level: this.levelControl.value,
         caster_name: this.caster_nameControl.value,
-        stats: this.tableStats
+        stats: this.tableStats,
+        dices: this.dicesControl.value
       };
       this.dialogRef.close(item);
     }
@@ -138,7 +135,7 @@ export class SkillDialogComponent implements OnDestroy {
       this.skillId = this.data.skill.id;
       this.form.patchValue(this.data.skill);
       this.tableStats = this.data.skill.stats;
-      this.form.controls.stats.setValue(this.reverseMapStats(this.tableStats) || []);
+      debugger;
       if (this.data.readonly) {
         this.form.disable();
       }

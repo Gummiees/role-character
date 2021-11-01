@@ -28,7 +28,6 @@
             appearance="standard"
           >
             <mat-label>Dices to roll</mat-label>
-            <mat-label>Dices</mat-label>
             <mat-select [formControl]="dicesControl" multiple>
               <mat-option *ngFor="let dice of data.dices" [value]="dice.id">
                 {{ dice | dicePipe }}

@@ -1,4 +1,5 @@
 import { Base } from './base.model';
+import { Dice } from './dice.model';
 
 export interface StatAffected extends Base {
   statId?: string;
@@ -13,7 +14,8 @@ export interface Skill extends Base {
   whenRollDice?: string;
   turnBased: boolean;
   turnsLeft: number;
-  stats: StatAffected[];
   level?: number;
   caster_name?: string;
+  stats: StatAffected[];
+  dices: Dice[];
 }

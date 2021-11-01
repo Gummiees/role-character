@@ -68,6 +68,25 @@ export class CharacterStatsComponent implements OnDestroy {
     }
   }
 
+  public async onReset(stat: Statistic) {
+    this.loadersService.statisticsLoading = true;
+    try {
+      const character: Character | null = await this.characterService.character;
+      if (character) {
+        stat.current = stat.total;
+        await this.statisticService.updateStat(character, stat);
+        this.messageService.showOk('Stat reset successfully');
+      } else {
+        this.messageService.showLocalError('You must have a character to reset a stat');
+        this.router.navigate(['/create']);
+      }
+    } catch (e: any) {
+      console.error(e);
+      this.messageService.showLocalError(e);
+    }
+    this.loadersService.statisticsLoading = false;
+  }
+
   public async onDelete(stat: Statistic) {
     const dialogModel: BasicDialogModel = {
       body: 'Are you sure you want to delete the stat?'

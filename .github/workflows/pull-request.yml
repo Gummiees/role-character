@@ -1,18 +1,19 @@
-name: CI Angular
-'on':
-  pull_request:
-    branches:
-      - master
-jobs:
-  build:
-    name: Test project
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-      - name: Install
-        run: npm i
-      - name: Lint
-        run: npm run lint
-#      - name: Test
-#        run: npm run ci-test
+# Useless to implement for myself since I always push with "npm run push", which already checks this validations.
+# name: CI Angular
+# 'on':
+#   pull_request:
+#     branches:
+#       - master
+# jobs:
+#   build:
+#     name: Test project
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout Repo
+#         uses: actions/checkout@v2
+#       - name: Install
+#         run: npm i
+#       - name: Lint
+#         run: npm run lint
+# #      - name: Test
+# #        run: npm run ci-test
