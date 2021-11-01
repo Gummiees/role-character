@@ -5,7 +5,7 @@ import { Character } from '@shared/models/character.model';
 import { LoadersService } from '@shared/services/loaders.service';
 import { MessageService } from '@shared/services/message.service';
 import { Subscription } from 'rxjs';
-import { debounceTime, skip } from 'rxjs/operators';
+import { debounceTime, filter, skip } from 'rxjs/operators';
 import { CharacterService } from '../../services/character.service';
 
 @Component({
@@ -16,7 +16,7 @@ import { CharacterService } from '../../services/character.service';
 })
 export class StoryComponent implements OnDestroy {
   form: FormGroup = new FormGroup({});
-  storyControl: FormControl = new FormControl(null, [Validators.required]);
+  storyControl: FormControl = new FormControl(null);
   private character?: Character;
   private subscriptions: Subscription[] = [];
   constructor(
@@ -42,7 +42,11 @@ export class StoryComponent implements OnDestroy {
   }
 
   isDisabled(): boolean {
-    return this.form.invalid || this.loadersService.storyLoading;
+    return (
+      this.form.invalid ||
+      (this.form.untouched && this.form.pristine) ||
+      this.loadersService.storyLoading
+    );
   }
 
   private setForm() {
@@ -71,7 +75,10 @@ export class StoryComponent implements OnDestroy {
 
   private subscribeToStory() {
     const sub: Subscription = this.storyControl.valueChanges
-      .pipe(debounceTime(5000), skip(1))
+      .pipe(
+        debounceTime(5000),
+        filter(() => this.form.touched || this.form.dirty)
+      )
       .subscribe((val: string) => this.save(val));
     this.subscriptions.push(sub);
   }

@@ -49,6 +49,7 @@ export class CharacterComponent {
   ];
 
   currentPhase: string = this.globalService.turnStart;
+  inCombat: boolean = true;
   constructor(
     public loadersService: LoadersService,
     private globalService: GlobalService,
@@ -56,7 +57,9 @@ export class CharacterComponent {
     private messageService: MessageService,
     private commonService: CommonService,
     private router: Router
-  ) {}
+  ) {
+    this.loadCharacter();
+  }
 
   public previousTurn() {
     const iTurn: number | undefined = this.globalService.turns.indexOf(this.currentPhase);
@@ -67,7 +70,7 @@ export class CharacterComponent {
         this.setCurrentPhase(iTurn - 1);
       }
 
-      this.saveTurn();
+      this.save();
     }
   }
 
@@ -79,20 +82,29 @@ export class CharacterComponent {
       } else {
         this.setCurrentPhase(iTurn + 1);
       }
-
-      this.saveTurn();
+      this.save();
     }
+  }
+
+  public toggleCombat() {
+    this.inCombat = !this.inCombat;
+    if (!this.inCombat) {
+      this.currentPhase = this.globalService.turnStart;
+    }
+    this.save();
   }
 
   private setCurrentPhase(key: number) {
     this.currentPhase = this.globalService.turns[key];
   }
-  private async saveTurn() {
+
+  private async save() {
     this.loadersService.turnLoading = true;
     try {
       const character: Character | null = await this.characterService.character;
       if (character) {
         character.phase = this.currentPhase;
+        character.inCombat = this.inCombat;
         await this.characterService.updateCharacter(character);
       } else {
         this.messageService.showLocalError('You must have a character to change the turn phase.');
@@ -103,5 +115,21 @@ export class CharacterComponent {
       this.messageService.showLocalError(e);
     }
     this.loadersService.turnLoading = false;
+  }
+
+  private async loadCharacter() {
+    this.loadersService.turnLoading = true;
+    try {
+      const character: Character | null = await this.characterService.character;
+      if (character) {
+        this.currentPhase = character.phase;
+        this.inCombat = character.inCombat;
+      }
+    } catch (e: any) {
+      console.error(e);
+      this.messageService.showLocalError(e);
+    } finally {
+      this.loadersService.turnLoading = false;
+    }
   }
 }

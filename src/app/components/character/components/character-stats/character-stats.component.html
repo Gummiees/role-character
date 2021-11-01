@@ -103,6 +103,7 @@
         <td>
           <div class="w-full flex items-center justify-evenly">
             <button
+            *ngIf="isEditing(item)"
               type="button"
               mat-icon-button
               color="primary"
@@ -141,6 +142,20 @@
               (click)="statDetails(item)"
             >
               <mat-icon>loupe</mat-icon>
+            </button>
+            <button
+              *ngIf="!isEditing(item)"
+              type="button"
+              mat-icon-button
+              color="primary"
+              aria-label="Reset"
+              class="hover:bg-indigo-100 micro-button"
+              matTooltip="Reset"
+              matTooltipPosition="below"
+              [disabled]="buttonsDisabled()"
+              (click)="onReset(item)"
+            >
+              <mat-icon>restart_alt</mat-icon>
             </button>
             <button
               *ngIf="!isEditing(item)"

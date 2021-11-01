@@ -3,6 +3,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      lineHeight: {
+        sm: '0.875rem'
+      },
       fontSize: {
         '3xl': '2rem'
       },

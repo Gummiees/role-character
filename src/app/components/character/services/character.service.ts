@@ -70,6 +70,7 @@ export class CharacterService {
     character.gold = 0;
     character.turn = 0;
     character.phase = this.globalService.turnStart;
+    character.inCombat = false;
     await this.firestore.collection<Character>('characters').add(character);
     let characterSaved: Character = await this.getCharacterOrThrowError();
     await this.characterStatsService.addDefautStats(characterSaved);

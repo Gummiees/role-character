@@ -2,6 +2,30 @@
   <div class="cursor-pointer flex items-center" (click)="onMenuClick()">
     <mat-icon class="h-8 w-8 text-3xl"> menu </mat-icon>
   </div>
+  <div class="ml-4 flex items-end">
+    <a
+      href="https://github.com/Gummiees/rol-player"
+      target="_blank"
+      class="
+        h-8
+        flex
+        items-center
+        justify-center
+        transform
+        transition
+        duration-150
+        ease-in-out
+        hover:scale-110
+        active:scale-110
+      "
+      aria-label="GitHub"
+      matTooltip="GitHub"
+      matTooltipPosition="below"
+    >
+      <img class="rounded-full h-8" src="assets/images/github-logo.svg" />
+    </a>
+    <span *ngIf="version" class="ml-2 leading-sm text-sm">v{{ version }}</span>
+  </div>
   <span class="flex-auto"></span>
   <a
     routerLink="/user"
