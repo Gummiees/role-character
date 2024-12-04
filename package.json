@@ -28,7 +28,7 @@
     "@angular/material": "^12.2.6",
     "@angular/platform-browser": "~12.2.0",
     "@angular/platform-browser-dynamic": "~12.2.0",
-    "@angular/router": "~12.2.0",
+    "@angular/router": "~12.2.12",
     "firebase": "^9.0.0",
     "ngx-quill": "^14.3.0",
     "primeicons": "^4.1.0",
